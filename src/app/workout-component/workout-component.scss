@@ -1,0 +1,418 @@
+.workout-container{
+
+  min-height:100vh;
+
+  padding:24px;
+
+  color:white;
+
+  background:
+    radial-gradient(circle at top,rgba(59,130,246,0.18),transparent),
+    #050505;
+}
+
+/* header */
+
+.workout-header{
+
+  margin-bottom:18px;
+}
+
+.exercise-progress{
+
+  font-size:12px;
+
+  color:#9ca3af;
+
+  margin-bottom:4px;
+}
+
+.exercise-name{
+
+  font-size:24px;
+
+  font-weight:600;
+}
+
+.exercise-muscle{
+
+  font-size:14px;
+
+  color:#9ca3af;
+}
+
+/* video */
+
+.exercise-video{
+
+  margin-top:10px;
+
+  margin-bottom:20px;
+
+  border-radius:16px;
+
+  overflow:hidden;
+
+  border:1px solid rgba(255,255,255,0.08);
+}
+
+.exercise-video video{
+
+  width:100%;
+
+  height:200px;
+
+  object-fit:cover;
+}
+
+/* completed sets */
+
+.completed-section{
+
+  margin-bottom:16px;
+}
+
+.completed-set{
+
+  display:flex;
+
+  align-items:center;
+
+  gap:10px;
+
+  padding:8px 12px;
+
+  margin-bottom:6px;
+
+  border-radius:10px;
+
+  background:rgba(34,197,94,0.12);
+
+  border:1px solid rgba(34,197,94,0.35);
+
+  font-size:13px;
+}
+
+.check{
+
+  color:#22c55e;
+
+  font-weight:bold;
+}
+
+.set-stats{
+
+  margin-left:auto;
+
+  color:#d1d5db;
+}
+
+/* current set */
+
+.current-set-card{
+
+  padding:22px;
+
+  border-radius:18px;
+
+  margin-bottom:20px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(59,130,246,0.2),
+      rgba(30,30,30,0.8)
+    );
+
+  backdrop-filter:blur(14px);
+
+  border:1px solid rgba(59,130,246,0.35);
+
+  box-shadow:
+    0 0 0 1px rgba(59,130,246,0.25),
+    0 12px 28px rgba(0,0,0,0.6);
+
+  animation:setActivate 0.4s ease;
+}
+
+.current-set-label{
+
+  font-size:11px;
+
+  color:#60a5fa;
+
+  margin-bottom:6px;
+
+  letter-spacing:1px;
+}
+
+.set-title{
+
+  font-size:20px;
+
+  font-weight:600;
+
+  margin-bottom:4px;
+}
+
+.target-text{
+
+  font-size:14px;
+
+  color:#d1d5db;
+
+  margin-bottom:16px;
+}
+
+/* inputs */
+
+.set-input-row{
+
+  display:flex;
+
+  gap:16px;
+
+  margin-bottom:18px;
+}
+
+.input-block{
+
+  display:flex;
+
+  flex-direction:column;
+}
+
+.input-block label{
+
+  font-size:11px;
+
+  color:#9ca3af;
+
+  margin-bottom:3px;
+}
+
+.input-block input{
+
+  width:90px;
+
+  padding:8px;
+
+  border-radius:8px;
+
+  background:rgba(255,255,255,0.06);
+
+  border:1px solid rgba(255,255,255,0.15);
+
+  color:white;
+
+  text-align:center;
+}
+
+/* button */
+
+.log-set-btn{
+
+  width:100%;
+
+  padding:12px;
+
+  border-radius:12px;
+
+  background:#2563eb;
+
+  font-weight:600;
+
+  font-size:14px;
+
+  transition:all 0.2s;
+}
+
+.log-set-btn:hover{
+
+  background:#1d4ed8;
+
+  transform:translateY(-1px);
+}
+
+/* next set */
+
+.next-set-card{
+
+  padding:14px;
+
+  border-radius:12px;
+
+  background:rgba(255,255,255,0.05);
+
+  border:1px solid rgba(255,255,255,0.08);
+}
+
+.next-label{
+
+  font-size:12px;
+
+  color:#9ca3af;
+}
+
+.next-details{
+
+  font-size:16px;
+
+  font-weight:600;
+}
+
+.next-target{
+
+  font-size:13px;
+
+  color:#d1d5db;
+}
+
+/* animation */
+
+@keyframes setActivate{
+
+  0%{
+    transform:scale(0.96);
+    opacity:0.6;
+  }
+
+  100%{
+    transform:scale(1);
+    opacity:1;
+  }
+}
+
+/* ── Exercise Complete Card ── */
+
+.exercise-complete-card {
+  padding: 28px 22px;
+  border-radius: 22px;
+  margin-bottom: 20px;
+  text-align: center;
+
+  background: linear-gradient(
+    145deg,
+    rgba(34, 197, 94, 0.18),
+    rgba(20, 20, 20, 0.85)
+  );
+
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(34, 197, 94, 0.35);
+
+  box-shadow:
+    0 0 0 1px rgba(34, 197, 94, 0.2),
+    0 16px 40px rgba(0, 0, 0, 0.6);
+
+  animation: setActivate 0.5s ease;
+}
+
+.complete-badge {
+  font-size: 48px;
+  margin-bottom: 10px;
+  animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes popIn {
+  0%   { transform: scale(0); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+.complete-title {
+  font-size: 22px;
+  font-weight: 700;
+  color: #22c55e;
+  margin-bottom: 6px;
+}
+
+.complete-subtitle {
+  font-size: 14px;
+  color: #9ca3af;
+  margin-bottom: 20px;
+
+  strong { color: #f3f4f6; }
+}
+
+.complete-stats {
+  display: flex;
+  justify-content: center;
+  gap: 24px;
+  margin-bottom: 22px;
+  padding: 14px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.complete-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.stat-val {
+  font-size: 20px;
+  font-weight: 700;
+  color: #f3f4f6;
+}
+
+.stat-lbl {
+  font-size: 11px;
+  color: #6b7280;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Next exercise preview inside complete card */
+
+.next-exercise-preview {
+  margin-bottom: 18px;
+  padding: 14px 16px;
+  border-radius: 14px;
+  text-align: left;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.next-up-label {
+  font-size: 11px;
+  color: #facc15;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.next-exercise-info {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.next-exercise-name {
+  font-size: 16px;
+  font-weight: 600;
+  color: #f3f4f6;
+}
+
+.next-exercise-meta {
+  font-size: 13px;
+  color: #9ca3af;
+  margin-top: 2px;
+}
+
+.next-exercise-icon {
+  font-size: 20px;
+  color: #60a5fa;
+}
+
+.complete-btn {
+  background: linear-gradient(135deg, #22c55e, #16a34a);
+  box-shadow: 0 6px 18px rgba(34, 197, 94, 0.35);
+}
+
+.complete-btn:hover {
+  background: linear-gradient(135deg, #16a34a, #15803d);
+  transform: translateY(-1px);
+  box-shadow: 0 8px 22px rgba(34, 197, 94, 0.45);
+}

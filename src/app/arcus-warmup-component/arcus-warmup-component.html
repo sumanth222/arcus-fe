@@ -1,0 +1,70 @@
+<div class="arcus-page">
+
+  <!-- Header -->
+
+  <div class="mb-4">
+    <h1 class="text-2xl font-semibold">Warm Up 🔥</h1>
+    <p class="text-zinc-400 text-sm">
+      Prepare your muscles before today's workout
+    </p>
+  </div>
+
+
+  <!-- Warmup Cards -->
+
+  <div class="flex flex-col gap-5">
+
+    <div *ngFor="let warmup of warmups" class="glass-card">
+
+      <video
+        class="w-full rounded-lg"
+        autoplay
+        muted
+        loop
+      >
+        <source [src]="warmup.video" type="video/mp4">
+        Sorry, your browser doesn't support embedded videos.
+      </video>
+
+      <div class="mt-3">
+
+        <h3 class="text-lg font-semibold">
+          {{warmup.name}}
+        </h3>
+
+        <p class="text-zinc-400 text-sm">
+          {{warmup.description}}
+        </p>
+
+        <div class="warmup-meta">
+          ⏱ {{warmup.duration}}
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- Buttons -->
+
+  <div class="mt-6 flex flex-col gap-3">
+
+    <button
+      (click)="startWorkout()"
+      class="arcus-button"
+    >
+      Start Workout
+    </button>
+
+    <button
+      (click)="skipWarmup()"
+      class="skip-button"
+    >
+      Warmup Already Done
+    </button>
+
+  </div>
+
+</div>

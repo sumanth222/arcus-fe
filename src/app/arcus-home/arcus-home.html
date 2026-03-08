@@ -1,0 +1,66 @@
+<div class="min-h-screen from-zinc-900 to-black text-white p-6 flex flex-col gap-6 bg-[url('/images/home-background.jpg')] bg-cover bg-center">
+
+  <!-- Welcome -->
+  <div>
+    <h1 class="text-3xl font-semibold">Hi Sumanth 👋</h1>
+    <p class="text-zinc-400 text-sm">Ready to lift today?</p>
+  </div>
+
+  <!-- Centered Content -->
+  <div class="flex-1 flex flex-col justify-center  w-full gap-6">
+    <!-- Today's Workout -->
+    <div class="glass-card">
+      <p class="text-zinc-400 text-sm">Today's Workout</p>
+      <h2 class="text-xl font-semibold mt-1">
+        {{todaysWorkout.name}}
+      </h2>
+      <p class="text-white drop-shadow-md mt-1">
+        {{todaysWorkout.muscles}}
+      </p>
+      <!-- Slider -->
+      <div
+        #sliderContainer
+        class="slider-container"
+        (mousemove)="onDrag($event)"
+        (mouseup)="endDrag()"
+        (mouseleave)="endDrag()"
+        (touchmove)="onDrag($event)"
+        (touchend)="endDrag()"
+      >
+        <div
+          #sliderThumb
+          class="slider-thumb"
+          (mousedown)="startDrag($event)"
+          (touchstart)="startDrag($event)"
+        >
+          ▶
+        </div>
+        <span class="slider-text">
+          Slide to Start Workout
+        </span>
+      </div>
+    </div>
+    <!-- Last Workout -->
+    <div class="glass-card">
+      <p class="text-zinc-400 text-sm">Last Workout</p>
+      <h2 class="text-xl font-semibold mt-1">
+        {{lastWorkout.name}}
+      </h2>
+      <div class="grid grid-cols-3 gap-4 mt-4">
+        <div class="stat-card">
+          <p class="stat-value">{{lastWorkout.volume}}</p>
+          <p class="stat-label">kg lifted</p>
+        </div>
+        <div class="stat-card">
+          <p class="stat-value">{{lastWorkout.calories}}</p>
+          <p class="stat-label">Calories</p>
+        </div>
+        <div class="stat-card">
+          <p class="stat-value">{{lastWorkout.duration}}</p>
+          <p class="stat-label">Minutes</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>

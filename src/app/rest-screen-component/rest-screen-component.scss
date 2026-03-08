@@ -1,0 +1,151 @@
+.rest-container {
+
+  min-height: 100vh;
+
+  display: flex;
+
+  flex-direction: column;
+
+  justify-content: center;
+
+  align-items: center;
+
+  padding: 30px;
+
+  background:
+    radial-gradient(circle at 20% 20%, rgba(59,130,246,0.15), transparent),
+    #050505;
+
+  color: white;
+
+  text-align: center;
+}
+
+/* completed message */
+
+.rest-complete {
+
+  font-size: 20px;
+
+  font-weight: 600;
+
+  color: #22c55e;
+
+  margin-bottom: 12px;
+}
+
+/* AI coaching message */
+
+.rest-message {
+
+  font-size: 14px;
+
+  color: #9ca3af;
+
+  max-width: 260px;
+
+  margin-bottom: 40px;
+}
+
+/* timer */
+
+.timer-section {
+
+  margin-bottom: 40px;
+}
+
+.rest-label {
+
+  font-size: 14px;
+
+  color: #9ca3af;
+
+  margin-bottom: 8px;
+}
+
+.rest-timer {
+
+  font-size: 64px;
+
+  font-weight: 700;
+
+  letter-spacing: 2px;
+
+  color: white;
+
+  text-shadow: 0 4px 14px rgba(0,0,0,0.6);
+}
+
+/* next set card */
+
+.next-set-card {
+
+  width: 100%;
+
+  max-width: 320px;
+
+  padding: 18px;
+
+  border-radius: 16px;
+
+  backdrop-filter: blur(12px);
+
+  background: rgba(30,30,30,0.55);
+
+  border: 1px solid rgba(255,255,255,0.08);
+
+  box-shadow:
+    0 6px 14px rgba(0,0,0,0.5),
+    inset 0 1px 0 rgba(255,255,255,0.04);
+
+  margin-bottom: 30px;
+}
+
+.next-label {
+
+  font-size: 12px;
+
+  color: #9ca3af;
+
+  margin-bottom: 4px;
+}
+
+.next-set-details {
+
+  font-size: 18px;
+
+  font-weight: 600;
+}
+
+.next-target {
+
+  font-size: 14px;
+
+  color: #d1d5db;
+}
+
+/* end rest button */
+
+.end-rest-btn {
+
+  width: 100%;
+
+  max-width: 320px;
+
+  padding: 14px;
+
+  border-radius: 12px;
+
+  font-weight: 600;
+
+  background: #2563eb;
+
+  transition: all 0.2s;
+}
+
+.end-rest-btn:hover {
+
+  background: #1d4ed8;
+
+  transform: translateY(-1px);
+}

@@ -1,0 +1,51 @@
+<div class="rest-container">
+
+  <!-- Completed indicator -->
+  <div class="rest-complete">
+    ✓ Set {{completedSet}} Logged
+  </div>
+
+  <!-- AI feedback -->
+  <div class="rest-message">
+    {{restData.message}}
+  </div>
+
+  <!-- Timer -->
+  <div class="timer-section">
+
+    <div class="rest-label">
+      Rest
+    </div>
+
+    <div class="rest-timer">
+      {{minutes}}:{{seconds}}
+    </div>
+
+  </div>
+
+  <!-- Next Set Info -->
+  <div class="next-set-card">
+
+    <div class="next-label">
+      Next Set
+    </div>
+
+    <div class="next-set-details">
+      Set {{nextSet.setNumber}}
+    </div>
+
+    <div class="next-target">
+      {{nextSet.targetWeight}} kg × {{nextSet.targetReps}} reps
+    </div>
+
+  </div>
+
+  <!-- End Rest -->
+  <button
+    class="end-rest-btn"
+    (click)="endRest()"
+  >
+    End Rest Early
+  </button>
+
+</div>

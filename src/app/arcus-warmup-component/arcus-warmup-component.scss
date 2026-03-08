@@ -1,0 +1,50 @@
+.arcus-page {
+  min-height: 100vh;
+  padding: 24px;
+  background: linear-gradient(to bottom,#0f0f10,#000);
+  color: white;
+}
+
+.glass-card {
+  background: rgba(255,255,255,0.05);
+  backdrop-filter: blur(16px);
+  border-radius: 20px;
+  border: 1px solid rgba(255,255,255,0.08);
+  padding: 16px;
+  box-shadow: 0 12px 30px rgba(0,0,0,0.5);
+  transition: transform .25s ease;
+}
+
+.glass-card:hover {
+  transform: translateY(-3px);
+}
+
+.warmup-video {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  border-radius: 14px;
+}
+
+.warmup-meta {
+  margin-top: 8px;
+  font-size: 13px;
+  color: #9ca3af;
+}
+
+.arcus-button {
+  background: #ff7a18;
+  padding: 16px;
+  border-radius: 16px;
+  font-weight: 600;
+  transition: all .2s;
+}
+
+.arcus-button:hover {
+  transform: scale(1.02);
+}
+
+.skip-button {
+  color: #a1a1aa;
+  font-size: 14px;
+}

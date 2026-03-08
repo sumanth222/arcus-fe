@@ -1,0 +1,149 @@
+<!-- Loading State -->
+<div *ngIf="loading" class="workout-container" style="display:flex;align-items:center;justify-content:center;min-height:100vh;">
+  <p style="color:#9ca3af;font-size:16px;">Generating your workout...</p>
+</div>
+
+<!-- Error State -->
+<div *ngIf="error" class="workout-container" style="display:flex;align-items:center;justify-content:center;min-height:100vh;">
+  <p style="color:#f87171;font-size:16px;">{{error}}</p>
+</div>
+
+<!-- Workout Screen -->
+<div class="workout-container" *ngIf="!loading && !error && workout">
+
+  <!-- Header -->
+  <div class="workout-header">
+
+    <div class="exercise-progress">
+      Exercise {{exerciseIndex + 1}} / {{totalExercises}}
+    </div>
+
+    <h1 class="exercise-name">
+      {{workout.name}}
+    </h1>
+
+    <p class="exercise-muscle">
+      Tempo: {{workout.tempo}}
+    </p>
+
+  </div>
+
+  <!-- Video -->
+  <div class="exercise-video">
+    <video autoplay muted loop playsinline>
+      <source [src]="workout.video" type="video/mp4">
+    </video>
+  </div>
+
+  <!-- Completed Sets -->
+  <div class="completed-section" *ngIf="completedSets.length">
+
+    <div
+      *ngFor="let set of completedSets"
+      class="completed-set">
+
+      <span class="check">✓</span>
+
+      <span>
+        Set {{set.setNumber}}
+      </span>
+
+      <span class="set-stats">
+        {{set.weight}} kg × {{set.reps}}
+      </span>
+
+    </div>
+
+  </div>
+
+  <!-- Current Set Card -->
+  <div *ngIf="currentSet" class="current-set-card">
+
+    <div class="current-set-label">
+      CURRENT SET
+    </div>
+
+    <div class="set-title">
+      Set {{currentSet.setNumber}}
+    </div>
+
+    <div class="target-text">
+      Target: {{currentSet.targetWeight}} kg × {{currentSet.targetReps}} reps
+    </div>
+
+    <div class="set-input-row">
+
+      <div class="input-block">
+        <label>Weight</label>
+        <input type="number" [(ngModel)]="currentSet.weight">
+      </div>
+
+      <div class="input-block">
+        <label>Reps</label>
+        <input type="number" [(ngModel)]="currentSet.reps">
+      </div>
+
+    </div>
+
+    <button class="log-set-btn" (click)="logSet(currentSet)">
+      Log Set
+    </button>
+
+  </div>
+
+  <!-- All Sets Done - Exercise Complete -->
+  <div *ngIf="!currentSet" class="exercise-complete-card">
+
+    <div class="complete-badge">🏆</div>
+
+    <h2 class="complete-title">Exercise Complete!</h2>
+
+    <p class="complete-subtitle">
+      You crushed <strong>{{workout.name}}</strong> —
+      {{completedSets.length}} sets done 💪
+    </p>
+
+    <!-- Stats row -->
+    <div class="complete-stats">
+      <div class="complete-stat">
+        <span class="stat-val">{{completedSets.length}}</span>
+        <span class="stat-lbl">Sets</span>
+      </div>
+      <div class="complete-stat">
+        <span class="stat-val">{{totalVolume()}} kg</span>
+        <span class="stat-lbl">Volume</span>
+      </div>
+      <div class="complete-stat">
+        <span class="stat-val">{{totalReps()}}</span>
+        <span class="stat-lbl">Reps</span>
+      </div>
+    </div>
+
+    <!-- Next exercise preview -->
+    <div *ngIf="nextExercise" class="next-exercise-preview">
+      <p class="next-up-label">⚡ Up Next</p>
+      <div class="next-exercise-info">
+        <div>
+          <p class="next-exercise-name">{{nextExercise.name}}</p>
+          <p class="next-exercise-meta">
+            {{nextExercise.sets.length}} sets · {{nextExercise.sets[0].targetWeight}} kg · Tempo {{nextExercise.tempo}}
+          </p>
+        </div>
+        <span class="next-exercise-icon">→</span>
+      </div>
+    </div>
+
+    <button class="log-set-btn complete-btn" (click)="goToNextExercise()">
+      {{ exerciseIndex + 1 < totalExercises ? 'Start Next Exercise →' : 'Finish Workout 🎉' }}
+    </button>
+
+  </div>
+
+  <!-- Next Set Preview (while sets remain) -->
+  <div *ngIf="nextSet && currentSet" class="next-set-card">
+    <div class="next-label">UP NEXT</div>
+    <div class="next-details">Set {{nextSet.setNumber}}</div>
+    <div class="next-target">{{nextSet.targetWeight}} kg × {{nextSet.targetReps}} reps</div>
+  </div>
+
+</div>
