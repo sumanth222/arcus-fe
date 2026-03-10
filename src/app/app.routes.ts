@@ -3,6 +3,7 @@ import { ArcusHomeComponent } from './arcus-home/arcus-home';
 import { ArcusWarmupComponent } from './arcus-warmup-component/arcus-warmup-component';
 import { WorkoutComponent } from './workout-component/workout-component';
 import { RestScreenComponent } from './rest-screen-component/rest-screen-component';
+import { WorkoutCompleteComponent } from './workout-complete-component/workout-complete-component';
 
 export const routes: Routes = [
   {
@@ -25,5 +26,9 @@ export const routes: Routes = [
   {
     path: 'rest',
     component: RestScreenComponent
+  },
+  {
+    path: 'complete',
+    component: WorkoutCompleteComponent
   }
 ];

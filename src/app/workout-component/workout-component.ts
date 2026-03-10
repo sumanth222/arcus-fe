@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { WorkoutService } from '../services/workout.service';
-import { ExerciseView, SetData, WorkoutExercise } from '../models/workout.model';
+import { ExerciseView, LogSetResponse, SetData, WorkoutExercise } from '../models/workout.model';
 
 // Map exercise names to local videos (extend as needed)
 const EXERCISE_VIDEO_MAP: Record<string, string> = {
@@ -134,18 +134,37 @@ export class WorkoutComponent implements OnInit {
     // Persist exercise index in service before navigating
     this.workoutService.exerciseIndex = this.exerciseIndex;
 
-    const restData = {
-      exerciseCompleted: this.currentSet === null,
-      fatigueDetected: false,
-      message: 'Good control. Maintain tempo.',
-      suggestedRestSeconds: 60
-    };
-
-    this.router.navigate(['/rest'], {
-      state: {
-        restData,
-        completedSet: set.setNumber,
-        nextSet: this.currentSet
+    // Log set to backend and use the response as restData
+    this.workoutService.logSet({
+      exerciseSessionId: this.workout.exerciseSessionId,
+      setNumber: set.setNumber,
+      weight: set.weight,
+      reps: set.reps
+    }).subscribe({
+      next: (restData: LogSetResponse) => {
+        this.router.navigate(['/rest'], {
+          state: {
+            restData,
+            completedSet: set.setNumber,
+            nextSet: this.currentSet
+          }
+        });
+      },
+      error: (err) => {
+        console.error('Failed to log set', err);
+        // Navigate anyway with fallback restData so UX is not blocked
+        this.router.navigate(['/rest'], {
+          state: {
+            restData: {
+              fatigueDetected: false,
+              suggestedRestSeconds: 60,
+              message: 'Good work! Take a short rest.',
+              exerciseCompleted: this.currentSet === null
+            },
+            completedSet: set.setNumber,
+            nextSet: this.currentSet
+          }
+        });
       }
     });
   }
@@ -157,7 +176,7 @@ export class WorkoutComponent implements OnInit {
       this.initializeSets();
     } else {
       this.workoutService.clearSession();
-      this.router.navigate(['/home']);
+      this.router.navigate(['/complete']);
     }
   }
 

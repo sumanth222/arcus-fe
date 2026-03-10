@@ -14,6 +14,13 @@ export interface WorkoutSession {
   exercises: WorkoutExercise[];
 }
 
+export interface LogSetResponse {
+  fatigueDetected: boolean;
+  suggestedRestSeconds: number;
+  message: string;
+  exerciseCompleted: boolean;
+}
+
 export interface SetData {
   setNumber: number;
   targetWeight: number;
