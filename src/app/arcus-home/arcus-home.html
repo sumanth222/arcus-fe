@@ -46,18 +46,14 @@
       <h2 class="text-xl font-semibold mt-1">
         {{lastWorkout.name}}
       </h2>
-      <div class="grid grid-cols-3 gap-4 mt-4">
+      <div class="grid grid-cols-2 gap-4 mt-4">
         <div class="stat-card">
-          <p class="stat-value">{{lastWorkout.volume}}</p>
+          <p class="stat-value">{{lastWorkout.volume | number}}</p>
           <p class="stat-label">kg lifted</p>
         </div>
         <div class="stat-card">
-          <p class="stat-value">{{lastWorkout.calories}}</p>
-          <p class="stat-label">Calories</p>
-        </div>
-        <div class="stat-card">
-          <p class="stat-value">{{lastWorkout.duration}}</p>
-          <p class="stat-label">Minutes</p>
+          <p class="stat-value">{{lastWorkout.date || '—'}}</p>
+          <p class="stat-label">Date</p>
         </div>
       </div>
     </div>

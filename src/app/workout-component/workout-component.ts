@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { WorkoutService } from '../services/workout.service';
+import { ProfileService } from '../services/user-profile.service';
 import { ExerciseView, LogSetResponse, SetData, WorkoutExercise } from '../models/workout.model';
 
 // Map exercise names to local videos (extend as needed)
@@ -42,11 +43,12 @@ function buildExerciseView(ex: WorkoutExercise): ExerciseView {
 })
 export class WorkoutComponent implements OnInit {
 
-  constructor(private router: Router, private workoutService: WorkoutService) {}
+  constructor(private router: Router, private workoutService: WorkoutService, private profileService: ProfileService) {}
 
   exercises: ExerciseView[] = [];
   exerciseIndex = 0;
   sessionId: number = 0;
+  dayNumber: number = 0;
 
   currentSet: SetData | null = null;
   nextSet: SetData | null = null;
@@ -80,6 +82,7 @@ export class WorkoutComponent implements OnInit {
     if (this.workoutService.activeExercises.length > 0) {
       this.exercises = this.workoutService.activeExercises;
       this.exerciseIndex = this.workoutService.exerciseIndex;
+      this.dayNumber = this.workoutService.dayNumber;
       this.loading = false;
       this.restoreSetState();
       return;
@@ -88,6 +91,8 @@ export class WorkoutComponent implements OnInit {
     this.workoutService.generateWorkout(1, 'beginner').subscribe({
       next: (session) => {
         this.sessionId = session.sessionId;
+        this.dayNumber = session.dayNumber;
+        this.workoutService.dayNumber = session.dayNumber;
         this.exercises = session.exercises.map(buildExerciseView);
         this.workoutService.activeExercises = this.exercises;
         this.loading = false;
@@ -134,37 +139,19 @@ export class WorkoutComponent implements OnInit {
     // Persist exercise index in service before navigating
     this.workoutService.exerciseIndex = this.exerciseIndex;
 
-    // Log set to backend and use the response as restData
+    // Fire the API call — rest screen will subscribe to the result via service
     this.workoutService.logSet({
       exerciseSessionId: this.workout.exerciseSessionId,
       setNumber: set.setNumber,
       weight: set.weight,
       reps: set.reps
-    }).subscribe({
-      next: (restData: LogSetResponse) => {
-        this.router.navigate(['/rest'], {
-          state: {
-            restData,
-            completedSet: set.setNumber,
-            nextSet: this.currentSet
-          }
-        });
-      },
-      error: (err) => {
-        console.error('Failed to log set', err);
-        // Navigate anyway with fallback restData so UX is not blocked
-        this.router.navigate(['/rest'], {
-          state: {
-            restData: {
-              fatigueDetected: false,
-              suggestedRestSeconds: 60,
-              message: 'Good work! Take a short rest.',
-              exerciseCompleted: this.currentSet === null
-            },
-            completedSet: set.setNumber,
-            nextSet: this.currentSet
-          }
-        });
+    });
+
+    // Navigate immediately — rest screen picks up the pending observable
+    this.router.navigate(['/rest'], {
+      state: {
+        completedSet: set.setNumber,
+        nextSet: this.currentSet
       }
     });
   }
@@ -175,7 +162,21 @@ export class WorkoutComponent implements OnInit {
       this.workoutService.exerciseIndex = this.exerciseIndex;
       this.initializeSets();
     } else {
+      const totalVolume = this.workoutService.totalSessionVolume;
+      const dayNum = this.dayNumber;
       this.workoutService.clearSession();
+
+      // Fire both API calls in parallel, navigate to complete regardless of outcome
+      this.profileService.updateLastWorkoutDay(1, dayNum).subscribe({
+        next: () => console.log('Last workout day updated'),
+        error: (err) => console.error('Failed to update last workout day', err)
+      });
+
+      this.workoutService.completeWorkout(1, totalVolume).subscribe({
+        next: () => console.log('Workout completed, totalWeight:', totalVolume),
+        error: (err) => console.error('Failed to complete workout', err)
+      });
+
       this.router.navigate(['/complete']);
     }
   }

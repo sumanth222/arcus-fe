@@ -11,6 +11,7 @@ export interface WorkoutExercise {
 export interface WorkoutSession {
   sessionId: number;
   level: string;
+  dayNumber: number;
   exercises: WorkoutExercise[];
 }
 

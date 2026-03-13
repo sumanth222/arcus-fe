@@ -15,8 +15,6 @@ export class WorkoutCompleteComponent {
   constructor(private router: Router) {}
 
   goHome() {
-
     this.router.navigate(['/home']);
-
   }
 }

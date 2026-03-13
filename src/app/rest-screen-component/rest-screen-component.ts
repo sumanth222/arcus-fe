@@ -1,67 +1,89 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
+import { WorkoutService } from '../services/workout.service';
+import { LogSetResponse } from '../models/workout.model';
 
 @Component({
   selector: 'app-rest-screen',
+  standalone: true,
+  imports: [CommonModule],
   templateUrl: './rest-screen-component.html',
   styleUrls: ['./rest-screen-component.scss']
 })
-export class RestScreenComponent implements OnInit {
+export class RestScreenComponent implements OnInit, OnDestroy {
 
   remainingSeconds: number = 0;
-
   minutes: string = '00';
   seconds: string = '00';
-
   timer: any;
 
-  restData: any;
+  restData: LogSetResponse | null = null;
   completedSet!: number;
   nextSet: any;
+  loading = true;
 
+  constructor(private router: Router, private workoutService: WorkoutService) {}
 
-  constructor(private router: Router) {}
-
-  
   ngOnInit(): void {
-
     const state = history.state;
-
-    this.restData = state.restData;
     this.completedSet = state.completedSet;
     this.nextSet = state.nextSet;
 
-    if (this.restData?.suggestedRestSeconds) {
-      this.remainingSeconds = this.restData.suggestedRestSeconds;
+    // Subscribe to the pending API call fired by the workout screen
+    const pending$ = this.workoutService.pendingLogSet$;
+    if (pending$) {
+      pending$.subscribe({
+        next: (data: LogSetResponse) => {
+          this.restData = data;
+          this.loading = false;
+          this.remainingSeconds = data.suggestedRestSeconds ?? 60;
+          this.updateTimeDisplay();
+          this.startTimer();
+        },
+        error: () => {
+          // Fallback if API failed
+          this.restData = {
+            fatigueDetected: false,
+            suggestedRestSeconds: 60,
+            message: 'Good work! Take a short rest.',
+            exerciseCompleted: !this.nextSet
+          };
+          this.loading = false;
+          this.remainingSeconds = 60;
+          this.updateTimeDisplay();
+          this.startTimer();
+        }
+      });
+    } else {
+      // Fallback if navigated directly
+      this.restData = state.restData ?? {
+        fatigueDetected: false,
+        suggestedRestSeconds: 60,
+        message: 'Good work! Take a short rest.',
+        exerciseCompleted: false
+      };
+      this.loading = false;
+      this.remainingSeconds = this.restData!.suggestedRestSeconds;
+      this.updateTimeDisplay();
+      this.startTimer();
     }
-
-    this.updateTimeDisplay();
-    this.startTimer();
   }
 
   startTimer() {
-
-    console.log('Starting rest timer for', this.remainingSeconds, 'seconds');
-
     this.timer = setInterval(() => {
-
       this.remainingSeconds--;
-
       this.updateTimeDisplay();
-
       if (this.remainingSeconds <= 0) {
         clearInterval(this.timer);
         this.endRest();
       }
-
     }, 1000);
   }
 
   updateTimeDisplay() {
-
     const m = Math.floor(this.remainingSeconds / 60);
     const s = this.remainingSeconds % 60;
-
     this.minutes = String(m).padStart(2, '0');
     this.seconds = String(s).padStart(2, '0');
   }
@@ -69,9 +91,11 @@ export class RestScreenComponent implements OnInit {
   endRest() {
     clearInterval(this.timer);
     this.router.navigate(['/workout'], {
-      state: {
-        completedSet: this.completedSet
-      }
+      state: { completedSet: this.completedSet }
     });
+  }
+
+  ngOnDestroy(): void {
+    clearInterval(this.timer);
   }
 }

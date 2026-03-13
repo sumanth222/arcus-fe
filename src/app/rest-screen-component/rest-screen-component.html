@@ -1,51 +1,47 @@
 <div class="rest-container">
 
-  <!-- Completed indicator -->
-  <div class="rest-complete">
-    ✓ Set {{completedSet}} Logged
+  <!-- Loading state while API resolves -->
+  <div *ngIf="loading" class="rest-loading">
+    <div class="rest-loading-icon">✓</div>
+    <p class="rest-loading-text">Set {{completedSet}} Logged</p>
+    <p class="rest-loading-sub">Loading rest data...</p>
   </div>
 
-  <!-- AI feedback -->
-  <div class="rest-message">
-    {{restData.message}}
-  </div>
+  <!-- Rest screen once data is ready -->
+  <ng-container *ngIf="!loading && restData">
 
-  <!-- Timer -->
-  <div class="timer-section">
-
-    <div class="rest-label">
-      Rest
+    <!-- Completed indicator -->
+    <div class="rest-complete rest-fadein">
+      ✓ Set {{completedSet}} Logged
     </div>
 
-    <div class="rest-timer">
-      {{minutes}}:{{seconds}}
+    <!-- AI feedback -->
+    <div class="rest-message rest-fadein">
+      {{restData.message}}
     </div>
 
-  </div>
-
-  <!-- Next Set Info -->
-  <div class="next-set-card">
-
-    <div class="next-label">
-      Next Set
+    <!-- Fatigue warning -->
+    <div *ngIf="restData.fatigueDetected" class="fatigue-badge rest-fadein">
+      ⚠️ Fatigue detected — take an extra rest
     </div>
 
-    <div class="next-set-details">
-      Set {{nextSet.setNumber}}
+    <!-- Timer -->
+    <div class="timer-section rest-fadein">
+      <div class="rest-label">Rest</div>
+      <div class="rest-timer">{{minutes}}:{{seconds}}</div>
     </div>
 
-    <div class="next-target">
-      {{nextSet.targetWeight}} kg × {{nextSet.targetReps}} reps
+    <!-- Next Set Info -->
+    <div *ngIf="nextSet" class="next-set-card rest-fadein">
+      <div class="next-label">Next Set</div>
+      <div class="next-set-details">Set {{nextSet.setNumber}}</div>
+      <div class="next-target">{{nextSet.targetWeight}} kg × {{nextSet.targetReps}} reps</div>
     </div>
+    <!-- End Rest -->
+    <button class="end-rest-btn rest-fadein" (click)="endRest()">
+      End Rest Early
+    </button>
 
-  </div>
-
-  <!-- End Rest -->
-  <button
-    class="end-rest-btn"
-    (click)="endRest()"
-  >
-    End Rest Early
-  </button>
+  </ng-container>
 
 </div>

@@ -19,6 +19,14 @@ export interface UserProfile {
 
   lastWorkoutDate: string;
   lastWorkoutDay: number;
-  lastExerciseSessionId: number;
+}
 
+export interface NextWorkoutInfo {
+  nextWorkoutName: string;
+  nextDayNumber: number;
+  lastWorkoutName: string;
+  lastDayNumber: number;
+  lastWorkoutDate: string;
+  lastWorkoutCompleted: boolean;
+  lastWorkoutTotalWeight: number;
 }
