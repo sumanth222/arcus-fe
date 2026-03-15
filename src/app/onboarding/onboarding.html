@@ -1,0 +1,119 @@
+<div class="onboarding-shell">
+
+  <!-- Background orbs -->
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="orb orb-3"></div>
+
+  <div class="onboarding-card" [class.slide-out]="animating">
+
+    <!-- Top bar: back + progress -->
+    <div class="top-bar">
+      <button class="back-btn" (click)="back()" [class.invisible]="currentStep === 0">
+        ← Back
+      </button>
+      <span class="step-counter">{{currentStep + 1}} / {{steps.length}}</span>
+    </div>
+
+    <!-- Progress bar -->
+    <div class="progress-track">
+      <div class="progress-fill" [style.width.%]="progressPct"></div>
+    </div>
+
+    <!-- Step heading -->
+    <div class="step-heading">
+      <h1 class="step-title">{{step.title}}</h1>
+      <p class="step-subtitle">{{step.subtitle}}</p>
+    </div>
+
+    <!-- ── Step 0: Name ── -->
+    <div *ngIf="currentStep === 0" class="input-step">
+      <div class="text-input-wrap">
+        <input
+          class="glass-input"
+          type="text"
+          placeholder="e.g. Alex"
+          [(ngModel)]="data.name"
+          (keydown)="onEnter($event)"
+          autofocus
+          maxlength="40"
+        />
+        <span class="input-icon">✦</span>
+      </div>
+    </div>
+
+    <!-- ── Step 1: Email ── -->
+    <div *ngIf="currentStep === 1" class="input-step">
+      <div class="text-input-wrap">
+        <input
+          class="glass-input"
+          type="email"
+          placeholder="you@email.com"
+          [(ngModel)]="data.email"
+          (keydown)="onEnter($event)"
+          autofocus
+        />
+        <span class="input-icon">@</span>
+      </div>
+    </div>
+
+    <!-- ── Step 2: Level ── -->
+    <div *ngIf="currentStep === 2" class="choice-grid">
+      <button
+        *ngFor="let lvl of levels"
+        class="choice-card"
+        [class.choice-card--selected]="data.currentLevel === lvl.key"
+        (click)="select('currentLevel', lvl.key)">
+        <span class="choice-icon">{{lvl.icon}}</span>
+        <span class="choice-label">{{lvl.label}}</span>
+        <span class="choice-desc">{{lvl.desc}}</span>
+        <span class="choice-check" *ngIf="data.currentLevel === lvl.key">✓</span>
+      </button>
+    </div>
+
+    <!-- ── Step 3: Goal ── -->
+    <div *ngIf="currentStep === 3" class="choice-grid">
+      <button
+        *ngFor="let goal of goals"
+        class="choice-card"
+        [class.choice-card--selected]="data.fitnessGoal === goal.key"
+        (click)="select('fitnessGoal', goal.key)">
+        <span class="choice-icon">{{goal.icon}}</span>
+        <span class="choice-label">{{goal.label}}</span>
+        <span class="choice-desc">{{goal.desc}}</span>
+        <span class="choice-check" *ngIf="data.fitnessGoal === goal.key">✓</span>
+      </button>
+    </div>
+
+    <!-- ── Step 4: Split ── -->
+    <div *ngIf="currentStep === 4" class="choice-grid">
+      <button
+        *ngFor="let sp of splits"
+        class="choice-card"
+        [class.choice-card--selected]="data.workoutSplit === sp.key"
+        (click)="select('workoutSplit', sp.key)">
+        <span class="choice-icon">{{sp.icon}}</span>
+        <span class="choice-label">{{sp.label}}</span>
+        <span class="choice-desc">{{sp.desc}}</span>
+        <span class="choice-check" *ngIf="data.workoutSplit === sp.key">✓</span>
+      </button>
+    </div>
+
+    <!-- Error -->
+    <p *ngIf="error" class="error-msg">{{error}}</p>
+
+    <!-- CTA -->
+    <button
+      class="cta-btn"
+      [class.cta-btn--disabled]="!canAdvance"
+      [disabled]="!canAdvance || submitting"
+      (click)="next()">
+      <span *ngIf="!submitting">
+        {{ currentStep === steps.length - 1 ? 'Launch Arcus 🚀' : 'Continue →' }}
+      </span>
+      <span *ngIf="submitting" class="spinner"></span>
+    </button>
+
+  </div>
+
+</div>

@@ -2,6 +2,7 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { ProfileService } from '../services/user-profile.service';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-arcus-home',
@@ -15,37 +16,43 @@ export class ArcusHomeComponent implements OnInit {
   @ViewChild('sliderThumb') sliderThumb!: ElementRef;
   @ViewChild('sliderContainer') sliderContainer!: ElementRef;
 
-  constructor(private router: Router, private profileService: ProfileService) {}
+  constructor(
+    private router: Router,
+    private profileService: ProfileService,
+    private authService: AuthService
+  ) {}
+
+  get userName(): string { return this.authService.userName || 'Athlete'; }
 
   dragging = false;
   startX = 0;
   currentX = 0;
 
-  todaysWorkout = {
-    name: 'Loading...',
-    muscles: ''
-  };
-
-  lastWorkout = {
-    name: '—',
-    volume: 0,
-    date: ''
-  };
+  todaysWorkout = { name: 'Loading...', muscles: '' };
+  lastWorkout    = { name: '—', volume: 0, date: '' };
 
   ngOnInit() {
-    this.profileService.getNextWorkoutInfo(1, 'beginner').subscribe({
-      next: (info) => {
-        this.todaysWorkout = {
-          name: info.nextWorkoutName,
-          muscles: `Day ${info.nextDayNumber}`
-        };
-        this.lastWorkout = {
-          name: info.lastWorkoutName,
-          volume: info.lastWorkoutTotalWeight,
-          date: info.lastWorkoutDate
-            ? new Date(info.lastWorkoutDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
-            : ''
-        };
+    const userId = this.authService.userId ?? 1;
+    this.profileService.getUserProfile(userId).subscribe({
+      next: (profile) => {
+        this.profileService.getNextWorkoutInfo(userId, profile.currentLevel || 'beginner').subscribe({
+          next: (info) => {
+            this.todaysWorkout = {
+              name: info.nextWorkoutName,
+              muscles: `Day ${info.nextDayNumber}`
+            };
+            this.lastWorkout = {
+              name: info.lastWorkoutName,
+              volume: info.lastWorkoutTotalWeight,
+              date: info.lastWorkoutDate
+                ? new Date(info.lastWorkoutDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
+                : ''
+            };
+          },
+          error: () => {
+            this.todaysWorkout = { name: 'Push Day', muscles: 'Day 1' };
+          }
+        });
       },
       error: () => {
         this.todaysWorkout = { name: 'Push Day', muscles: 'Day 1' };

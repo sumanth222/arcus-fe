@@ -18,14 +18,33 @@
       Day {{dayNumber}} · Exercise {{exerciseIndex + 1}} / {{totalExercises}}
     </div>
 
-    <h1 class="exercise-name">
-      {{workout.name}}
-    </h1>
+    <div class="exercise-name-row">
+      <h1 class="exercise-name">{{workout.name}}</h1>
+      <button
+        class="tip-icon-btn"
+        [class.tip-icon-btn--active]="showTip"
+        (click)="showTip = !showTip"
+        title="Form tip">
+        ⓘ
+      </button>
+    </div>
 
     <p class="exercise-muscle">
       Tempo: {{workout.tempo}}
     </p>
 
+  </div>
+
+  <!-- Tip Popover -->
+  <div *ngIf="showTip" class="tip-popover" (click)="showTip = false">
+    <div class="tip-popover-inner" (click)="$event.stopPropagation()">
+      <div class="tip-popover-header">
+        <span class="tip-popover-icon">💡</span>
+        <span class="tip-popover-title">Coach Tip</span>
+        <button class="tip-close-btn" (click)="showTip = false">✕</button>
+      </div>
+      <p class="tip-popover-text">{{workout.tip || 'Focus on form and controlled movement.'}}</p>
+    </div>
   </div>
 
   <!-- Video -->

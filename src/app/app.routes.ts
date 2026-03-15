@@ -4,16 +4,26 @@ import { ArcusWarmupComponent } from './arcus-warmup-component/arcus-warmup-comp
 import { WorkoutComponent } from './workout-component/workout-component';
 import { RestScreenComponent } from './rest-screen-component/rest-screen-component';
 import { WorkoutCompleteComponent } from './workout-complete-component/workout-complete-component';
+import { OnboardingComponent } from './onboarding/onboarding';
+import { LoginComponent } from './login/login';
 
 export const routes: Routes = [
   {
-    path: 'home',
-    component: ArcusHomeComponent
+    path: '',
+    redirectTo: 'login',
+    pathMatch: 'full'
   },
   {
-    path: '',
-    redirectTo: 'home',
-    pathMatch: 'full'
+    path: 'login',
+    component: LoginComponent
+  },
+  {
+    path: 'onboarding',
+    component: OnboardingComponent
+  },
+  {
+    path: 'home',
+    component: ArcusHomeComponent
   },
   {
     path: 'warmup',

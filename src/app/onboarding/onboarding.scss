@@ -1,0 +1,378 @@
+// ── Shell & background ─────────────────────────────────────────
+.onboarding-shell {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background:
+    radial-gradient(ellipse at 20% 20%, rgba(59,130,246,0.15), transparent 55%),
+    radial-gradient(ellipse at 80% 80%, rgba(168,85,247,0.12), transparent 55%),
+    #05050a;
+  overflow: hidden;
+  position: relative;
+}
+
+// Decorative blurred orbs
+.orb {
+  position: fixed;
+  border-radius: 50%;
+  filter: blur(80px);
+  pointer-events: none;
+  z-index: 0;
+  animation: orbFloat 8s ease-in-out infinite;
+}
+
+.orb-1 {
+  width: 320px; height: 320px;
+  background: rgba(59, 130, 246, 0.18);
+  top: -80px; left: -80px;
+  animation-delay: 0s;
+}
+
+.orb-2 {
+  width: 260px; height: 260px;
+  background: rgba(168, 85, 247, 0.14);
+  bottom: -60px; right: -60px;
+  animation-delay: 3s;
+}
+
+.orb-3 {
+  width: 200px; height: 200px;
+  background: rgba(245, 158, 11, 0.08);
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  animation-delay: 5s;
+}
+
+@keyframes orbFloat {
+  0%, 100% { transform: translateY(0) scale(1); }
+  50%       { transform: translateY(-24px) scale(1.06); }
+}
+
+// ── Main card ──────────────────────────────────────────────────
+.onboarding-card {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 480px;
+  padding: 32px 28px;
+  border-radius: 28px;
+  background: linear-gradient(
+    145deg,
+    rgba(255, 255, 255, 0.06),
+    rgba(255, 255, 255, 0.02)
+  );
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow:
+    0 0 0 1px rgba(255,255,255,0.04),
+    0 24px 64px rgba(0, 0, 0, 0.7),
+    inset 0 1px 0 rgba(255,255,255,0.08);
+  animation: cardIn 0.5s cubic-bezier(0.22, 0.61, 0.36, 1) both;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.onboarding-card.slide-out {
+  opacity: 0;
+  transform: translateY(8px) scale(0.98);
+}
+
+@keyframes cardIn {
+  from { opacity: 0; transform: translateY(20px) scale(0.97); }
+  to   { opacity: 1; transform: translateY(0)    scale(1); }
+}
+
+// ── Account badge ──────────────────────────────────────────────
+.account-badge {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 7px 12px;
+  margin-bottom: 20px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  width: fit-content;
+  animation: cardIn 0.4s ease both;
+}
+
+.account-badge-icon {
+  font-size: 13px;
+}
+
+.account-badge-handle {
+  font-size: 13px;
+  font-weight: 600;
+  color: #a5b4fc;
+  letter-spacing: 0.2px;
+}
+
+.account-badge-link {
+  font-size: 12px;
+  color: #4b5563;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0 0 0 4px;
+  border-left: 1px solid rgba(255,255,255,0.1);
+  margin-left: 2px;
+  transition: color 0.15s;
+
+  &:hover { color: #f87171; }
+}
+
+// ── Top bar ────────────────────────────────────────────────────
+.top-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.back-btn {
+  font-size: 13px;
+  color: #6b7280;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.08);
+  padding: 6px 12px;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: all 0.2s;
+
+  &:hover { color: #d1d5db; background: rgba(255,255,255,0.09); }
+}
+
+.back-btn.invisible { visibility: hidden; pointer-events: none; }
+
+.step-counter {
+  font-size: 12px;
+  color: #6b7280;
+  letter-spacing: 0.5px;
+}
+
+// ── Progress bar ───────────────────────────────────────────────
+.progress-track {
+  height: 3px;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.07);
+  margin-bottom: 32px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+  transition: width 0.4s cubic-bezier(0.22, 0.61, 0.36, 1);
+  box-shadow: 0 0 8px rgba(99,102,241,0.6);
+}
+
+// ── Step heading ───────────────────────────────────────────────
+.step-heading {
+  margin-bottom: 28px;
+}
+
+.step-title {
+  font-size: 24px;
+  font-weight: 700;
+  color: #f3f4f6;
+  margin-bottom: 4px;
+  letter-spacing: -0.3px;
+}
+
+.step-subtitle {
+  font-size: 14px;
+  color: #6b7280;
+}
+
+// ── Text input step ────────────────────────────────────────────
+.input-step {
+  margin-bottom: 28px;
+}
+
+.text-input-wrap {
+  position: relative;
+}
+
+.glass-input {
+  width: 100%;
+  padding: 16px 48px 16px 18px;
+  border-radius: 14px;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.12);
+  color: #f3f4f6;
+  font-size: 17px;
+  outline: none;
+  transition: all 0.2s;
+  box-sizing: border-box;
+
+  &::placeholder { color: #4b5563; }
+
+  &:focus {
+    border-color: rgba(99,102,241,0.6);
+    background: rgba(255,255,255,0.08);
+    box-shadow: 0 0 0 3px rgba(99,102,241,0.15);
+  }
+}
+
+.input-icon {
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #4b5563;
+  font-size: 16px;
+  pointer-events: none;
+}
+
+// ── Choice grid ────────────────────────────────────────────────
+.choice-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 28px;
+  max-height: 340px;
+  overflow-y: auto;
+  padding-right: 2px;
+
+  // custom scrollbar
+  &::-webkit-scrollbar { width: 4px; }
+  &::-webkit-scrollbar-track { background: transparent; }
+  &::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 999px; }
+}
+
+.choice-card {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 16px;
+  border-radius: 14px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08);
+  cursor: pointer;
+  text-align: left;
+  transition: all 0.2s ease;
+  animation: choiceIn 0.3s ease both;
+
+  &:hover {
+    background: rgba(255,255,255,0.07);
+    border-color: rgba(255,255,255,0.15);
+    transform: translateX(3px);
+  }
+
+  &--selected {
+    background: linear-gradient(135deg, rgba(59,130,246,0.2), rgba(99,102,241,0.12));
+    border-color: rgba(99,102,241,0.5);
+    box-shadow: 0 0 0 1px rgba(99,102,241,0.2), 0 4px 16px rgba(59,130,246,0.2);
+
+    .choice-label { color: #c7d2fe; }
+    .choice-icon  { filter: none; }
+  }
+}
+
+@keyframes choiceIn {
+  from { opacity: 0; transform: translateX(-8px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+// Stagger each card
+.choice-card:nth-child(1) { animation-delay: 0.00s; }
+.choice-card:nth-child(2) { animation-delay: 0.04s; }
+.choice-card:nth-child(3) { animation-delay: 0.08s; }
+.choice-card:nth-child(4) { animation-delay: 0.12s; }
+.choice-card:nth-child(5) { animation-delay: 0.16s; }
+.choice-card:nth-child(6) { animation-delay: 0.20s; }
+
+.choice-icon {
+  font-size: 22px;
+  flex-shrink: 0;
+  width: 36px;
+  text-align: center;
+}
+
+.choice-label {
+  font-size: 15px;
+  font-weight: 600;
+  color: #e5e7eb;
+  display: block;
+}
+
+.choice-desc {
+  font-size: 12px;
+  color: #6b7280;
+  display: block;
+  margin-top: 1px;
+}
+
+.choice-check {
+  position: absolute;
+  right: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #818cf8;
+  font-size: 16px;
+  font-weight: 700;
+  animation: popIn 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes popIn {
+  from { transform: translateY(-50%) scale(0); }
+  to   { transform: translateY(-50%) scale(1); }
+}
+
+// ── CTA button ─────────────────────────────────────────────────
+.cta-btn {
+  width: 100%;
+  padding: 15px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, #3b82f6, #6366f1);
+  color: #fff;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 6px 20px rgba(99,102,241,0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+
+  &:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 28px rgba(99,102,241,0.45);
+    background: linear-gradient(135deg, #2563eb, #4f46e5);
+  }
+
+  &:active:not(:disabled) { transform: translateY(0); }
+
+  &--disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+    box-shadow: none;
+  }
+}
+
+// Loading spinner
+.spinner {
+  width: 18px;
+  height: 18px;
+  border: 2px solid rgba(255,255,255,0.25);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+// ── Error ──────────────────────────────────────────────────────
+.error-msg {
+  font-size: 13px;
+  color: #f87171;
+  margin-bottom: 12px;
+  text-align: center;
+}

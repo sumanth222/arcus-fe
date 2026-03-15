@@ -1,0 +1,148 @@
+<div class="login-shell">
+
+  <!-- Background orbs -->
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="orb orb-3"></div>
+
+  <div class="login-card">
+
+    <!-- Logo / Brand -->
+    <div class="brand">
+      <div class="brand-icon">A</div>
+      <h1 class="brand-name">Arcus</h1>
+      <p class="brand-tagline">Train smarter. Track everything.</p>
+    </div>
+
+    <!-- Tab switcher -->
+    <div class="tab-bar">
+      <button
+        class="tab-btn"
+        [class.tab-btn--active]="isLogin"
+        (click)="switchMode('login')">
+        Sign In
+      </button>
+      <button
+        class="tab-btn"
+        [class.tab-btn--active]="!isLogin"
+        (click)="switchMode('register')">
+        Create Account
+      </button>
+      <div class="tab-indicator" [class.tab-indicator--right]="!isLogin"></div>
+    </div>
+
+    <!-- Form -->
+    <div class="form-body">
+
+      <!-- Username -->
+      <div class="field">
+        <label class="field-label">Username</label>
+        <div class="input-wrap"
+             [class.input-wrap--error]="!isLogin && usernameStatus === 'taken'"
+             [class.input-wrap--success]="!isLogin && usernameStatus === 'available'">
+          <span class="input-prefix">@</span>
+          <input
+            class="glass-input"
+            type="text"
+            placeholder="yourhandle"
+            [(ngModel)]="username"
+            (input)="onUsernameInput()"
+            (blur)="onUsernameBlur()"
+            (keydown)="onEnter($event)"
+            autocomplete="username"
+            autocapitalize="none"
+          />
+          <!-- Status icon inside the input -->
+          <span *ngIf="!isLogin" class="username-status-icon">
+            <span *ngIf="usernameStatus === 'checking'" class="status-spinner"></span>
+            <span *ngIf="usernameStatus === 'available'" class="status-tick">✓</span>
+            <span *ngIf="usernameStatus === 'taken'"     class="status-cross">✕</span>
+          </span>
+        </div>
+        <!-- Status message (register mode only) -->
+        <ng-container *ngIf="!isLogin">
+          <p *ngIf="usernameStatus === 'available'" class="field-success">
+            ✓ @{{username}} is available
+          </p>
+          <p *ngIf="usernameStatus === 'taken'" class="field-error">
+            ✕ @{{username}} is already taken
+          </p>
+          <p *ngIf="usernameStatus === 'short' && username.length > 0" class="field-hint">
+            At least 3 characters
+          </p>
+        </ng-container>
+      </div>
+
+      <!-- Password -->
+      <div class="field">
+        <label class="field-label">Password</label>
+        <div class="input-wrap" [class.input-wrap--error]="fieldErrors.password">
+          <span class="input-prefix">🔒</span>
+          <input
+            class="glass-input"
+            [type]="showPassword ? 'text' : 'password'"
+            placeholder="••••••••"
+            [(ngModel)]="password"
+            (keydown)="onEnter($event)"
+            autocomplete="current-password"
+          />
+          <button class="show-btn" (click)="showPassword = !showPassword" type="button">
+            {{showPassword ? 'Hide' : 'Show'}}
+          </button>
+        </div>
+        <p *ngIf="fieldErrors.password" class="field-error">{{fieldErrors.password}}</p>
+      </div>
+
+      <!-- Confirm Password (register only) -->
+      <div *ngIf="!isLogin" class="field confirm-field">
+        <label class="field-label">Confirm Password</label>
+        <div class="input-wrap" [class.input-wrap--error]="fieldErrors.confirm">
+          <span class="input-prefix">🔒</span>
+          <input
+            class="glass-input"
+            [type]="showConfirm ? 'text' : 'password'"
+            placeholder="••••••••"
+            [(ngModel)]="confirmPassword"
+            (keydown)="onEnter($event)"
+            autocomplete="new-password"
+          />
+          <button class="show-btn" (click)="showConfirm = !showConfirm" type="button">
+            {{showConfirm ? 'Hide' : 'Show'}}
+          </button>
+        </div>
+        <p *ngIf="fieldErrors.confirm" class="field-error">{{fieldErrors.confirm}}</p>
+      </div>
+
+      <!-- Global error -->
+      <div *ngIf="error" class="error-banner">
+        <span>⚠</span> {{error}}
+      </div>
+
+      <!-- Submit -->
+      <button
+        class="submit-btn"
+        [disabled]="loading"
+        (click)="submit()">
+        <span *ngIf="!loading">
+          {{ isLogin ? 'Sign In →' : 'Create Account →' }}
+        </span>
+        <span *ngIf="loading" class="spinner"></span>
+      </button>
+
+      <!-- Switch hint -->
+      <p class="switch-hint">
+        <ng-container *ngIf="isLogin">
+          No account?
+          <button class="link-btn" (click)="switchMode('register')">Create one</button>
+        </ng-container>
+        <ng-container *ngIf="!isLogin">
+          Already have an account?
+          <button class="link-btn" (click)="switchMode('login')">Sign in</button>
+        </ng-container>
+      </p>
+
+    </div>
+
+  </div>
+
+</div>

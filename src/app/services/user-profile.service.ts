@@ -23,6 +23,18 @@ export class ProfileService {
     );
   }
 
+  createProfile(payload: {
+    username: string;
+    name: string;
+    email: string;
+    currentLevel: string;
+    fitnessGoal: string;
+    workoutSplit: string;
+    lastWorkoutDay: number;
+  }): Observable<UserProfile> {
+    return this.http.post<UserProfile>(`${this.baseUrl}/create`, payload);
+  }
+
   updateLastWorkoutDay(userId: number, lastWorkoutDay: number): Observable<UserProfile> {
     return this.http.put<UserProfile>(
       `${this.baseUrl}/${userId}`,

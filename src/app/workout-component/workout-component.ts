@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { WorkoutService } from '../services/workout.service';
 import { ProfileService } from '../services/user-profile.service';
+import { AuthService } from '../services/auth.service';
 import { ExerciseView, LogSetResponse, SetData, WorkoutExercise } from '../models/workout.model';
 
 // Map exercise names to local videos (extend as needed)
@@ -31,7 +32,8 @@ function buildExerciseView(ex: WorkoutExercise): ExerciseView {
     muscle: '',
     video: EXERCISE_VIDEO_MAP[ex.exerciseName] ?? DEFAULT_VIDEO,
     sets,
-    tempo: ex.tempo
+    tempo: ex.tempo,
+    tip: ex.tip ?? ''
   };
 }
 
@@ -43,7 +45,12 @@ function buildExerciseView(ex: WorkoutExercise): ExerciseView {
 })
 export class WorkoutComponent implements OnInit {
 
-  constructor(private router: Router, private workoutService: WorkoutService, private profileService: ProfileService) {}
+  constructor(
+    private router: Router,
+    private workoutService: WorkoutService,
+    private profileService: ProfileService,
+    private authService: AuthService
+  ) {}
 
   exercises: ExerciseView[] = [];
   exerciseIndex = 0;
@@ -56,6 +63,7 @@ export class WorkoutComponent implements OnInit {
 
   loading = true;
   error = '';
+  showTip = false;
 
   get workout(): ExerciseView {
     return this.exercises[this.exerciseIndex];
@@ -88,18 +96,30 @@ export class WorkoutComponent implements OnInit {
       return;
     }
 
-    this.workoutService.generateWorkout(1, 'beginner').subscribe({
-      next: (session) => {
-        this.sessionId = session.sessionId;
-        this.dayNumber = session.dayNumber;
-        this.workoutService.dayNumber = session.dayNumber;
-        this.exercises = session.exercises.map(buildExerciseView);
-        this.workoutService.activeExercises = this.exercises;
-        this.loading = false;
-        this.initializeSets();
+    const uid = this.authService.userId ?? 1;
+    // Fetch the user's level from their profile, then generate the workout
+    this.profileService.getUserProfile(uid).subscribe({
+      next: (profile) => {
+        const level = profile.currentLevel || 'beginner';
+        this.workoutService.generateWorkout(uid, level).subscribe({
+          next: (session) => {
+            this.sessionId = session.sessionId;
+            this.dayNumber = session.dayNumber;
+            this.workoutService.dayNumber = session.dayNumber;
+            this.exercises = session.exercises.map(buildExerciseView);
+            this.workoutService.activeExercises = this.exercises;
+            this.loading = false;
+            this.initializeSets();
+          },
+          error: (err) => {
+            this.error = 'Failed to load workout. Please try again.';
+            this.loading = false;
+            console.error(err);
+          }
+        });
       },
       error: (err) => {
-        this.error = 'Failed to load workout. Please try again.';
+        this.error = 'Failed to load profile. Please try again.';
         this.loading = false;
         console.error(err);
       }
@@ -108,6 +128,7 @@ export class WorkoutComponent implements OnInit {
 
   initializeSets() {
     this.completedSets = [];
+    this.showTip = false;
     this.currentSet = this.workout.sets[0] ?? null;
     this.nextSet = this.workout.sets[1] ?? null;
   }
@@ -167,12 +188,13 @@ export class WorkoutComponent implements OnInit {
       this.workoutService.clearSession();
 
       // Fire both API calls in parallel, navigate to complete regardless of outcome
-      this.profileService.updateLastWorkoutDay(1, dayNum).subscribe({
+      const uid = this.authService.userId ?? 1;
+      this.profileService.updateLastWorkoutDay(uid, dayNum).subscribe({
         next: () => console.log('Last workout day updated'),
         error: (err) => console.error('Failed to update last workout day', err)
       });
 
-      this.workoutService.completeWorkout(1, totalVolume).subscribe({
+      this.workoutService.completeWorkout(uid, totalVolume).subscribe({
         next: () => console.log('Workout completed, totalWeight:', totalVolume),
         error: (err) => console.error('Failed to complete workout', err)
       });

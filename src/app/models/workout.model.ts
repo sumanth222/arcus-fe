@@ -6,6 +6,7 @@ export interface WorkoutExercise {
   repMax: number;
   sets: number;
   tempo: string;
+  tip: string;
 }
 
 export interface WorkoutSession {
@@ -38,4 +39,5 @@ export interface ExerciseView {
   video: string;
   sets: SetData[];
   tempo: string;
+  tip: string;
 }

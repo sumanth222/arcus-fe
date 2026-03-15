@@ -7,6 +7,7 @@ export interface UserProfile {
 
   currentLevel: string;
   fitnessGoal: string;
+  workoutSplit: string;
 
   bio: string | null;
 
@@ -29,4 +30,15 @@ export interface NextWorkoutInfo {
   lastWorkoutDate: string;
   lastWorkoutCompleted: boolean;
   lastWorkoutTotalWeight: number;
+}
+
+export interface LoginRequest {
+  username: string;
+  password: string;
+}
+
+export interface LoginResponse {
+  userId: number | null;
+  name: string;
+  isNewUser: boolean;
 }
