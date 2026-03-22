@@ -17,7 +17,7 @@ export class ArcusHomeComponent implements OnInit {
   @ViewChild('sliderContainer') sliderContainer!: ElementRef;
 
   constructor(
-    private router: Router,
+    public router: Router,
     private profileService: ProfileService,
     private authService: AuthService
   ) {}
@@ -28,19 +28,23 @@ export class ArcusHomeComponent implements OnInit {
   startX = 0;
   currentX = 0;
 
-  todaysWorkout = { name: 'Loading...', muscles: '' };
+  todaysWorkout = { name: 'Loading...', muscles: '', muscleGroups: [] as string[] };
   lastWorkout    = { name: '—', volume: 0, date: '' };
+  nextMuscleGroups: string[] = [];
 
   ngOnInit() {
-    const userId = this.authService.userId ?? 1;
+    const userId = this.authService.userId;
+    if (!userId) { this.router.navigate(['/login']); return; }
     this.profileService.getUserProfile(userId).subscribe({
       next: (profile) => {
         this.profileService.getNextWorkoutInfo(userId, profile.currentLevel || 'beginner').subscribe({
           next: (info) => {
             this.todaysWorkout = {
               name: info.nextWorkoutName,
-              muscles: `Day ${info.nextDayNumber}`
+              muscles: `Day ${info.nextDayNumber}`,
+              muscleGroups: info.muscleGroups || []
             };
+            this.nextMuscleGroups = info.muscleGroups || [];
             this.lastWorkout = {
               name: info.lastWorkoutName,
               volume: info.lastWorkoutTotalWeight,
@@ -50,12 +54,14 @@ export class ArcusHomeComponent implements OnInit {
             };
           },
           error: () => {
-            this.todaysWorkout = { name: 'Push Day', muscles: 'Day 1' };
+            this.todaysWorkout = { name: 'Push Day', muscles: 'Day 1', muscleGroups: [] };
+            this.nextMuscleGroups = [];
           }
         });
       },
       error: () => {
-        this.todaysWorkout = { name: 'Push Day', muscles: 'Day 1' };
+        this.todaysWorkout = { name: 'Push Day', muscles: 'Day 1', muscleGroups: [] };
+        this.nextMuscleGroups = [];
       }
     });
   }
@@ -97,7 +103,7 @@ export class ArcusHomeComponent implements OnInit {
   }
 
   startWorkout() {
-    this.router.navigate(['/warmup']);
+    this.router.navigate(['/warmup'], { state: { muscleGroups: this.nextMuscleGroups } });
     // alert('Workout Started 💪');
   }
 

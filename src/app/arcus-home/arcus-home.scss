@@ -59,3 +59,34 @@
   font-size: 12px;
   color: #9ca3af;
 }
+
+.profile-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  transition: transform 0.2s ease;
+
+  &:hover {
+    transform: scale(1.05);
+  }
+
+  &:active {
+    transform: scale(0.95);
+  }
+}
+
+.profile-avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #ff7a18 0%, #ff9d42 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 18px;
+  color: white;
+  box-shadow: 0 4px 12px rgba(255, 122, 24, 0.3);
+  border: 2px solid rgba(255, 255, 255, 0.1);
+}

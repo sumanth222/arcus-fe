@@ -1,5 +1,6 @@
 export interface WorkoutExercise {
   exerciseSessionId: number;
+  exerciseTemplateSessionID?: number; // <-- add this line for backend compatibility
   exerciseName: string;
   targetWeight: number;
   repMin: number;
@@ -21,6 +22,8 @@ export interface LogSetResponse {
   suggestedRestSeconds: number;
   message: string;
   exerciseCompleted: boolean;
+  nextSetWeight?: number;
+  nextSetReps?: number;
 }
 
 export interface SetData {
@@ -30,6 +33,7 @@ export interface SetData {
   weight: number;
   reps: number;
   completed: boolean;
+  exerciseSessionId: number;
 }
 
 export interface ExerciseView {

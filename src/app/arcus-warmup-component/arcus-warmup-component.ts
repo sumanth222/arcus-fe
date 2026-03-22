@@ -34,10 +34,12 @@ export class ArcusWarmupComponent {
   ];
 
   skipWarmup() {
-    this.router.navigate(['/workout']);
+    const state = history.state;
+    this.router.navigate(['/workout'], { state: { muscleGroups: state.muscleGroups } });
   }
 
   startWorkout() {
-    this.router.navigate(['/workout']);
+    const state = history.state;
+    this.router.navigate(['/workout'], { state: { muscleGroups: state.muscleGroups } });
   }
 }

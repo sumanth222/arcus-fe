@@ -1,8 +1,18 @@
 <div class="min-h-screen from-zinc-900 to-black text-white p-6 flex flex-col gap-6 bg-[url('/images/home-background.jpg')] bg-cover bg-center">
 
-  <!-- Welcome -->
-  <div>
-    <h1 class="text-3xl font-semibold">Hi {{userName}} 👋</h1>
+  <!-- Header with Profile Icon -->
+  <div class="flex items-center justify-between">
+    <div></div>
+    <h1 class="text-3xl font-semibold flex-1">Hi {{userName}} 👋</h1>
+    <button 
+      (click)="router.navigate(['/profile'])"
+      class="profile-btn">
+      <div class="profile-avatar">{{ userName.charAt(0).toUpperCase() }}</div>
+    </button>
+  </div>
+
+  <!-- Subtitle -->
+  <div class="mb-2">
     <p class="text-zinc-400 text-sm">Ready to lift today?</p>
   </div>
 

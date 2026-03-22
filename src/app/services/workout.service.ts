@@ -24,12 +24,28 @@ export class WorkoutService {
 
   constructor(private http: HttpClient) {}
 
-  generateWorkout(userId: number, level: string): Observable<WorkoutSession> {
+  generateWorkout(userId: number, level: string, goal: string): Observable<WorkoutSession> {
     if (this.activeSession) {
       return of(this.activeSession);
     }
     return this.http.get<WorkoutSession>(
-      `${this.baseUrl}/workout/generateWorkout?userId=${userId}&level=${level}`
+      `${this.baseUrl}/workout/generateWorkout?userId=${userId}&level=${level}&goal=${goal}`
+    ).pipe(
+      tap(session => this.activeSession = session)
+    );
+  }
+
+  generateCustomWorkout(payload: {
+    userId: number;
+    level: string;
+    goal: string;
+    split: string;
+    dayNumber: number;
+    requestedMuscles: Array<{ muscleGroup: string; areasOrder: string[]; count: number }>;
+  }): Observable<WorkoutSession> {
+    return this.http.post<WorkoutSession>(
+      `${this.baseUrl}/workout/generateCustom`,
+      payload
     ).pipe(
       tap(session => this.activeSession = session)
     );
@@ -41,6 +57,7 @@ export class WorkoutService {
 
     const subject = new ReplaySubject<LogSetResponse>(1);
     this.pendingLogSet$ = subject;
+    console.log("Obj: ",payload)
     this.http.post<LogSetResponse>(`${this.baseUrl}/logs/log-set`, payload).subscribe({
       next: (res) => subject.next(res),
       error: (err) => subject.error(err)

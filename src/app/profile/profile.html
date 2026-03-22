@@ -1,0 +1,178 @@
+<div class="profile-shell">
+
+  <!-- Background Orbs -->
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+
+  <div class="profile-content">
+
+    <!-- Header Row -->
+    <div class="profile-header-row">
+      <button class="back-btn" (click)="router.navigate(['/home'])">
+        ← Back
+      </button>
+      <span class="header-title">Profile</span>
+      <div style="width:72px"></div>
+    </div>
+
+    <!-- Toast messages -->
+    <div *ngIf="successMessage" class="toast toast-success">
+      <span>✓</span> {{ successMessage }}
+    </div>
+    <div *ngIf="errorMessage" class="toast toast-error">
+      <span>✕</span> {{ errorMessage }}
+    </div>
+
+    <!-- Loading -->
+    <div *ngIf="loading" style="display:flex;justify-content:center;padding:80px 0">
+      <div class="spinner-ring"></div>
+    </div>
+
+    <ng-container *ngIf="profile && !loading">
+
+      <!-- Hero Card -->
+      <div class="hero-card">
+        <div class="avatar">{{ profile.name.charAt(0).toUpperCase() }}</div>
+        <div class="hero-info">
+          <div class="hero-name">{{ profile.name }}</div>
+          <div class="hero-username">@{{ authService.username }}</div>
+          <div class="hero-joined">Member since {{ formatDate(profile.joinedAt) }}</div>
+        </div>
+      </div>
+
+      <!-- Stats Grid -->
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-value">{{ profile.totalWorkouts }}</div>
+          <div class="stat-label">Workouts</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value">{{ profile.totalWeightLifted | number:'1.0-0' }}</div>
+          <div class="stat-label">lbs Lifted</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value">{{ profile.consecutiveWorkoutDays }}</div>
+          <div class="stat-label">Day Streak</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value">{{ profile.totalSetsSessions }}</div>
+          <div class="stat-label">Total Sets</div>
+        </div>
+      </div>
+
+      <!-- Profile Info Section -->
+      <div class="section-card">
+        <div class="section-label">Account Details</div>
+
+        <!-- Email -->
+        <div class="field-row" [class.editing]="editingField === 'email'">
+          <ng-container *ngIf="editingField !== 'email'">
+            <div class="field-meta">
+              <span class="field-key">Email</span>
+              <span class="field-val">{{ profile.email }}</span>
+            </div>
+            <button class="edit-pill" (click)="startEdit('email')">Edit</button>
+          </ng-container>
+          <ng-container *ngIf="editingField === 'email'">
+            <div class="edit-row-header">
+              <span class="edit-field-key">Email</span>
+            </div>
+            <input type="email" class="edit-input" [(ngModel)]="editValues['email']" placeholder="your@email.com">
+            <div class="edit-actions">
+              <button class="save-btn" (click)="saveEdit('email')">Save</button>
+              <button class="cancel-btn" (click)="cancelEdit()">Cancel</button>
+            </div>
+          </ng-container>
+        </div>
+
+        <!-- Level -->
+        <div class="field-row" [class.editing]="editingField === 'currentLevel'">
+          <ng-container *ngIf="editingField !== 'currentLevel'">
+            <div class="field-meta">
+              <span class="field-key">Experience Level</span>
+              <span class="field-val" style="text-transform:capitalize">{{ profile.currentLevel }}</span>
+            </div>
+            <button class="edit-pill" (click)="startEdit('currentLevel')">Edit</button>
+          </ng-container>
+          <ng-container *ngIf="editingField === 'currentLevel'">
+            <div class="edit-row-header">
+              <span class="edit-field-key">Experience Level</span>
+            </div>
+            <select class="edit-select" [(ngModel)]="editValues['currentLevel']">
+              <option *ngFor="let opt of levelOptions" [value]="opt">{{ opt | titlecase }}</option>
+            </select>
+            <div class="edit-actions">
+              <button class="save-btn" (click)="saveEdit('currentLevel')">Save</button>
+              <button class="cancel-btn" (click)="cancelEdit()">Cancel</button>
+            </div>
+          </ng-container>
+        </div>
+
+        <!-- Goal -->
+        <div class="field-row" [class.editing]="editingField === 'fitnessGoal'">
+          <ng-container *ngIf="editingField !== 'fitnessGoal'">
+            <div class="field-meta">
+              <span class="field-key">Fitness Goal</span>
+              <span class="field-val" style="text-transform:capitalize">{{ profile.fitnessGoal }}</span>
+            </div>
+            <button class="edit-pill" (click)="startEdit('fitnessGoal')">Edit</button>
+          </ng-container>
+          <ng-container *ngIf="editingField === 'fitnessGoal'">
+            <div class="edit-row-header">
+              <span class="edit-field-key">Fitness Goal</span>
+            </div>
+            <select class="edit-select" [(ngModel)]="editValues['fitnessGoal']">
+              <option *ngFor="let opt of goalOptions" [value]="opt">{{ opt | titlecase }}</option>
+            </select>
+            <div class="edit-actions">
+              <button class="save-btn" (click)="saveEdit('fitnessGoal')">Save</button>
+              <button class="cancel-btn" (click)="cancelEdit()">Cancel</button>
+            </div>
+          </ng-container>
+        </div>
+
+        <!-- Split -->
+        <div class="field-row" [class.editing]="editingField === 'workoutSplit'">
+          <ng-container *ngIf="editingField !== 'workoutSplit'">
+            <div class="field-meta">
+              <span class="field-key">Workout Split</span>
+              <span class="field-val" style="text-transform:capitalize">{{ profile.workoutSplit }}</span>
+            </div>
+            <button class="edit-pill" (click)="startEdit('workoutSplit')">Edit</button>
+          </ng-container>
+          <ng-container *ngIf="editingField === 'workoutSplit'">
+            <div class="edit-row-header">
+              <span class="edit-field-key">Workout Split</span>
+            </div>
+            <select class="edit-select" [(ngModel)]="editValues['workoutSplit']">
+              <option *ngFor="let opt of splitOptions" [value]="opt">{{ opt | titlecase }}</option>
+            </select>
+            <div class="edit-actions">
+              <button class="save-btn" (click)="saveEdit('workoutSplit')">Save</button>
+              <button class="cancel-btn" (click)="cancelEdit()">Cancel</button>
+            </div>
+          </ng-container>
+        </div>
+
+        <!-- Last Workout (read-only) -->
+        <div class="field-row">
+          <div class="field-meta">
+            <span class="field-key">Last Workout</span>
+            <span class="field-val" *ngIf="profile.lastWorkoutDate; else noWorkout">
+              {{ formatDate(profile.lastWorkoutDate) }}
+            </span>
+            <ng-template #noWorkout>
+              <span class="field-val-muted">No workouts yet</span>
+            </ng-template>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Logout -->
+      <button class="logout-btn" (click)="logout()">Log Out</button>
+
+    </ng-container>
+
+  </div>
+</div>

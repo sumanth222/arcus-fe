@@ -6,6 +6,7 @@ import { RestScreenComponent } from './rest-screen-component/rest-screen-compone
 import { WorkoutCompleteComponent } from './workout-complete-component/workout-complete-component';
 import { OnboardingComponent } from './onboarding/onboarding';
 import { LoginComponent } from './login/login';
+import { ProfileComponent } from './profile/profile';
 
 export const routes: Routes = [
   {
@@ -40,5 +41,9 @@ export const routes: Routes = [
   {
     path: 'complete',
     component: WorkoutCompleteComponent
+  },
+  {
+    path: 'profile',
+    component: ProfileComponent
   }
 ];

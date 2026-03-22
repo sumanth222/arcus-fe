@@ -15,10 +15,15 @@ export class AuthService {
   constructor(private http: HttpClient) {
     const stored = sessionStorage.getItem('arcus_user');
     if (stored) {
-      const parsed = JSON.parse(stored);
-      this._userId   = parsed.userId;
-      this._userName = parsed.name;
-      this._username = parsed.username ?? '';
+      try {
+        const parsed = JSON.parse(stored);
+        this._userId   = parsed.userId != null ? Number(parsed.userId) : null;
+        this._userName = parsed.name    ?? '';
+        this._username = parsed.username ?? '';
+        console.log('[AuthService] restored session:', { userId: this._userId, name: this._userName, username: this._username });
+      } catch {
+        sessionStorage.removeItem('arcus_user');
+      }
     }
   }
 
@@ -47,10 +52,12 @@ export class AuthService {
   }
 
   private storeSession(userId: number | null, name: string, username: string) {
-    this._userId   = userId;
+    this._userId   = userId != null ? Number(userId) : null;
     this._userName = name;
     this._username = username;
-    sessionStorage.setItem('arcus_user', JSON.stringify({ userId, name, username }));
+    const payload = { userId: this._userId, name, username };
+    console.log('[AuthService] storeSession:', payload);
+    sessionStorage.setItem('arcus_user', JSON.stringify(payload));
   }
 
   setDisplayName(name: string) {
@@ -63,7 +70,7 @@ export class AuthService {
   }
 
   setUserSession(userId: number, name: string) {
-    this.storeSession(userId, name, this._username);
+    this.storeSession(Number(userId), name, this._username);
   }
 
   logout() {

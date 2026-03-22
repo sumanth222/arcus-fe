@@ -42,4 +42,11 @@ export class ProfileService {
       { params: { lastWorkoutDay: lastWorkoutDay } }
     );
   }
+
+  updateProfile(userId: number, updatePayload: { [key: string]: any }): Observable<UserProfile> {
+    return this.http.put<UserProfile>(
+      `${this.baseUrl}/${userId}`,
+      updatePayload
+    );
+  }
 }

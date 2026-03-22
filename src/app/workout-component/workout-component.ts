@@ -17,17 +17,21 @@ const EXERCISE_VIDEO_MAP: Record<string, string> = {
 const DEFAULT_VIDEO = 'https://www.w3schools.com/html/mov_bbb.mp4';
 
 function buildExerciseView(ex: WorkoutExercise): ExerciseView {
+  // Use exerciseTemplateSessionID from backend as exerciseSessionId
+  const exerciseSessionId = ex.exerciseTemplateSessionID ?? ex.exerciseSessionId;
+
   const sets: SetData[] = Array.from({ length: ex.sets }, (_, i) => ({
     setNumber: i + 1,
     targetWeight: ex.targetWeight,
     targetReps: ex.repMax,
     weight: ex.targetWeight,
     reps: ex.repMax,
-    completed: false
+    completed: false,
+    exerciseSessionId // ensure each set has the correct ID
   }));
 
   return {
-    exerciseSessionId: ex.exerciseSessionId,
+    exerciseSessionId,
     name: ex.exerciseName,
     muscle: '',
     video: EXERCISE_VIDEO_MAP[ex.exerciseName] ?? DEFAULT_VIDEO,
@@ -64,6 +68,7 @@ export class WorkoutComponent implements OnInit {
   loading = true;
   error = '';
   showTip = false;
+  setLogging = false;
 
   get workout(): ExerciseView {
     return this.exercises[this.exerciseIndex];
@@ -86,6 +91,9 @@ export class WorkoutComponent implements OnInit {
   }
 
   ngOnInit() {
+    // Extract muscleGroups from navigation state if present
+    const navState = history.state;
+    const passedMuscleGroups = navState && navState.muscleGroups ? navState.muscleGroups : null;
     // Restore state from service if returning from rest screen
     if (this.workoutService.activeExercises.length > 0) {
       this.exercises = this.workoutService.activeExercises;
@@ -96,12 +104,25 @@ export class WorkoutComponent implements OnInit {
       return;
     }
 
-    const uid = this.authService.userId ?? 1;
+    const uid = this.authService.userId;
+    if (!uid) { this.router.navigate(['/login']); return; }
     // Fetch the user's level from their profile, then generate the workout
     this.profileService.getUserProfile(uid).subscribe({
       next: (profile) => {
         const level = profile.currentLevel || 'beginner';
-        this.workoutService.generateWorkout(uid, level).subscribe({
+        const goal = profile.fitnessGoal || 'muscle_gain';
+        const split = profile.workoutSplit || 'bro';
+        const dayNumber = this.dayNumber || 1;
+        // Example: You may want to build requestedMuscles dynamically based on split/day
+        const requestedMuscles = passedMuscleGroups;
+        this.workoutService.generateCustomWorkout({
+          userId: uid,
+          level,
+          goal,
+          split,
+          dayNumber,
+          requestedMuscles
+        }).subscribe({
           next: (session) => {
             this.sessionId = session.sessionId;
             this.dayNumber = session.dayNumber;
@@ -129,6 +150,12 @@ export class WorkoutComponent implements OnInit {
   initializeSets() {
     this.completedSets = [];
     this.showTip = false;
+    if (!this.workout || !this.workout.sets) {
+      console.error('Workout or sets missing:', this.workout, this.exercises);
+      this.currentSet = null;
+      this.nextSet = null;
+      return;
+    }
     this.currentSet = this.workout.sets[0] ?? null;
     this.nextSet = this.workout.sets[1] ?? null;
   }
@@ -160,12 +187,30 @@ export class WorkoutComponent implements OnInit {
     // Persist exercise index in service before navigating
     this.workoutService.exerciseIndex = this.exerciseIndex;
 
+    // Show blur + spinner overlay while waiting for backend
+    this.setLogging = true;
+
     // Fire the API call — rest screen will subscribe to the result via service
     this.workoutService.logSet({
-      exerciseSessionId: this.workout.exerciseSessionId,
+      exerciseSessionId: set.exerciseSessionId,
       setNumber: set.setNumber,
       weight: set.weight,
       reps: set.reps
+    }).subscribe({
+      next: (res) => {
+        // If the backend suggests next set weight/reps, update the next set
+        if (this.currentSet && res.nextSetWeight != null) {
+          this.currentSet.weight = res.nextSetWeight;
+        }
+        if (this.currentSet && res.nextSetReps != null) {
+          this.currentSet.reps = res.nextSetReps;
+        }
+        this.setLogging = false;
+      },
+      error: (err) => {
+        this.setLogging = false;
+        // Optionally handle error
+      }
     });
 
     // Navigate immediately — rest screen picks up the pending observable
@@ -188,7 +233,8 @@ export class WorkoutComponent implements OnInit {
       this.workoutService.clearSession();
 
       // Fire both API calls in parallel, navigate to complete regardless of outcome
-      const uid = this.authService.userId ?? 1;
+      const uid = this.authService.userId;
+      if (!uid) { this.router.navigate(['/login']); return; }
       this.profileService.updateLastWorkoutDay(uid, dayNum).subscribe({
         next: () => console.log('Last workout day updated'),
         error: (err) => console.error('Failed to update last workout day', err)

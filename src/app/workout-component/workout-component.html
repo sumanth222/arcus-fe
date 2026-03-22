@@ -11,6 +11,15 @@
 <!-- Workout Screen -->
 <div class="workout-container" *ngIf="!loading && !error && workout">
 
+  <!-- Spinner Overlay for Set Logging -->
+  <div *ngIf="setLogging" class="set-logging-overlay">
+    <div class="spinner-glass">
+      <svg class="spinner" viewBox="0 0 50 50">
+        <circle class="path" cx="25" cy="25" r="20" fill="none" stroke-width="5"></circle>
+      </svg>
+    </div>
+  </div>
+
   <!-- Header -->
   <div class="workout-header">
 

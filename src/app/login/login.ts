@@ -122,11 +122,22 @@ export class LoginComponent implements OnInit, OnDestroy {
 
     call$.subscribe({
       next: (res) => {
+        console.log('[Auth] response:', res);
+        this.loading = false;
+
+        // New user (register flow or flagged by backend) → onboarding
         if (!this.isLogin || res.isNewUser) {
           this.router.navigate(['/onboarding']);
-        } else {
-          this.router.navigate(['/home']);
+          return;
         }
+
+        // Existing user login — must have a real userId or something is wrong
+        if (!res.userId) {
+          this.error = 'Login succeeded but no user profile found. Please contact support.';
+          return;
+        }
+
+        this.router.navigate(['/home']);
       },
       error: (err) => {
         this.loading = false;

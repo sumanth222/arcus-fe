@@ -35,7 +35,11 @@
     <div *ngIf="nextSet" class="next-set-card rest-fadein">
       <div class="next-label">Next Set</div>
       <div class="next-set-details">Set {{nextSet.setNumber}}</div>
-      <div class="next-target">{{nextSet.targetWeight}} kg × {{nextSet.targetReps}} reps</div>
+      <div class="next-target">
+        <!-- Prefer backend-suggested values if present -->
+        {{restData.nextSetWeight != null ? restData.nextSetWeight : nextSet.targetWeight}} kg ×
+        {{restData.nextSetReps != null ? restData.nextSetReps : nextSet.targetReps}} reps
+      </div>
     </div>
     <!-- End Rest -->
     <button class="end-rest-btn rest-fadein" (click)="endRest()">
