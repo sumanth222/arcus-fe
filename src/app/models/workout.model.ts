@@ -1,6 +1,6 @@
 export interface WorkoutExercise {
   exerciseSessionId: number;
-  exerciseTemplateSessionID?: number; // <-- add this line for backend compatibility
+  exerciseTemplateSessionID?: number;
   exerciseName: string;
   targetWeight: number;
   repMin: number;
@@ -8,6 +8,7 @@ export interface WorkoutExercise {
   sets: number;
   tempo: string;
   tip: string;
+  videoUrl?: string;
 }
 
 export interface WorkoutSession {

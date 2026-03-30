@@ -21,7 +21,14 @@ export class RestScreenComponent implements OnInit, OnDestroy {
   restData: LogSetResponse | null = null;
   completedSet!: number;
   nextSet: any;
+  exerciseName: string = '';
   loading = true;
+
+  get isBodyweightNextSet(): boolean {
+    const name = this.exerciseName.toLowerCase();
+    return name.includes('push-up') || name.includes('pushup') || name.includes('push up')
+        || name.includes('pull-up') || name.includes('pullup') || name.includes('pull up');
+  }
 
   constructor(private router: Router, private workoutService: WorkoutService) {}
 
@@ -29,6 +36,7 @@ export class RestScreenComponent implements OnInit, OnDestroy {
     const state = history.state;
     this.completedSet = state.completedSet;
     this.nextSet = state.nextSet;
+    this.exerciseName = state.exerciseName ?? '';
 
     // Subscribe to the pending API call fired by the workout screen
     const pending$ = this.workoutService.pendingLogSet$;

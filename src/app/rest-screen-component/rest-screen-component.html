@@ -36,9 +36,14 @@
       <div class="next-label">Next Set</div>
       <div class="next-set-details">Set {{nextSet.setNumber}}</div>
       <div class="next-target">
-        <!-- Prefer backend-suggested values if present -->
-        {{restData.nextSetWeight != null ? restData.nextSetWeight : nextSet.targetWeight}} kg ×
-        {{restData.nextSetReps != null ? restData.nextSetReps : nextSet.targetReps}} reps
+        <!-- Prefer backend-suggested values if present; show Bodyweight for bodyweight exercises -->
+        <ng-container *ngIf="isBodyweightNextSet">
+          Bodyweight × {{restData.nextSetReps != null ? restData.nextSetReps : nextSet.targetReps}} reps
+        </ng-container>
+        <ng-container *ngIf="!isBodyweightNextSet">
+          {{restData.nextSetWeight != null ? restData.nextSetWeight : nextSet.targetWeight}} kg ×
+          {{restData.nextSetReps != null ? restData.nextSetReps : nextSet.targetReps}} reps
+        </ng-container>
       </div>
     </div>
     <!-- End Rest -->

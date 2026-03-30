@@ -181,6 +181,8 @@
   overflow:hidden;
 
   border:1px solid rgba(255,255,255,0.08);
+
+  position: relative;
 }
 
 .exercise-video video{
@@ -190,6 +192,29 @@
   height:200px;
 
   object-fit:cover;
+}
+
+/* Video in-frame spinner */
+.video-spinner-wrap {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(5, 5, 10, 0.6);
+  border-radius: 16px;
+  z-index: 2;
+}
+
+.video-spinner {
+  width: 40px;
+  height: 40px;
+  animation: spin 1s linear infinite;
+}
+
+.video-spinner-path {
+  stroke: rgba(96, 165, 250, 0.8);
+  stroke-linecap: round;
 }
 
 /* completed sets */
@@ -333,6 +358,19 @@
   color:white;
 
   text-align:center;
+}
+
+.bodyweight-label {
+  width: 90px;
+  padding: 8px;
+  border-radius: 8px;
+  background: rgba(99, 102, 241, 0.15);
+  border: 1px solid rgba(99, 102, 241, 0.35);
+  color: #a5b4fc;
+  text-align: center;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
 }
 
 /* button */

@@ -49,4 +49,8 @@ export class ProfileService {
       updatePayload
     );
   }
+
+  completeDay(userId: number, currentDay: number): Observable<any> {
+    return this.http.post(`${this.baseUrl}/${userId}/${currentDay}/complete-day`, {});
+  }
 }

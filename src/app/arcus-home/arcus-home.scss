@@ -19,6 +19,11 @@
   overflow: hidden;
 }
 
+.slider-container--rest {
+  background: rgba(99, 102, 241, 0.12);
+  border: 1px solid rgba(99, 102, 241, 0.25);
+}
+
 .slider-thumb {
   height: 44px;
   width: 44px;
@@ -32,6 +37,12 @@
   cursor: pointer;
   transition: transform 0.2s ease;
   z-index: 2;
+}
+
+.slider-thumb--rest {
+  background: linear-gradient(135deg, #6366f1, #818cf8);
+  box-shadow: 0 0 14px rgba(99, 102, 241, 0.5);
+  font-size: 20px;
 }
 
 .slider-text {

@@ -3,35 +3,35 @@
   <div class="complete-card">
 
     <div class="trophy">
-      ✓
+      {{ isRestDay ? '😴' : '✓' }}
     </div>
 
     <h1 class="title">
-      Workout Complete
+      {{ isRestDay ? 'Rest Day Logged' : 'Workout Complete' }}
     </h1>
 
     <p class="subtitle">
-      Great work today. Your effort is paying off.
+      {{ isRestDay
+        ? 'Hope you had a great rest day! Recovery is just as important as the grind. See you tomorrow 💪'
+        : 'Great work today. Your effort is paying off.' }}
     </p>
 
-    <div class="stats">
-
-      <div class="stat">
-        <span class="value">{{totalSets}}</span>
-        <span class="label">Sets</span>
+    <ng-container *ngIf="!isRestDay">
+      <div class="stats">
+        <div class="stat">
+          <span class="value">{{totalSets}}</span>
+          <span class="label">Sets</span>
+        </div>
+        <div class="stat">
+          <span class="value">{{totalWeight}}</span>
+          <span class="label">kg lifted</span>
+        </div>
+        <div class="stat">
+          <span class="value">{{duration}}</span>
+          <span class="label">minutes</span>
+        </div>
       </div>
-
-      <div class="stat">
-        <span class="value">{{totalWeight}}</span>
-        <span class="label">kg lifted</span>
-      </div>
-
-      <div class="stat">
-        <span class="value">{{duration}}</span>
-        <span class="label">minutes</span>
-      </div>
-
-    </div>
+    </ng-container>
 
     <button
       class="home-button"

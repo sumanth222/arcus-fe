@@ -30,7 +30,10 @@ export interface NextWorkoutInfo {
   lastWorkoutDate: string;
   lastWorkoutCompleted: boolean;
   lastWorkoutTotalWeight: number;
-  muscleGroups?: string[]; // <-- add this optional property
+  muscleGroups?: string[];
+  previousWorkoutTotalWeight: number;
+  lastWorkoutWeightChange: number;
+  lastWorkoutWeightChangePercent: number,
 }
 
 export interface LoginRequest {

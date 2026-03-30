@@ -41,6 +41,7 @@ export class WorkoutService {
     goal: string;
     split: string;
     dayNumber: number;
+    lastWorkoutDay: number;
     requestedMuscles: Array<{ muscleGroup: string; areasOrder: string[]; count: number }>;
   }): Observable<WorkoutSession> {
     return this.http.post<WorkoutSession>(

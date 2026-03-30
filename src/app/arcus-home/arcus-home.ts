@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { ProfileService } from '../services/user-profile.service';
 import { AuthService } from '../services/auth.service';
+import { WorkoutService } from '../services/workout.service';
 
 @Component({
   selector: 'app-arcus-home',
@@ -19,10 +20,12 @@ export class ArcusHomeComponent implements OnInit {
   constructor(
     public router: Router,
     private profileService: ProfileService,
-    private authService: AuthService
+    private authService: AuthService,
+    private workoutService: WorkoutService
   ) {}
 
   get userName(): string { return this.authService.userName || 'Athlete'; }
+  get isRestDay(): boolean { return this.todaysWorkout.name?.toLowerCase() === 'rest'; }
 
   dragging = false;
   startX = 0;
@@ -31,14 +34,20 @@ export class ArcusHomeComponent implements OnInit {
   todaysWorkout = { name: 'Loading...', muscles: '', muscleGroups: [] as string[] };
   lastWorkout    = { name: '—', volume: 0, date: '' };
   nextMuscleGroups: string[] = [];
+  lastDay: number = 1;
+  currentDayNum: number = 1;
+  percentageChange: number = 0.0;
 
   ngOnInit() {
     const userId = this.authService.userId;
     if (!userId) { this.router.navigate(['/login']); return; }
     this.profileService.getUserProfile(userId).subscribe({
       next: (profile) => {
+        this.lastDay = profile.lastWorkoutDay;
+        console.log("Last wd: ", this.lastDay)
         this.profileService.getNextWorkoutInfo(userId, profile.currentLevel || 'beginner').subscribe({
           next: (info) => {
+            this.currentDayNum = info.nextDayNumber;
             this.todaysWorkout = {
               name: info.nextWorkoutName,
               muscles: `Day ${info.nextDayNumber}`,
@@ -52,6 +61,7 @@ export class ArcusHomeComponent implements OnInit {
                 ? new Date(info.lastWorkoutDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
                 : ''
             };
+            this.percentageChange = info.lastWorkoutWeightChangePercent;
           },
           error: () => {
             this.todaysWorkout = { name: 'Push Day', muscles: 'Day 1', muscleGroups: [] };
@@ -103,8 +113,51 @@ export class ArcusHomeComponent implements OnInit {
   }
 
   startWorkout() {
-    this.router.navigate(['/warmup'], { state: { muscleGroups: this.nextMuscleGroups } });
-    // alert('Workout Started 💪');
+    if (this.isRestDay) {
+      const userId = this.authService.userId;
+      if (userId) {
+        // Register the rest day completion and log it as a 0-weight workout
+        this.profileService.completeDay(userId, this.currentDayNum).subscribe();
+        this.workoutService.completeWorkout(userId, 0).subscribe();
+        this.router.navigate(['/complete'], { state: { isRestDay: true } });
+      }
+      return;
+    }
+    this.router.navigate(['/warmup'], { state: { muscleGroups: this.nextMuscleGroups, lastWorkoutDay: this.lastDay, nextDayNumber: this.currentDayNum } });
+  }
+
+  loadData(userId: number) {
+    this.todaysWorkout = { name: 'Loading...', muscles: '', muscleGroups: [] };
+    this.profileService.getUserProfile(userId).subscribe({
+      next: (profile) => {
+        this.lastDay = profile.lastWorkoutDay;
+        this.profileService.getNextWorkoutInfo(userId, profile.currentLevel || 'beginner').subscribe({
+          next: (info) => {
+            this.todaysWorkout = {
+              name: info.nextWorkoutName,
+              muscles: `Day ${info.nextDayNumber}`,
+              muscleGroups: info.muscleGroups || []
+            };
+            this.nextMuscleGroups = info.muscleGroups || [];
+            this.lastWorkout = {
+              name: info.lastWorkoutName,
+              volume: info.lastWorkoutTotalWeight,
+              date: info.lastWorkoutDate
+                ? new Date(info.lastWorkoutDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
+                : ''
+            };
+          },
+          error: () => {
+            this.todaysWorkout = { name: 'Push Day', muscles: 'Day 1', muscleGroups: [] };
+            this.nextMuscleGroups = [];
+          }
+        });
+      },
+      error: () => {
+        this.todaysWorkout = { name: 'Push Day', muscles: 'Day 1', muscleGroups: [] };
+        this.nextMuscleGroups = [];
+      }
+    });
   }
 
   getPosition(event: MouseEvent | TouchEvent): number {

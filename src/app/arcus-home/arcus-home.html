@@ -31,6 +31,7 @@
       <div
         #sliderContainer
         class="slider-container"
+        [class.slider-container--rest]="isRestDay"
         (mousemove)="onDrag($event)"
         (mouseup)="endDrag()"
         (mouseleave)="endDrag()"
@@ -40,13 +41,14 @@
         <div
           #sliderThumb
           class="slider-thumb"
+          [class.slider-thumb--rest]="isRestDay"
           (mousedown)="startDrag($event)"
           (touchstart)="startDrag($event)"
         >
-          ▶
+          {{ isRestDay ? '😴' : '▶' }}
         </div>
         <span class="slider-text">
-          Slide to Start Workout
+          {{ isRestDay ? 'Slide to Log Rest Day' : 'Slide to Start Workout' }}
         </span>
       </div>
     </div>
@@ -64,6 +66,20 @@
         <div class="stat-card">
           <p class="stat-value">{{lastWorkout.date || '—'}}</p>
           <p class="stat-label">Date</p>
+        </div>
+        <!-- Motivational percent change line -->
+        <div *ngIf="percentageChange !== undefined && percentageChange !== null"
+            class="inline-flex items-center justify-center rounded-lg px-3 py-1 mt-2 bg-white/20 backdrop-blur-sm shadow text-sm font-medium mx-auto"
+            style="min-width: 180px; width: 18.75rem;">
+          <span [ngClass]="{
+            'text-green-400': percentageChange > 0,
+            'text-red-400': percentageChange < 0
+          }" class="font-semibold mr-2">
+            {{ percentageChange > 0 ? '+' : ''}}{{ percentageChange | number:'1.0-2' }}%
+          </span>
+          <span class="text-zinc-100">
+            {{ percentageChange > 0 ? 'You lifted more than last time! Awesome work!' : (percentageChange < 0 ? 'You lifted a bit lesser. That’s okay—keep going!' : 'You matched your last workout. Stay consistent!') }}
+          </span>
         </div>
       </div>
     </div>

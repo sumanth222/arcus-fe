@@ -58,8 +58,24 @@
 
   <!-- Video -->
   <div class="exercise-video">
-    <video autoplay muted loop playsinline>
-      <source [src]="workout.video" type="video/mp4">
+    <!-- In-frame spinner while video loads -->
+    <div *ngIf="videoLoading" class="video-spinner-wrap">
+      <svg class="video-spinner" viewBox="0 0 50 50">
+        <circle class="video-spinner-path" cx="25" cy="25" r="20" fill="none" stroke-width="4"></circle>
+      </svg>
+    </div>
+    <video
+      #exerciseVideo
+      [src]="workout.video"
+      autoplay
+      muted
+      loop
+      playsinline
+      preload="auto"
+      [style.opacity]="videoLoading ? 0 : 1"
+      (loadeddata)="onVideoLoaded()"
+      (error)="onVideoError($event)"
+      style="transition: opacity 0.3s ease;">
     </video>
   </div>
 
@@ -77,7 +93,7 @@
       </span>
 
       <span class="set-stats">
-        {{set.weight}} kg × {{set.reps}}
+        {{ isBodyweightExercise ? 'BW' : set.weight + ' kg' }} × {{set.reps}}
       </span>
 
     </div>
@@ -96,14 +112,19 @@
     </div>
 
     <div class="target-text">
-      Target: {{currentSet.targetWeight}} kg × {{currentSet.targetReps}} reps
+      Target: {{ isBodyweightExercise ? 'Bodyweight' : currentSet.targetWeight + ' kg' }} × {{currentSet.targetReps}} reps
     </div>
 
     <div class="set-input-row">
 
-      <div class="input-block">
+      <div class="input-block" *ngIf="!isBodyweightExercise">
         <label>Weight</label>
         <input type="number" [(ngModel)]="currentSet.weight">
+      </div>
+
+      <div class="input-block bodyweight-badge" *ngIf="isBodyweightExercise">
+        <label>Weight</label>
+        <div class="bodyweight-label">Bodyweight</div>
       </div>
 
       <div class="input-block">

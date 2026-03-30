@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { WorkoutService } from '../services/workout.service';
@@ -27,14 +27,17 @@ function buildExerciseView(ex: WorkoutExercise): ExerciseView {
     weight: ex.targetWeight,
     reps: ex.repMax,
     completed: false,
-    exerciseSessionId // ensure each set has the correct ID
+    exerciseSessionId
   }));
+
+  // Prefer backend videoUrl, then local map, then default fallback
+  const video = ex.videoUrl || EXERCISE_VIDEO_MAP[ex.exerciseName] || DEFAULT_VIDEO;
 
   return {
     exerciseSessionId,
     name: ex.exerciseName,
     muscle: '',
-    video: EXERCISE_VIDEO_MAP[ex.exerciseName] ?? DEFAULT_VIDEO,
+    video,
     sets,
     tempo: ex.tempo,
     tip: ex.tip ?? ''
@@ -49,6 +52,8 @@ function buildExerciseView(ex: WorkoutExercise): ExerciseView {
 })
 export class WorkoutComponent implements OnInit {
 
+  @ViewChild('exerciseVideo') exerciseVideo!: ElementRef<HTMLVideoElement>;
+
   constructor(
     private router: Router,
     private workoutService: WorkoutService,
@@ -60,6 +65,7 @@ export class WorkoutComponent implements OnInit {
   exerciseIndex = 0;
   sessionId: number = 0;
   dayNumber: number = 0;
+  totalWeight : number = 0;
 
   currentSet: SetData | null = null;
   nextSet: SetData | null = null;
@@ -69,6 +75,9 @@ export class WorkoutComponent implements OnInit {
   error = '';
   showTip = false;
   setLogging = false;
+  videoLoading = true;
+
+  lastWorkoutDay: number = 1;
 
   get workout(): ExerciseView {
     return this.exercises[this.exerciseIndex];
@@ -82,6 +91,12 @@ export class WorkoutComponent implements OnInit {
     return this.exercises[this.exerciseIndex + 1] ?? null;
   }
 
+  get isBodyweightExercise(): boolean {
+    const name = this.workout?.name?.toLowerCase() ?? '';
+    return name.includes('push-up') || name.includes('pushup') || name.includes('push up')
+        || name.includes('pull-up') || name.includes('pullup') || name.includes('pull up');
+  }
+
   totalVolume(): number {
     return this.completedSets.reduce((sum, s) => sum + s.weight * s.reps, 0);
   }
@@ -91,9 +106,12 @@ export class WorkoutComponent implements OnInit {
   }
 
   ngOnInit() {
-    // Extract muscleGroups from navigation state if present
+    // Extract muscleGroups and dayNumber from navigation state if present
     const navState = history.state;
-    const passedMuscleGroups = navState && navState.muscleGroups ? navState.muscleGroups : null;
+    const passedMuscleGroups = navState?.muscleGroups ?? null;
+    const passedDayNumber: number = navState?.nextDayNumber ?? 0;
+    this.lastWorkoutDay = navState?.lastWorkoutDay ?? 0;
+    console.log('Received navState:', { passedDayNumber, lastWorkoutDay: this.lastWorkoutDay });
     // Restore state from service if returning from rest screen
     if (this.workoutService.activeExercises.length > 0) {
       this.exercises = this.workoutService.activeExercises;
@@ -112,8 +130,8 @@ export class WorkoutComponent implements OnInit {
         const level = profile.currentLevel || 'beginner';
         const goal = profile.fitnessGoal || 'muscle_gain';
         const split = profile.workoutSplit || 'bro';
-        const dayNumber = this.dayNumber || 1;
-        // Example: You may want to build requestedMuscles dynamically based on split/day
+        // Use the dayNumber passed from home (nextDayNumber), not a stale local value
+        const dayNumber = passedDayNumber || this.dayNumber || 1;
         const requestedMuscles = passedMuscleGroups;
         this.workoutService.generateCustomWorkout({
           userId: uid,
@@ -121,7 +139,8 @@ export class WorkoutComponent implements OnInit {
           goal,
           split,
           dayNumber,
-          requestedMuscles
+          lastWorkoutDay: dayNumber,
+          requestedMuscles,
         }).subscribe({
           next: (session) => {
             this.sessionId = session.sessionId;
@@ -150,6 +169,7 @@ export class WorkoutComponent implements OnInit {
   initializeSets() {
     this.completedSets = [];
     this.showTip = false;
+    this.videoLoading = true;
     if (!this.workout || !this.workout.sets) {
       console.error('Workout or sets missing:', this.workout, this.exercises);
       this.currentSet = null;
@@ -217,7 +237,8 @@ export class WorkoutComponent implements OnInit {
     this.router.navigate(['/rest'], {
       state: {
         completedSet: set.setNumber,
-        nextSet: this.currentSet
+        nextSet: this.currentSet,
+        exerciseName: this.workout.name
       }
     });
   }
@@ -227,6 +248,12 @@ export class WorkoutComponent implements OnInit {
       this.exerciseIndex++;
       this.workoutService.exerciseIndex = this.exerciseIndex;
       this.initializeSets();
+      // Force video element to reload with the new exercise's src
+      setTimeout(() => {
+        if (this.exerciseVideo?.nativeElement) {
+          this.exerciseVideo.nativeElement.load();
+        }
+      }, 0);
     } else {
       const totalVolume = this.workoutService.totalSessionVolume;
       const dayNum = this.dayNumber;
@@ -245,11 +272,25 @@ export class WorkoutComponent implements OnInit {
         error: (err) => console.error('Failed to complete workout', err)
       });
 
-      this.router.navigate(['/complete']);
+      this.router.navigate(['/complete'], {
+        state: { dayNumber: dayNum, totalVolume: totalVolume }
+      });
     }
   }
 
   completeSet(set: SetData) {
     set.completed = true;
+  }
+
+  onVideoLoaded() {
+    this.videoLoading = false;
+  }
+
+  onVideoError(event: Event) {
+    this.videoLoading = false;
+    // Fallback to default video on error
+    if (this.workout && this.workout.video !== DEFAULT_VIDEO) {
+      this.workout.video = DEFAULT_VIDEO;
+    }
   }
 }
