@@ -9,7 +9,9 @@
 
     <!-- Logo / Brand -->
     <div class="brand">
-      <div class="brand-icon">A</div>
+      <div class="brand-icon">
+        <img src="/images/logo.svg" alt="Arcus Logo" class="brand-logo-img" />
+      </div>
       <h1 class="brand-name">Arcus</h1>
       <p class="brand-tagline">Train smarter. Track everything.</p>
     </div>
@@ -34,8 +36,8 @@
     <!-- Form -->
     <div class="form-body">
 
-      <!-- Username -->
-      <div class="field">
+      <!-- Username (register: required | login: optional if using email) -->
+      <div class="field" *ngIf="!isLogin">
         <label class="field-label">Username</label>
         <div class="input-wrap"
              [class.input-wrap--error]="!isLogin && usernameStatus === 'taken'"
@@ -52,25 +54,52 @@
             autocomplete="username"
             autocapitalize="none"
           />
-          <!-- Status icon inside the input -->
           <span *ngIf="!isLogin" class="username-status-icon">
             <span *ngIf="usernameStatus === 'checking'" class="status-spinner"></span>
             <span *ngIf="usernameStatus === 'available'" class="status-tick">✓</span>
             <span *ngIf="usernameStatus === 'taken'"     class="status-cross">✕</span>
           </span>
         </div>
-        <!-- Status message (register mode only) -->
         <ng-container *ngIf="!isLogin">
-          <p *ngIf="usernameStatus === 'available'" class="field-success">
-            ✓ @{{username}} is available
-          </p>
-          <p *ngIf="usernameStatus === 'taken'" class="field-error">
-            ✕ @{{username}} is already taken
-          </p>
-          <p *ngIf="usernameStatus === 'short' && username.length > 0" class="field-hint">
-            At least 3 characters
-          </p>
+          <p *ngIf="usernameStatus === 'available'" class="field-success">✓ @{{username}} is available</p>
+          <p *ngIf="usernameStatus === 'taken'" class="field-error">✕ @{{username}} is already taken</p>
+          <p *ngIf="usernameStatus === 'short' && username.length > 0" class="field-hint">At least 3 characters</p>
         </ng-container>
+      </div>
+
+      <!-- Email (login only — primary identifier) -->
+      <div class="field" *ngIf="isLogin">
+        <label class="field-label">Email</label>
+        <div class="input-wrap" [class.input-wrap--error]="fieldErrors.email">
+          <span class="input-prefix">✉</span>
+          <input
+            class="glass-input"
+            type="email"
+            placeholder="you@example.com"
+            [(ngModel)]="email"
+            (keydown)="onEnter($event)"
+            autocomplete="email"
+          />
+        </div>
+        <p *ngIf="fieldErrors.email" class="field-error">{{fieldErrors.email}}</p>
+        <p class="field-hint">Or enter your username below (optional)</p>
+      </div>
+
+      <!-- Username (login only — optional fallback) -->
+      <div class="field" *ngIf="isLogin">
+        <label class="field-label">Username <span class="field-optional">(optional)</span></label>
+        <div class="input-wrap">
+          <span class="input-prefix">@</span>
+          <input
+            class="glass-input"
+            type="text"
+            placeholder="yourhandle"
+            [(ngModel)]="username"
+            (keydown)="onEnter($event)"
+            autocomplete="username"
+            autocapitalize="none"
+          />
+        </div>
       </div>
 
       <!-- Password -->

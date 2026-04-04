@@ -31,14 +31,15 @@ export interface NextWorkoutInfo {
   lastWorkoutCompleted: boolean;
   lastWorkoutTotalWeight: number;
   muscleGroups?: string[];
-  previousWorkoutTotalWeight: number;
-  lastWorkoutWeightChange: number;
-  lastWorkoutWeightChangePercent: number,
+  previousWorkoutTotalWeight?: number;
+  lastWorkoutWeightChange?: number;
+  lastWorkoutWeightChangePercent?: number;
 }
 
 export interface LoginRequest {
   username: string;
   password: string;
+  email?: string;
 }
 
 export interface LoginResponse {

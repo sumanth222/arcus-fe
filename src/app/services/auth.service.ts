@@ -41,7 +41,7 @@ export class AuthService {
 
   login(payload: LoginRequest): Observable<LoginResponse> {
     return this.http.post<LoginResponse>(`${this.baseUrl}/login`, payload).pipe(
-      tap(res => this.storeSession(res.userId, res.name, payload.username))
+      tap(res => this.storeSession(res.userId, res.name, payload.username || payload.email || ''))
     );
   }
 

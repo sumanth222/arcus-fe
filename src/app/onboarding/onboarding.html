@@ -12,6 +12,7 @@
       <button class="back-btn" (click)="back()" [class.invisible]="currentStep === 0">
         ← Back
       </button>
+      <img src="/images/logo.svg" alt="Arcus" style="width:24px;height:24px;filter:brightness(0) invert(1);opacity:0.8;" />
       <span class="step-counter">{{currentStep + 1}} / {{steps.length}}</span>
     </div>
 

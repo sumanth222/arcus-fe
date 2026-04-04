@@ -23,6 +23,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   mode: Mode = 'login';
 
   username = '';
+  email = '';
   password = '';
   confirmPassword = '';
   showPassword = false;
@@ -30,7 +31,7 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   loading = false;
   error = '';
-  fieldErrors = { password: '', confirm: '' };
+  fieldErrors = { password: '', confirm: '', email: '' };
 
   // Username availability state
   usernameStatus: UsernameStatus = 'idle';
@@ -69,7 +70,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   switchMode(m: Mode) {
     this.mode = m;
     this.error = '';
-    this.fieldErrors = { password: '', confirm: '' };
+    this.fieldErrors = { password: '', confirm: '', email: '' };
     this.usernameStatus = 'idle';
   }
 
@@ -89,12 +90,24 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
 
   validate(): boolean {
-    this.fieldErrors = { password: '', confirm: '' };
+    this.fieldErrors = { password: '', confirm: '', email: '' };
     let ok = true;
 
-    if (this.username.trim().length < 3) {
-      ok = false;
+    if (this.isLogin) {
+      // Login: require either username or email
+      const hasUsername = this.username.trim().length >= 3;
+      const hasEmail = this.email.trim().length > 0 && this.email.includes('@');
+      if (!hasUsername && !hasEmail) {
+        this.fieldErrors.email = 'Enter your username or email';
+        ok = false;
+      }
+    } else {
+      // Register: only username required — email is collected during onboarding
+      if (this.username.trim().length < 3) {
+        ok = false;
+      }
     }
+
     if (this.password.length < 6) {
       this.fieldErrors.password = 'At least 6 characters';
       ok = false;
@@ -115,7 +128,14 @@ export class LoginComponent implements OnInit, OnDestroy {
     this.loading = true;
     this.error = '';
 
-    const payload = { username: this.username.trim(), password: this.password };
+    const payload = this.isLogin
+      ? {
+          // If username is filled use it, otherwise use email
+          username: this.username.trim() || '',
+          email: this.username.trim() ? undefined : this.email.trim(),
+          password: this.password
+        }
+      : { username: this.username.trim(), password: this.password };
     const call$ = this.isLogin
       ? this.authService.login(payload)
       : this.authService.register(payload);

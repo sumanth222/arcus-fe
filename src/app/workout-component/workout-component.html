@@ -118,8 +118,11 @@
     <div class="set-input-row">
 
       <div class="input-block" *ngIf="!isBodyweightExercise">
-        <label>Weight</label>
+        <label>Weight (kg)</label>
         <input type="number" [(ngModel)]="currentSet.weight">
+        <span *ngIf="isSplitWeightExercise && currentSet.weight" class="weight-hint">
+          = {{ currentSet.weight / 2 }} kg per side
+        </span>
       </div>
 
       <div class="input-block bodyweight-badge" *ngIf="isBodyweightExercise">

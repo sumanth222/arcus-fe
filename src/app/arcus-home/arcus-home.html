@@ -2,9 +2,9 @@
 
   <!-- Header with Profile Icon -->
   <div class="flex items-center justify-between">
-    <div></div>
-    <h1 class="text-3xl font-semibold flex-1">Hi {{userName}} 👋</h1>
-    <button 
+    <img src="/images/logo.svg" alt="Arcus" class="h-8 w-8 opacity-90" style="filter: brightness(0) invert(1);" />
+    <h1 class="text-3xl font-semibold flex-1 ml-3">Hi {{userName}} 👋</h1>
+    <button
       (click)="router.navigate(['/profile'])"
       class="profile-btn">
       <div class="profile-avatar">{{ userName.charAt(0).toUpperCase() }}</div>
@@ -17,7 +17,8 @@
   </div>
 
   <!-- Centered Content -->
-  <div class="flex-1 flex flex-col justify-center  w-full gap-6">
+  <div class="flex-1 flex flex-col justify-center w-full gap-6">
+
     <!-- Today's Workout -->
     <div class="glass-card">
       <p class="text-zinc-400 text-sm">Today's Workout</p>
@@ -52,6 +53,7 @@
         </span>
       </div>
     </div>
+
     <!-- Last Workout -->
     <div class="glass-card">
       <p class="text-zinc-400 text-sm">Last Workout</p>
@@ -67,22 +69,24 @@
           <p class="stat-value">{{lastWorkout.date || '—'}}</p>
           <p class="stat-label">Date</p>
         </div>
-        <!-- Motivational percent change line -->
-        <div *ngIf="percentageChange !== undefined && percentageChange !== null"
-            class="inline-flex items-center justify-center rounded-lg px-3 py-1 mt-2 bg-white/20 backdrop-blur-sm shadow text-sm font-medium mx-auto"
-            style="min-width: 180px; width: 18.75rem;">
-          <span [ngClass]="{
-            'text-green-400': percentageChange > 0,
-            'text-red-400': percentageChange < 0
-          }" class="font-semibold mr-2">
-            {{ percentageChange > 0 ? '+' : ''}}{{ percentageChange | number:'1.0-2' }}%
-          </span>
-          <span class="text-zinc-100">
-            {{ percentageChange > 0 ? 'You lifted more than last time! Awesome work!' : (percentageChange < 0 ? 'You lifted a bit lesser. That’s okay—keep going!' : 'You matched your last workout. Stay consistent!') }}
-          </span>
-        </div>
+      </div>
+
+      <!-- Motivational percent change badge -->
+      <div *ngIf="hasPercentageChange" class="pct-badge"
+           [class.pct-badge--up]="percentageChange > 0"
+           [class.pct-badge--down]="percentageChange < 0">
+        <span class="pct-icon">{{ percentageChange > 0 ? '▲' : (percentageChange < 0 ? '▼' : '—') }}</span>
+        <span class="pct-num">{{ percentageChange > 0 ? '+' : '' }}{{ percentageChange | number:'1.0-1' }}%</span>
+        <span class="pct-msg">
+          {{ percentageChange > 0
+            ? 'More volume than last time! 💪'
+            : (percentageChange < 0
+              ? 'A bit less today — keep going!'
+              : 'Matched your last session. Consistency wins!') }}
+        </span>
       </div>
     </div>
+
   </div>
 
 </div>

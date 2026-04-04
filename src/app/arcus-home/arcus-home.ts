@@ -37,6 +37,7 @@ export class ArcusHomeComponent implements OnInit {
   lastDay: number = 1;
   currentDayNum: number = 1;
   percentageChange: number = 0.0;
+  hasPercentageChange: boolean = false;
 
   ngOnInit() {
     const userId = this.authService.userId;
@@ -61,7 +62,9 @@ export class ArcusHomeComponent implements OnInit {
                 ? new Date(info.lastWorkoutDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
                 : ''
             };
-            this.percentageChange = info.lastWorkoutWeightChangePercent;
+            const pct = info.lastWorkoutWeightChangePercent;
+            this.hasPercentageChange = pct !== undefined && pct !== null;
+            this.percentageChange = pct ?? 0;
           },
           error: () => {
             this.todaysWorkout = { name: 'Push Day', muscles: 'Day 1', muscleGroups: [] };

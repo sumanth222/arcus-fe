@@ -97,6 +97,14 @@ export class WorkoutComponent implements OnInit {
         || name.includes('pull-up') || name.includes('pullup') || name.includes('pull up');
   }
 
+  /** True only for dumbbell or barbell exercises where weight is split per side */
+  get isSplitWeightExercise(): boolean {
+    const name = this.workout?.name?.toLowerCase() ?? '';
+    return name.includes('dumbbell') || name.includes('db ') || name.includes(' db')
+        || name.includes('barbell') || name.includes('bb ') || name.includes(' bb')
+        || name.includes('bench');
+  }
+
   totalVolume(): number {
     return this.completedSets.reduce((sum, s) => sum + s.weight * s.reps, 0);
   }
