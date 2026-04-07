@@ -1,0 +1,126 @@
+.refuel-card {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: 20px;
+  padding: 18px 20px;
+  color: white;
+  margin-top: 20px;
+  animation: fadeUp 0.4s ease both;
+}
+
+// Header
+.refuel-header {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin-bottom: 14px;
+}
+
+.refuel-icon { font-size: 16px; line-height: 1; }
+
+.refuel-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.5);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+// Stats row
+.refuel-stats {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.refuel-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.refuel-val {
+  font-size: 32px;
+  font-weight: 800;
+  letter-spacing: -1px;
+  line-height: 1;
+  color: #86efac;
+}
+
+.refuel-unit {
+  font-size: 15px;
+  font-weight: 500;
+  color: rgba(134, 239, 172, 0.55);
+  margin-left: 1px;
+}
+
+.refuel-desc {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.35);
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+.refuel-divider {
+  width: 1px;
+  height: 40px;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+// Carb badge
+.refuel-carb-badge {
+  display: inline-block;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 99px;
+  letter-spacing: 0.2px;
+}
+
+// Food suggestion chips
+.refuel-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.refuel-chip {
+  font-size: 13px;
+  font-weight: 500;
+  padding: 6px 14px;
+  border-radius: 99px;
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.85);
+  white-space: nowrap;
+  transition: background 0.15s;
+
+  &:hover { background: rgba(255, 255, 255, 0.12); }
+}
+
+// Skeleton
+.refuel-card--skeleton { pointer-events: none; }
+
+.sk {
+  background: rgba(255, 255, 255, 0.07);
+  border-radius: 8px;
+  margin-bottom: 10px;
+  animation: shimmer 1.4s ease infinite;
+
+  &--sm  { height: 10px; width: 40%; }
+  &--lg  { height: 32px; width: 65%; }
+  &--md  { height: 14px; width: 80%; }
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes shimmer {
+  0%, 100% { opacity: 0.4; }
+  50%       { opacity: 0.8; }
+}

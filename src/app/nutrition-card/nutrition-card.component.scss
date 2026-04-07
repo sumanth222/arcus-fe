@@ -1,0 +1,241 @@
+.nutrition-card {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: 20px;
+  padding: 18px 20px;
+  color: white;
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.35);
+}
+
+// Header
+.nc-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.nc-icon { font-size: 16px; line-height: 1; }
+
+.nc-label {
+  flex: 1;
+  font-size: 12px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.5);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+// ⓘ button
+.nc-info-btn {
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 50%;
+  width: 22px;
+  height: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.45);
+  cursor: pointer;
+  transition: all 0.15s;
+  flex-shrink: 0;
+  line-height: 1;
+
+  &:hover {
+    background: rgba(134, 239, 172, 0.15);
+    border-color: rgba(134, 239, 172, 0.4);
+    color: #86efac;
+  }
+}
+
+// Stats row
+.nc-stats {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 12px;
+}
+
+.nc-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.nc-stat-value {
+  font-size: 26px;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  line-height: 1;
+}
+
+.nc-unit {
+  font-size: 14px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.55);
+  margin-left: 1px;
+}
+
+.nc-stat-value--sm {
+  font-size: 18px;
+}
+
+.nc-stat--protein .nc-stat-value {
+  color: #86efac; // soft green — protein = growth
+}
+
+.nc-stat-desc {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.4);
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+.nc-divider {
+  width: 1px;
+  height: 36px;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+// Quick options button
+.nc-options-btn {
+  background: none;
+  border: none;
+  padding: 0;
+  font-size: 13px;
+  font-weight: 600;
+  color: rgba(134, 239, 172, 0.85);
+  cursor: pointer;
+  letter-spacing: 0.1px;
+  transition: color 0.15s;
+  &:hover { color: #86efac; }
+}
+
+// ── Info Popover ───────────────────────────────────────────────────────────────
+
+.nc-popover-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(3px);
+  animation: fadeIn 0.15s ease;
+}
+
+.nc-popover {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 201;
+  background: #18181b;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 20px 20px 0 0;
+  padding: 20px 20px 36px;
+  color: white;
+  animation: slideUp 0.25s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+.nc-popover-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.nc-popover-title {
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.nc-popover-close {
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
+  width: 26px;
+  height: 26px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  color: #9ca3af;
+  cursor: pointer;
+  transition: background 0.15s;
+  &:hover { background: rgba(255,255,255,0.14); color: white; }
+}
+
+.nc-popover-summary {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.6);
+  line-height: 1.6;
+  margin-bottom: 12px;
+}
+
+.nc-popover-insight {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.6);
+  line-height: 1.5;
+  padding: 10px 12px;
+  background: rgba(255, 255, 255, 0.04);
+  border-radius: 12px;
+  border-left: 2px solid rgba(134, 239, 172, 0.45);
+
+  &--warning {
+    border-left-color: rgba(251, 191, 36, 0.6);
+    background: rgba(251, 191, 36, 0.05);
+    color: rgba(255, 230, 160, 0.8);
+  }
+
+  &--success {
+    border-left-color: rgba(74, 222, 128, 0.6);
+    background: rgba(74, 222, 128, 0.06);
+    color: rgba(180, 255, 200, 0.85);
+  }
+}
+
+.nc-popover-insight-icon { flex-shrink: 0; }
+
+.nc-popover-empty {
+  font-size: 13px;
+  color: rgba(255,255,255,0.3);
+  text-align: center;
+  padding: 8px 0;
+}
+
+// Skeleton
+.nutrition-card--skeleton {
+  pointer-events: none;
+}
+
+.skeleton-line {
+  background: rgba(255, 255, 255, 0.07);
+  border-radius: 8px;
+  margin-bottom: 10px;
+  animation: shimmer 1.4s ease infinite;
+
+  &--sm  { height: 10px; width: 50%; }
+  &--lg  { height: 28px; width: 70%; }
+  &--md  { height: 12px; width: 85%; }
+}
+
+@keyframes shimmer {
+  0%, 100% { opacity: 0.5; }
+  50%       { opacity: 1; }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { transform: translateY(100%); opacity: 0; }
+  to   { transform: translateY(0);    opacity: 1; }
+}

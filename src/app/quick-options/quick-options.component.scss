@@ -1,0 +1,413 @@
+// Backdrop
+.qo-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(4px);
+  z-index: 100;
+  animation: fadeIn 0.2s ease;
+}
+
+// Bottom sheet
+.qo-sheet {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 101;
+  background: #111114;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 24px 24px 0 0;
+  padding: 16px 20px 36px;
+  color: white;
+  max-height: 72vh;
+  overflow-y: auto;
+  animation: slideUp 0.28s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+.qo-handle {
+  width: 36px;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.18);
+  border-radius: 99px;
+  margin: 0 auto 18px;
+}
+
+// Header
+.qo-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.qo-title {
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.qo-close-btn {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  color: #9ca3af;
+  cursor: pointer;
+  transition: background 0.15s;
+  &:hover { background: rgba(255,255,255,0.15); color: white; }
+}
+
+// Combo list
+.qo-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.qo-empty {
+  text-align: center;
+  color: rgba(255,255,255,0.35);
+  font-size: 14px;
+  padding: 24px 0;
+}
+
+// Each combo card
+.qo-combo {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 14px;
+  overflow: hidden;
+}
+
+.qo-combo-header {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px 16px;
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+  text-align: left;
+  transition: background 0.15s;
+  &:hover { background: rgba(255,255,255,0.04); }
+}
+
+.qo-combo-left {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  flex: 1;
+  min-width: 0;
+}
+
+.qo-combo-name {
+  font-size: 14px;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.qo-combo-meta {
+  font-size: 11px;
+  color: rgba(255,255,255,0.4);
+}
+
+.qo-combo-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+.qo-protein-val {
+  font-size: 20px;
+  font-weight: 700;
+  color: #86efac;
+  line-height: 1;
+}
+
+.qo-protein-unit {
+  font-size: 12px;
+  color: rgba(134,239,172,0.6);
+}
+
+.qo-chevron {
+  font-size: 18px;
+  color: rgba(255,255,255,0.35);
+  transition: transform 0.2s;
+  display: inline-block;
+  &--open { transform: rotate(90deg); }
+}
+
+// Expanded food items
+.qo-items {
+  border-top: 1px solid rgba(255,255,255,0.06);
+  padding: 4px 0 8px;
+  animation: fadeIn 0.18s ease;
+}
+
+.qo-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 8px 16px;
+}
+
+.qo-item-left {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+  min-width: 0;
+}
+
+.qo-item-name {
+  font-size: 13px;
+  font-weight: 500;
+  color: rgba(255,255,255,0.85);
+}
+
+.qo-item-meta {
+  font-size: 11px;
+  color: rgba(255,255,255,0.35);
+}
+
+.qo-item-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 1px;
+  flex-shrink: 0;
+}
+
+.qo-item-protein {
+  font-size: 13px;
+  font-weight: 600;
+  color: #86efac;
+}
+
+.qo-item-cal {
+  font-size: 11px;
+  color: rgba(255,255,255,0.35);
+}
+
+// Footer
+.qo-footer {
+  margin-top: 20px;
+  text-align: center;
+  font-size: 12px;
+  color: rgba(255,255,255,0.25);
+}
+
+// Skeletons
+.qo-skeleton {
+  padding: 14px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+
+.sk-line {
+  background: rgba(255,255,255,0.07);
+  border-radius: 6px;
+  margin-bottom: 8px;
+  animation: shimmer 1.4s ease infinite;
+  &--title { height: 14px; width: 55%; }
+  &--sub   { height: 10px; width: 30%; }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { transform: translateY(100%); opacity: 0; }
+  to   { transform: translateY(0);    opacity: 1; }
+}
+
+@keyframes shimmer {
+  0%, 100% { opacity: 0.4; }
+  50%       { opacity: 0.8; }
+}
+
+
+// Bottom sheet
+.qo-sheet {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 101;
+  background: #111114;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 24px 24px 0 0;
+  padding: 16px 20px 36px;
+  color: white;
+  max-height: 72vh;
+  overflow-y: auto;
+  animation: slideUp 0.28s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+.qo-handle {
+  width: 36px;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.18);
+  border-radius: 99px;
+  margin: 0 auto 18px;
+}
+
+// Header
+.qo-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.qo-title {
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: -0.2px;
+}
+
+.qo-close-btn {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  color: #9ca3af;
+  cursor: pointer;
+  transition: background 0.15s;
+
+  &:hover { background: rgba(255, 255, 255, 0.15); color: white; }
+}
+
+// Meal items
+.qo-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.qo-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px 16px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 14px;
+  transition: background 0.15s;
+
+  &:hover { background: rgba(255, 255, 255, 0.07); }
+}
+
+.qo-item-info {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  flex: 1;
+  min-width: 0;
+}
+
+.qo-item-name {
+  font-size: 15px;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.qo-item-desc {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.qo-item-protein {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  flex-shrink: 0;
+}
+
+.qo-protein-val {
+  font-size: 20px;
+  font-weight: 700;
+  color: #86efac;
+  line-height: 1;
+}
+
+.qo-protein-unit {
+  font-size: 12px;
+  font-weight: 500;
+  color: rgba(134, 239, 172, 0.6);
+}
+
+.qo-protein-label {
+  font-size: 10px;
+  color: rgba(255, 255, 255, 0.35);
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+// Empty state
+.qo-empty {
+  text-align: center;
+  color: rgba(255, 255, 255, 0.35);
+  font-size: 14px;
+  padding: 24px 0;
+}
+
+// Footer note
+.qo-footer {
+  margin-top: 20px;
+  text-align: center;
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.25);
+}
+
+// Skeletons
+.qo-skeleton {
+  padding: 14px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.sk-line {
+  background: rgba(255, 255, 255, 0.07);
+  border-radius: 6px;
+  margin-bottom: 8px;
+  animation: shimmer 1.4s ease infinite;
+
+  &--title { height: 14px; width: 55%; }
+  &--sub   { height: 10px; width: 30%; }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { transform: translateY(100%); opacity: 0; }
+  to   { transform: translateY(0);    opacity: 1; }
+}
+
+@keyframes shimmer {
+  0%, 100% { opacity: 0.4; }
+  50%       { opacity: 0.8; }
+}

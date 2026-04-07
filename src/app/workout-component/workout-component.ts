@@ -281,7 +281,7 @@ export class WorkoutComponent implements OnInit {
       });
 
       this.router.navigate(['/complete'], {
-        state: { dayNumber: dayNum, totalVolume: totalVolume }
+        state: { dayNumber: dayNum, totalVolume: totalVolume, workoutSessionId: this.sessionId }
       });
     }
   }

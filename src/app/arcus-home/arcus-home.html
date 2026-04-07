@@ -87,6 +87,19 @@
       </div>
     </div>
 
+    <!-- Nutrition Card -->
+    <app-nutrition-card
+      [userId]="userId"
+      (quickOptions)="showQuickOptions = true">
+    </app-nutrition-card>
+
   </div>
 
 </div>
+
+<!-- Quick Options Modal — hosted at home level -->
+<app-quick-options
+  *ngIf="showQuickOptions"
+  [userId]="userId"
+  (close)="showQuickOptions = false">
+</app-quick-options>

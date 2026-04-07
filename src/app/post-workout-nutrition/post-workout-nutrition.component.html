@@ -1,0 +1,44 @@
+<!-- Refuel Card — shown on the workout complete screen -->
+<div class="refuel-card" *ngIf="!loading && data">
+
+  <div class="refuel-header">
+    <span class="refuel-icon">🍗</span>
+    <span class="refuel-label">Refuel Now</span>
+  </div>
+
+  <!-- Protein + carb row -->
+  <div class="refuel-stats">
+
+    <div class="refuel-stat refuel-stat--protein">
+      <span class="refuel-val">
+        {{ data.proteinRecommendation }}<span class="refuel-unit">g</span>
+      </span>
+      <span class="refuel-desc">protein now</span>
+    </div>
+
+    <div class="refuel-divider"></div>
+
+    <div class="refuel-stat">
+      <span class="refuel-carb-badge" [style.background]="carb!.color + '22'" [style.color]="carb!.color">
+        {{ carb!.label }}
+      </span>
+      <span class="refuel-desc">carb level</span>
+    </div>
+
+  </div>
+
+  <!-- Food suggestion chips -->
+  <div class="refuel-chips" *ngIf="data.foodSuggestions?.length">
+    <span class="refuel-chip" *ngFor="let food of data.foodSuggestions">
+      {{ food }}
+    </span>
+  </div>
+
+</div>
+
+<!-- Skeleton while loading -->
+<div class="refuel-card refuel-card--skeleton" *ngIf="loading">
+  <div class="sk sk--sm"></div>
+  <div class="sk sk--lg"></div>
+  <div class="sk sk--md"></div>
+</div>

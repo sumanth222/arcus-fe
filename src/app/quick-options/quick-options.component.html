@@ -1,0 +1,67 @@
+<!-- Backdrop -->
+<div class="qo-backdrop" (click)="close.emit()"></div>
+
+<!-- Sheet -->
+<div class="qo-sheet">
+
+  <div class="qo-handle"></div>
+
+  <div class="qo-header">
+    <span class="qo-title">Quick Meal Ideas</span>
+    <button class="qo-close-btn" (click)="close.emit()">✕</button>
+  </div>
+
+  <!-- Loading skeleton -->
+  <ng-container *ngIf="loading">
+    <div class="qo-skeleton" *ngFor="let i of [1,2,3]">
+      <div class="sk-line sk-line--title"></div>
+      <div class="sk-line sk-line--sub"></div>
+    </div>
+  </ng-container>
+
+  <!-- Combo list -->
+  <div class="qo-list" *ngIf="!loading">
+
+    <div class="qo-empty" *ngIf="!combos.length">
+      No meal suggestions available right now.
+    </div>
+
+    <div class="qo-combo" *ngFor="let combo of combos; let i = index">
+
+      <!-- Combo header — tap to expand/collapse items -->
+      <button class="qo-combo-header" (click)="toggle(i)">
+        <div class="qo-combo-left">
+          <span class="qo-combo-name">{{ combo.comboName }}</span>
+          <span class="qo-combo-meta">
+            {{ combo.totalCaloriesKcal }} kcal
+          </span>
+        </div>
+        <div class="qo-combo-right">
+          <span class="qo-protein-val">
+            {{ combo.totalProteinGrams }}<span class="qo-protein-unit">g</span>
+          </span>
+          <span class="qo-chevron" [class.qo-chevron--open]="expandedIndex === i">›</span>
+        </div>
+      </button>
+
+      <!-- Individual food items (expanded) -->
+      <div class="qo-items" *ngIf="expandedIndex === i">
+        <div class="qo-item" *ngFor="let food of combo.items">
+          <div class="qo-item-left">
+            <span class="qo-item-name">{{ food.name }}</span>
+            <span class="qo-item-meta" *ngIf="food.servingSize">{{ food.servingSize }}</span>
+          </div>
+          <div class="qo-item-right">
+            <span class="qo-item-protein">{{ food.proteinGrams }}g</span>
+            <span class="qo-item-cal">{{ food.caloriesKcal }} kcal</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <p class="qo-footer">No logging needed — just guidance 🥗</p>
+
+</div>

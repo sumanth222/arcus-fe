@@ -34,6 +34,12 @@
           <span class="label">minutes</span>
         </div>
       </div>
+
+      <!-- Refuel card -->
+      <app-post-workout-nutrition
+        *ngIf="workoutSessionId"
+        [workoutSessionId]="workoutSessionId">
+      </app-post-workout-nutrition>
     </ng-container>
 
     <button

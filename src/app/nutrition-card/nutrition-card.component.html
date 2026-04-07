@@ -1,0 +1,65 @@
+
+<!-- Skeleton while loading -->
+<div class="nutrition-card nutrition-card--skeleton" *ngIf="loading">
+  <div class="skeleton-line skeleton-line--sm"></div>
+  <div class="skeleton-line skeleton-line--lg"></div>
+  <div class="skeleton-line skeleton-line--md"></div>
+</div>
+
+<!-- Data card -->
+<div class="nutrition-card" *ngIf="!loading && target">
+
+  <!-- Header with ⓘ button -->
+  <div class="nc-header">
+    <span class="nc-icon">🥗</span>
+    <span class="nc-label">Today's Nutrition</span>
+    <button class="nc-info-btn" (click)="showInfo = true" title="More info">ⓘ</button>
+  </div>
+
+  <!-- Protein + calories — all that's shown on the card -->
+  <div class="nc-stats">
+    <div class="nc-stat nc-stat--protein">
+      <span class="nc-stat-value">{{ target.proteinTargetGrams }}<span class="nc-unit">g</span></span>
+      <span class="nc-stat-desc">Protein target</span>
+    </div>
+    <div class="nc-divider"></div>
+    <div class="nc-stat">
+      <span class="nc-stat-value nc-stat-value--sm">
+        {{ target.calorieTargetMin }}–{{ target.calorieTargetMax }}
+      </span>
+      <span class="nc-stat-desc">kcal range</span>
+    </div>
+  </div>
+
+  <!-- Quick options trigger -->
+  <button class="nc-options-btn" (click)="quickOptions.emit()">
+    Quick meal ideas →
+  </button>
+
+</div>
+
+<!-- ⓘ Info popover -->
+<ng-container *ngIf="showInfo && target">
+  <div class="nc-popover-backdrop" (click)="showInfo = false"></div>
+  <div class="nc-popover">
+    <div class="nc-popover-header">
+      <span class="nc-popover-title">Nutrition Details</span>
+      <button class="nc-popover-close" (click)="showInfo = false">✕</button>
+    </div>
+
+    <!-- Summary -->
+    <p *ngIf="target.summary" class="nc-popover-summary">{{ target.summary }}</p>
+
+    <!-- Insight -->
+    <div *ngIf="insight" class="nc-popover-insight"
+         [class.nc-popover-insight--warning]="insight.type === 'WARNING'"
+         [class.nc-popover-insight--success]="insight.type === 'SUCCESS'">
+      <span class="nc-popover-insight-icon">{{ insightIcon[insight.type] || '💡' }}</span>
+      <span>{{ insight.message }}</span>
+    </div>
+
+    <p *ngIf="!target.summary && !insight" class="nc-popover-empty">
+      No additional insights right now.
+    </p>
+  </div>
+</ng-container>

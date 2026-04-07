@@ -4,12 +4,13 @@ import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { ProfileService } from '../services/user-profile.service';
 import { AuthService } from '../services/auth.service';
+import { PostWorkoutNutritionComponent } from '../post-workout-nutrition/post-workout-nutrition.component';
 
 @Component({
   selector: 'app-workout-complete',
   templateUrl: './workout-complete-component.html',
   styleUrls: ['./workout-complete-component.scss'],
-  imports: [CommonModule]
+  imports: [CommonModule, PostWorkoutNutritionComponent]
 })
 export class WorkoutCompleteComponent {
 
@@ -18,6 +19,7 @@ export class WorkoutCompleteComponent {
   duration = 32;
   dayNumber: number = 0;
   isRestDay: boolean = false;
+  workoutSessionId: number = 0;
 
   constructor(
     private router: Router,
@@ -28,9 +30,10 @@ export class WorkoutCompleteComponent {
 
   ngOnInit() {
     const state = history.state;
-    this.dayNumber = state.dayNumber ?? 0;
-    this.totalWeight = state.totalVolume ?? this.totalWeight;
-    this.isRestDay = state.isRestDay ?? false;
+    this.dayNumber        = state.dayNumber        ?? 0;
+    this.totalWeight      = state.totalVolume       ?? this.totalWeight;
+    this.isRestDay        = state.isRestDay         ?? false;
+    this.workoutSessionId = state.workoutSessionId  ?? 0;
 
     // Only call completeDay for actual workouts (rest day calls it from home)
     const userId = this.authService.userId;

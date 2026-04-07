@@ -4,11 +4,13 @@ import { Router } from '@angular/router';
 import { ProfileService } from '../services/user-profile.service';
 import { AuthService } from '../services/auth.service';
 import { WorkoutService } from '../services/workout.service';
+import { NutritionCardComponent } from '../nutrition-card/nutrition-card.component';
+import { QuickOptionsComponent } from '../quick-options/quick-options.component';
 
 @Component({
   selector: 'app-arcus-home',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, NutritionCardComponent, QuickOptionsComponent],
   templateUrl: './arcus-home.html',
   styleUrls: ['./arcus-home.scss']
 })
@@ -25,6 +27,7 @@ export class ArcusHomeComponent implements OnInit {
   ) {}
 
   get userName(): string { return this.authService.userName || 'Athlete'; }
+  get userId(): number   { return this.authService.userId ?? 0; }
   get isRestDay(): boolean { return this.todaysWorkout.name?.toLowerCase() === 'rest'; }
 
   dragging = false;
@@ -38,6 +41,7 @@ export class ArcusHomeComponent implements OnInit {
   currentDayNum: number = 1;
   percentageChange: number = 0.0;
   hasPercentageChange: boolean = false;
+  showQuickOptions = false;
 
   ngOnInit() {
     const userId = this.authService.userId;
