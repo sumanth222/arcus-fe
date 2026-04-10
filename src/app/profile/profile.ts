@@ -24,10 +24,29 @@ export class ProfileComponent implements OnInit {
   editingField: string | null = null;
   editValues: { [key: string]: any } = {};
 
-  // Dropdown options
-  levelOptions = ['beginner', 'intermediate', 'advanced'];
-  goalOptions = ['muscle gain', 'fat loss', 'strength', 'endurance'];
-  splitOptions = ['full body', 'upper lower', 'push pull legs', 'body part'];
+  // Dropdown options — keys must match backend enum values exactly
+  levelOptions = [
+    { key: 'beginner',     label: 'Beginner' },
+    { key: 'intermediate', label: 'Intermediate' },
+    { key: 'advanced',     label: 'Advanced' },
+  ];
+
+  goalOptions = [
+    { key: 'muscle_gain',  label: 'Muscle Gain' },
+    { key: 'fat_loss',     label: 'Fat Loss' },
+    { key: 'strength',     label: 'Strength' },
+    { key: 'endurance',    label: 'Endurance' },
+    { key: 'maintenance',  label: 'Maintenance' },
+  ];
+
+  splitOptions = [
+    { key: 'bro_split',    label: 'Bro Split' },
+    { key: 'ppl',          label: 'Push / Pull / Legs' },
+    { key: 'upper_lower',  label: 'Upper / Lower' },
+    { key: 'full_body',    label: 'Full Body' },
+    { key: 'mass_gain',    label: 'Mass Gain' },
+    { key: 'athletic',     label: 'Athletic' },
+  ];
 
   constructor(
     public router: Router,
@@ -80,7 +99,7 @@ export class ProfileComponent implements OnInit {
         this.profile = updated;
         this.editingField = null;
         this.editValues = {};
-        this.successMessage = `${field} updated successfully!`;
+        this.successMessage = `${this.getFieldLabel(field)} updated successfully!`;
         setTimeout(() => { this.successMessage = ''; }, 3000);
 
         // Update display name in session if name was changed
@@ -118,13 +137,15 @@ export class ProfileComponent implements OnInit {
   }
 
   isEditableField(field: string): boolean {
-    return ['name', 'email', 'currentLevel', 'fitnessGoal', 'workoutSplit'].includes(field);
+    return ['name', 'email', 'heightCm', 'weightKg', 'currentLevel', 'fitnessGoal', 'workoutSplit'].includes(field);
   }
 
   getFieldLabel(field: string): string {
     const labels: { [key: string]: string } = {
       name: 'Name',
       email: 'Email',
+      heightCm: 'Height',
+      weightKg: 'Weight',
       joinedAt: 'Joined',
       currentLevel: 'Experience Level',
       fitnessGoal: 'Fitness Goal',
@@ -137,7 +158,7 @@ export class ProfileComponent implements OnInit {
     return labels[field] || field;
   }
 
-  getOptionsList(field: string): string[] {
+  getOptionsList(field: string): { key: string; label: string }[] {
     if (field === 'currentLevel') return this.levelOptions;
     if (field === 'fitnessGoal') return this.goalOptions;
     if (field === 'workoutSplit') return this.splitOptions;

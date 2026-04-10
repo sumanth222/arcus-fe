@@ -145,13 +145,122 @@
   margin-bottom:18px;
 }
 
+.exercise-progress-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 4px;
+}
+
 .exercise-progress{
 
   font-size:12px;
 
   color:#9ca3af;
 
-  margin-bottom:4px;
+  margin-bottom: 0;
+}
+
+.exit-btn {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.05);
+  color: #6b7280;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
+  flex-shrink: 0;
+
+  &:hover {
+    background: rgba(239, 68, 68, 0.12);
+    border-color: rgba(239, 68, 68, 0.3);
+    color: #f87171;
+  }
+}
+
+// ── Exit confirmation overlay ─────────────────────────────────
+.exit-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(6px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+.exit-dialog {
+  background: rgba(18, 18, 28, 0.95);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  padding: 28px 24px 24px;
+  width: 100%;
+  max-width: 320px;
+  text-align: center;
+  box-shadow: 0 24px 48px rgba(0, 0, 0, 0.5);
+}
+
+.exit-dialog-icon {
+  font-size: 32px;
+  margin-bottom: 12px;
+}
+
+.exit-dialog-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: #f3f4f6;
+  margin: 0 0 8px;
+}
+
+.exit-dialog-body {
+  font-size: 13px;
+  color: #6b7280;
+  margin: 0 0 24px;
+}
+
+.exit-dialog-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.exit-dialog-confirm {
+  padding: 13px;
+  border-radius: 12px;
+  border: 1px solid rgba(239, 68, 68, 0.35);
+  background: rgba(239, 68, 68, 0.12);
+  color: #f87171;
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+
+  &:hover {
+    background: rgba(239, 68, 68, 0.22);
+  }
+}
+
+.exit-dialog-cancel {
+  padding: 13px;
+  border-radius: 12px;
+  border: 1px solid rgba(99, 102, 241, 0.35);
+  background: rgba(99, 102, 241, 0.12);
+  color: #a5b4fc;
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+
+  &:hover {
+    background: rgba(99, 102, 241, 0.22);
+  }
 }
 
 .exercise-name{

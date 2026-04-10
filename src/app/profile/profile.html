@@ -88,6 +88,50 @@
           </ng-container>
         </div>
 
+        <!-- Height -->
+        <div class="field-row" [class.editing]="editingField === 'heightCm'">
+          <ng-container *ngIf="editingField !== 'heightCm'">
+            <div class="field-meta">
+              <span class="field-key">Height</span>
+              <span class="field-val" *ngIf="profile.heightCm; else noHeight">{{ profile.heightCm }} cm</span>
+              <ng-template #noHeight><span class="field-val-muted">Not set</span></ng-template>
+            </div>
+            <button class="edit-pill" (click)="startEdit('heightCm')">Edit</button>
+          </ng-container>
+          <ng-container *ngIf="editingField === 'heightCm'">
+            <div class="edit-row-header">
+              <span class="edit-field-key">Height (cm)</span>
+            </div>
+            <input type="number" class="edit-input" [(ngModel)]="editValues['heightCm']" placeholder="175" min="100" max="250">
+            <div class="edit-actions">
+              <button class="save-btn" (click)="saveEdit('heightCm')">Save</button>
+              <button class="cancel-btn" (click)="cancelEdit()">Cancel</button>
+            </div>
+          </ng-container>
+        </div>
+
+        <!-- Weight -->
+        <div class="field-row" [class.editing]="editingField === 'weightKg'">
+          <ng-container *ngIf="editingField !== 'weightKg'">
+            <div class="field-meta">
+              <span class="field-key">Weight</span>
+              <span class="field-val" *ngIf="profile.weightKg; else noWeight">{{ profile.weightKg }} kg</span>
+              <ng-template #noWeight><span class="field-val-muted">Not set</span></ng-template>
+            </div>
+            <button class="edit-pill" (click)="startEdit('weightKg')">Edit</button>
+          </ng-container>
+          <ng-container *ngIf="editingField === 'weightKg'">
+            <div class="edit-row-header">
+              <span class="edit-field-key">Weight (kg)</span>
+            </div>
+            <input type="number" class="edit-input" [(ngModel)]="editValues['weightKg']" placeholder="75" min="30" max="300">
+            <div class="edit-actions">
+              <button class="save-btn" (click)="saveEdit('weightKg')">Save</button>
+              <button class="cancel-btn" (click)="cancelEdit()">Cancel</button>
+            </div>
+          </ng-container>
+        </div>
+
         <!-- Level -->
         <div class="field-row" [class.editing]="editingField === 'currentLevel'">
           <ng-container *ngIf="editingField !== 'currentLevel'">
@@ -102,7 +146,7 @@
               <span class="edit-field-key">Experience Level</span>
             </div>
             <select class="edit-select" [(ngModel)]="editValues['currentLevel']">
-              <option *ngFor="let opt of levelOptions" [value]="opt">{{ opt | titlecase }}</option>
+              <option *ngFor="let opt of levelOptions" [value]="opt.key">{{ opt.label }}</option>
             </select>
             <div class="edit-actions">
               <button class="save-btn" (click)="saveEdit('currentLevel')">Save</button>
@@ -125,7 +169,7 @@
               <span class="edit-field-key">Fitness Goal</span>
             </div>
             <select class="edit-select" [(ngModel)]="editValues['fitnessGoal']">
-              <option *ngFor="let opt of goalOptions" [value]="opt">{{ opt | titlecase }}</option>
+              <option *ngFor="let opt of goalOptions" [value]="opt.key">{{ opt.label }}</option>
             </select>
             <div class="edit-actions">
               <button class="save-btn" (click)="saveEdit('fitnessGoal')">Save</button>
@@ -148,7 +192,7 @@
               <span class="edit-field-key">Workout Split</span>
             </div>
             <select class="edit-select" [(ngModel)]="editValues['workoutSplit']">
-              <option *ngFor="let opt of splitOptions" [value]="opt">{{ opt | titlecase }}</option>
+              <option *ngFor="let opt of splitOptions" [value]="opt.key">{{ opt.label }}</option>
             </select>
             <div class="edit-actions">
               <button class="save-btn" (click)="saveEdit('workoutSplit')">Save</button>

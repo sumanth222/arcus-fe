@@ -58,8 +58,43 @@
       </div>
     </div>
 
-    <!-- ── Step 2: Level ── -->
-    <div *ngIf="currentStep === 2" class="choice-grid">
+    <!-- ── Step 2: Body Measurements ── -->
+    <div *ngIf="currentStep === 2" class="input-step measurements-step">
+      <div class="measure-row">
+        <label class="measure-label">Height</label>
+        <div class="measure-input-wrap">
+          <input
+            class="glass-input measure-input"
+            type="number"
+            placeholder="175"
+            min="100"
+            max="250"
+            [(ngModel)]="data.heightCm"
+            (keydown)="onEnter($event)"
+          />
+          <span class="measure-unit">cm</span>
+        </div>
+      </div>
+      <div class="measure-row">
+        <label class="measure-label">Weight</label>
+        <div class="measure-input-wrap">
+          <input
+            class="glass-input measure-input"
+            type="number"
+            placeholder="75"
+            min="30"
+            max="300"
+            [(ngModel)]="data.weightKg"
+            (keydown)="onEnter($event)"
+          />
+          <span class="measure-unit">kg</span>
+        </div>
+      </div>
+      <p class="measure-hint">Used only for nutrition targets — never shared.</p>
+    </div>
+
+    <!-- ── Step 3: Level ── -->
+    <div *ngIf="currentStep === 3" class="choice-grid">
       <button
         *ngFor="let lvl of levels"
         class="choice-card"
@@ -72,8 +107,8 @@
       </button>
     </div>
 
-    <!-- ── Step 3: Goal ── -->
-    <div *ngIf="currentStep === 3" class="choice-grid">
+    <!-- ── Step 4: Goal ── -->
+    <div *ngIf="currentStep === 4" class="choice-grid">
       <button
         *ngFor="let goal of goals"
         class="choice-card"
@@ -86,8 +121,8 @@
       </button>
     </div>
 
-    <!-- ── Step 4: Split ── -->
-    <div *ngIf="currentStep === 4" class="choice-grid">
+    <!-- ── Step 5: Split ── -->
+    <div *ngIf="currentStep === 5" class="choice-grid">
       <button
         *ngFor="let sp of splits"
         class="choice-card"

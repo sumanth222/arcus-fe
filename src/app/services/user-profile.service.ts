@@ -27,6 +27,8 @@ export class ProfileService {
     username: string;
     name: string;
     email: string;
+    heightCm: number | null;
+    weightKg: number | null;
     currentLevel: string;
     fitnessGoal: string;
     workoutSplit: string;

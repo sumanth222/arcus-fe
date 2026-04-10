@@ -74,6 +74,7 @@ export class WorkoutComponent implements OnInit {
   loading = true;
   error = '';
   showTip = false;
+  showExitConfirm = false;
   setLogging = false;
   videoLoading = true;
 
@@ -288,6 +289,11 @@ export class WorkoutComponent implements OnInit {
 
   completeSet(set: SetData) {
     set.completed = true;
+  }
+
+  exitWorkout() {
+    this.workoutService.clearSession();
+    this.router.navigate(['/home']);
   }
 
   onVideoLoaded() {

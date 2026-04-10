@@ -8,6 +8,8 @@ import { AuthService } from '../services/auth.service';
 export interface OnboardingData {
   name: string;
   email: string;
+  heightCm: number | null;
+  weightKg: number | null;
   currentLevel: string;
   fitnessGoal: string;
   workoutSplit: string;
@@ -22,9 +24,10 @@ interface Step {
 const STEPS: Step[] = [
   { id: 0, title: "What's your name?",        subtitle: "Let's get to know you" },
   { id: 1, title: 'Your email',               subtitle: 'We\'ll keep your progress safe' },
-  { id: 2, title: 'Experience level',         subtitle: 'Be honest — we\'ll tailor your plan' },
-  { id: 3, title: 'Your fitness goal',        subtitle: 'What are you training for?' },
-  { id: 4, title: 'Choose your split',        subtitle: 'How do you want to structure your week?' },
+  { id: 2, title: 'Body measurements',        subtitle: 'Used to personalise your nutrition targets' },
+  { id: 3, title: 'Experience level',         subtitle: 'Be honest — we\'ll tailor your plan' },
+  { id: 4, title: 'Your fitness goal',        subtitle: 'What are you training for?' },
+  { id: 5, title: 'Choose your split',        subtitle: 'How do you want to structure your week?' },
 ];
 
 @Component({
@@ -51,6 +54,8 @@ export class OnboardingComponent {
   data: OnboardingData = {
     name: '',
     email: '',
+    heightCm: null,
+    weightKg: null,
     currentLevel: '',
     fitnessGoal: '',
     workoutSplit: ''
@@ -92,9 +97,11 @@ export class OnboardingComponent {
     switch (this.currentStep) {
       case 0: return this.data.name.trim().length >= 2;
       case 1: return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(this.data.email);
-      case 2: return !!this.data.currentLevel;
-      case 3: return !!this.data.fitnessGoal;
-      case 4: return !!this.data.workoutSplit;
+      case 2: return (this.data.heightCm != null && this.data.heightCm > 0)
+                  && (this.data.weightKg != null && this.data.weightKg > 0);
+      case 3: return !!this.data.currentLevel;
+      case 4: return !!this.data.fitnessGoal;
+      case 5: return !!this.data.workoutSplit;
       default: return false;
     }
   }
@@ -122,7 +129,7 @@ export class OnboardingComponent {
   }
 
   select(field: keyof OnboardingData, value: string) {
-    this.data[field] = value;
+    (this.data as any)[field] = value;
   }
 
   // Let the user go back to login to change their username
@@ -143,9 +150,11 @@ export class OnboardingComponent {
     }
 
     this.profileService.createProfile({
-      username: this.authService.username,   // raw login handle — backend uses this to find credentials & link the profile
+      username: this.authService.username,
       name: this.data.name.trim(),
       email: this.data.email.trim(),
+      heightCm: this.data.heightCm,
+      weightKg: this.data.weightKg,
       currentLevel: this.data.currentLevel,
       fitnessGoal: this.data.fitnessGoal,
       workoutSplit: this.data.workoutSplit,

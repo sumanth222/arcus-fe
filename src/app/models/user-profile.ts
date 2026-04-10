@@ -5,6 +5,9 @@ export interface UserProfile {
   email: string;
   joinedAt: string;
 
+  heightCm: number | null;
+  weightKg: number | null;
+
   currentLevel: string;
   fitnessGoal: string;
   workoutSplit: string;

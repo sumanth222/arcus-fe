@@ -26,10 +26,10 @@ export class ArcusWarmupComponent {
       video: "/videos/warmup/pushups.mp4"
     },
     {
-      name: "Resistance Band Pull",
+      name: "Bodyweight Squats",
       duration: "15 reps",
-      description: "With light weights, warm up the upper back and stabilize shoulders.",
-      video: "/videos/warmup/lat_pulldown.mp4"
+      description: "Warm up the quads, glutes and hips with slow controlled squats.",
+      video: "/videos/warmup/squats.mp4"
     }
   ];
 

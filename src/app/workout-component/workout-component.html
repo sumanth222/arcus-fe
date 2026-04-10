@@ -20,11 +20,25 @@
     </div>
   </div>
 
+  <!-- Exit Confirmation Overlay -->
+  <div *ngIf="showExitConfirm" class="exit-overlay" (click)="showExitConfirm = false">
+    <div class="exit-dialog" (click)="$event.stopPropagation()">
+      <div class="exit-dialog-icon">🏳️</div>
+      <h3 class="exit-dialog-title">Exit workout?</h3>
+      <p class="exit-dialog-body">Your progress so far won't be saved.</p>
+      <div class="exit-dialog-actions">
+        <button class="exit-dialog-confirm" (click)="exitWorkout()">Exit</button>
+        <button class="exit-dialog-cancel" (click)="showExitConfirm = false">Keep going</button>
+      </div>
+    </div>
+  </div>
+
   <!-- Header -->
   <div class="workout-header">
 
-    <div class="exercise-progress">
-      Day {{dayNumber}} · Exercise {{exerciseIndex + 1}} / {{totalExercises}}
+    <div class="exercise-progress-row">
+      <span class="exercise-progress">Day {{dayNumber}} · Exercise {{exerciseIndex + 1}} / {{totalExercises}}</span>
+      <button class="exit-btn" (click)="showExitConfirm = true" title="Exit workout">✕</button>
     </div>
 
     <div class="exercise-name-row">
