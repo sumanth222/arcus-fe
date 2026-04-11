@@ -4,6 +4,37 @@
   <div class="orb orb-1"></div>
   <div class="orb orb-2"></div>
   <div class="orb orb-3"></div>
+  <div class="orb orb-4"></div>
+
+  <!-- Floating ambient stat pills -->
+  <div class="ambient-pills" aria-hidden="true">
+    <div class="ambient-pill pill-a">🔥 12-day streak</div>
+    <div class="ambient-pill pill-b">↑ 8.4% strength</div>
+    <div class="ambient-pill pill-c">💪 142 kg volume</div>
+    <div class="ambient-pill pill-d">⚡ Day 4 · PPL</div>
+    <div class="ambient-pill pill-e">✓ 4 sets logged</div>
+    <div class="ambient-pill pill-f">🥗 148 g protein</div>
+  </div>
+
+  <!-- Mobile ticker strip (hidden on desktop via CSS) -->
+  <div class="pill-ticker" aria-hidden="true">
+    <div class="pill-ticker-track">
+      <!-- set 1 -->
+      <span class="ticker-pill">🔥 12-day streak</span>
+      <span class="ticker-pill">↑ 8.4% strength</span>
+      <span class="ticker-pill">💪 142 kg volume</span>
+      <span class="ticker-pill">⚡ Day 4 · PPL</span>
+      <span class="ticker-pill">✓ 4 sets logged</span>
+      <span class="ticker-pill">🥗 148 g protein</span>
+      <!-- set 2 — duplicate for seamless loop -->
+      <span class="ticker-pill">🔥 12-day streak</span>
+      <span class="ticker-pill">↑ 8.4% strength</span>
+      <span class="ticker-pill">💪 142 kg volume</span>
+      <span class="ticker-pill">⚡ Day 4 · PPL</span>
+      <span class="ticker-pill">✓ 4 sets logged</span>
+      <span class="ticker-pill">🥗 148 g protein</span>
+    </div>
+  </div>
 
   <div class="login-card">
 
@@ -13,8 +44,11 @@
         <img src="/images/logo.svg" alt="Arcus Logo" class="brand-logo-img" />
       </div>
       <h1 class="brand-name">Arcus</h1>
-      <p class="brand-tagline">Train smarter. Track everything.</p>
+      <p class="brand-tagline">Train smarter. <span class="tagline-accent">Track everything.</span></p>
     </div>
+
+    <!-- Divider -->
+    <div class="brand-divider"></div>
 
     <!-- Tab switcher -->
     <div class="tab-bar">
