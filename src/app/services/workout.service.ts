@@ -8,7 +8,7 @@ import { ExerciseView, LogSetResponse, WorkoutSession } from '../models/workout.
 })
 export class WorkoutService {
 
-  private baseUrl = 'http://localhost:8080';
+  private baseUrl = 'https://arcus-api-bohd.onrender.com';
 
   // In-memory session state — persists across navigation
   activeSession: WorkoutSession | null = null;

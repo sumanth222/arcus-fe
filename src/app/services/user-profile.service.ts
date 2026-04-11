@@ -8,8 +8,8 @@ import { NextWorkoutInfo, UserProfile } from '../models/user-profile';
 })
 export class ProfileService {
 
-  private baseUrl = 'http://localhost:8080/user/profile';
-  private workoutBaseUrl = 'http://localhost:8080/workout';
+  private baseUrl = 'https://arcus-api-bohd.onrender.com/user/profile';
+  private workoutBaseUrl = 'https://arcus-api-bohd.onrender.com/workout';
 
   constructor(private http: HttpClient) {}
 

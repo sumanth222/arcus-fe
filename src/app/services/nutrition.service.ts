@@ -12,7 +12,7 @@ import {
 @Injectable({ providedIn: 'root' })
 export class NutritionService {
 
-  private baseUrl = 'http://localhost:8080/nutrition';
+  private baseUrl = 'https://arcus-api-bohd.onrender.com/nutrition';
 
   constructor(private http: HttpClient) {}
 

@@ -6,7 +6,7 @@ import { LoginRequest, LoginResponse } from '../models/user-profile';
 @Injectable({ providedIn: 'root' })
 export class AuthService {
 
-  private baseUrl = 'http://localhost:8080/auth';
+  private baseUrl = 'https://arcus-api-bohd.onrender.com/auth';
 
   private _userId: number | null = null;
   private _userName: string = '';
