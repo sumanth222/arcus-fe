@@ -1,0 +1,105 @@
+<div class="about-shell">
+
+  <!-- Background orbs -->
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="orb orb-3"></div>
+
+  <!-- Grid overlay -->
+  <div class="grid-overlay" aria-hidden="true"></div>
+
+  <div class="about-content">
+
+    <!-- Nav bar -->
+    <div class="about-nav">
+      <button class="back-btn" (click)="goBack()">← Back</button>
+      <img src="/images/logo.svg" alt="Arcus" class="nav-logo" />
+      <div style="width:64px"></div>
+    </div>
+
+    <!-- Hero -->
+    <div class="hero">
+      <div class="hero-badge">Built for athletes</div>
+      <h1 class="hero-title">
+        Train smarter.<br />
+        <span class="hero-accent">Not just harder.</span>
+      </h1>
+      <p class="hero-sub">
+        Arcus is a precision fitness platform that combines adaptive workout
+        generation, progressive overload science, and nutrition intelligence —
+        all in one seamless experience.
+      </p>
+
+      <!-- Stat strip -->
+      <div class="stat-strip">
+        <div class="stat-item" *ngFor="let s of stats">
+          <span class="stat-val">{{ s.value }}</span>
+          <span class="stat-lbl">{{ s.label }}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Divider -->
+    <div class="section-divider"></div>
+
+    <!-- Features grid -->
+    <div class="features-section">
+      <p class="section-label">What Arcus does</p>
+      <div class="features-grid">
+        <div class="feature-card" *ngFor="let f of features">
+          <div class="feature-icon">{{ f.icon }}</div>
+          <h3 class="feature-title">{{ f.title }}</h3>
+          <p class="feature-desc">{{ f.desc }}</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Divider -->
+    <div class="section-divider"></div>
+
+    <!-- Philosophy -->
+    <div class="philosophy-section">
+      <p class="section-label">Our philosophy</p>
+      <div class="philosophy-card">
+        <blockquote class="philosophy-quote">
+          "Consistency over intensity. Data over guesswork.<br />
+          <span class="philosophy-accent">Progress over perfection.</span>"
+        </blockquote>
+        <p class="philosophy-body">
+          Most fitness apps track what you did. Arcus tells you what to do next —
+          and why. Every recommendation is backed by your own training history,
+          not a one-size-fits-all template.
+        </p>
+      </div>
+    </div>
+
+    <!-- Divider -->
+    <div class="section-divider"></div>
+
+    <!-- Why Arcus? -->
+    <div class="benefits-section">
+      <p class="section-label">Why Arcus?</p>
+      <div class="benefits-grid">
+        <div class="benefit-card" *ngFor="let b of benefits">
+          <div class="benefit-emoji">{{ b.emoji }}</div>
+          <h3 class="benefit-title">{{ b.title }}</h3>
+          <p class="benefit-desc">{{ b.desc }}</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Divider -->
+    <div class="section-divider"></div>
+
+    <!-- CTA -->
+    <div class="cta-section">
+      <button class="cta-btn" (click)="goBack()">
+        {{ isLoggedIn ? 'Back to Dashboard →' : 'Get Started →' }}
+      </button>
+    </div>
+
+    <!-- Footer -->
+    <p class="footer-note">Arcus · Built with ♥ · {{ 2026 }}</p>
+
+  </div>
+</div>
