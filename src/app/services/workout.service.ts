@@ -2,13 +2,14 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, of, tap, ReplaySubject } from 'rxjs';
 import { ExerciseView, LogSetResponse, WorkoutSession } from '../models/workout.model';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class WorkoutService {
 
-  private baseUrl = 'https://arcus-api-bohd.onrender.com';
+  private baseUrl = environment.apiBaseUrl;
 
   // In-memory session state — persists across navigation
   activeSession: WorkoutSession | null = null;

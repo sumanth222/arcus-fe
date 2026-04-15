@@ -2,14 +2,15 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { NextWorkoutInfo, UserProfile } from '../models/user-profile';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProfileService {
 
-  private baseUrl = 'https://arcus-api-bohd.onrender.com/user/profile';
-  private workoutBaseUrl = 'https://arcus-api-bohd.onrender.com/workout';
+  private baseUrl = `${environment.apiBaseUrl}/user/profile`;
+  private workoutBaseUrl = `${environment.apiBaseUrl}/workout`;
 
   constructor(private http: HttpClient) {}
 

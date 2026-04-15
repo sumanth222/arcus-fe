@@ -2,11 +2,12 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, tap } from 'rxjs';
 import { LoginRequest, LoginResponse } from '../models/user-profile';
+import { environment } from '../../environments/environment';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
 
-  private baseUrl = 'https://arcus-api-bohd.onrender.com/auth';
+  private baseUrl = `${environment.apiBaseUrl}/auth`;
 
   private _userId: number | null = null;
   private _userName: string = '';

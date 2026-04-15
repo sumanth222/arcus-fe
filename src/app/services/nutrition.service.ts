@@ -8,11 +8,12 @@ import {
   PostWorkoutNutrition,
   QuickNutritionOption
 } from '../models/nutrition.model';
+import { environment } from '../../environments/environment';
 
 @Injectable({ providedIn: 'root' })
 export class NutritionService {
 
-  private baseUrl = 'https://arcus-api-bohd.onrender.com/nutrition';
+  private baseUrl = `${environment.apiBaseUrl}/nutrition`;
 
   constructor(private http: HttpClient) {}
 
