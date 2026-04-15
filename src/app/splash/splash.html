@@ -1,0 +1,79 @@
+<div class="splash-shell" [class.splash-leaving]="leaving">
+
+  <!-- ── Background orbs ─────────────────────────────────────── -->
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="orb orb-3"></div>
+  <div class="orb orb-4"></div>
+
+  <!-- ── Grid overlay ────────────────────────────────────────── -->
+  <div class="grid-overlay" aria-hidden="true"></div>
+
+  <!-- ── Ambient pill rows (desktop) ────────────────────────── -->
+  <div class="pill-field" aria-hidden="true">
+    <div class="pill-row pill-row--top">
+      <span class="pill" *ngFor="let p of pillRows[0]">{{ p.icon }} {{ p.text }}</span>
+      <!-- duplicate for seamless scroll -->
+      <span class="pill" *ngFor="let p of pillRows[0]">{{ p.icon }} {{ p.text }}</span>
+    </div>
+    <div class="pill-row pill-row--bottom">
+      <span class="pill" *ngFor="let p of pillRows[1]">{{ p.icon }} {{ p.text }}</span>
+      <span class="pill" *ngFor="let p of pillRows[1]">{{ p.icon }} {{ p.text }}</span>
+    </div>
+  </div>
+
+  <!-- ── Main content ─────────────────────────────────────────── -->
+  <div class="splash-content">
+
+    <!-- Logo mark -->
+    <div class="logo-wrap">
+      <div class="logo-ring logo-ring--outer"></div>
+      <div class="logo-ring logo-ring--inner"></div>
+      <img src="/images/logo.svg" alt="Arcus" class="logo-img" />
+    </div>
+
+    <!-- Brand name -->
+    <div class="brand-name">Arcus</div>
+
+    <!-- Hero headline -->
+    <h1 class="headline">
+      Train smarter.<br />
+      <span class="headline-accent">Own your progress.</span>
+    </h1>
+
+    <!-- Sub-copy -->
+    <p class="sub-copy">
+      Adaptive workouts. Progressive overload science.<br class="br-desk" />
+      Nutrition intelligence — all in one place.
+    </p>
+
+    <!-- Proof strip -->
+    <div class="proof-strip">
+      <div class="proof-item">
+        <span class="proof-val">100%</span>
+        <span class="proof-lbl">Personalised</span>
+      </div>
+      <div class="proof-sep"></div>
+      <div class="proof-item">
+        <span class="proof-val">AI</span>
+        <span class="proof-lbl">Powered</span>
+      </div>
+      <div class="proof-sep"></div>
+      <div class="proof-item">
+        <span class="proof-val">Zero</span>
+        <span class="proof-lbl">Guesswork</span>
+      </div>
+    </div>
+
+    <!-- CTA -->
+    <button class="cta-btn" (click)="getStarted()">
+      <span class="cta-text">Get Started</span>
+      <span class="cta-arrow">→</span>
+    </button>
+
+    <!-- Fine print -->
+    <p class="fine-print">No credit card. No fluff. Just results.</p>
+
+  </div>
+
+</div>

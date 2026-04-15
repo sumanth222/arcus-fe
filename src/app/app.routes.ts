@@ -8,12 +8,17 @@ import { OnboardingComponent } from './onboarding/onboarding';
 import { LoginComponent } from './login/login';
 import { ProfileComponent } from './profile/profile';
 import { AboutComponent } from './about/about';
+import { SplashComponent } from './splash/splash';
 
 export const routes: Routes = [
   {
     path: '',
-    redirectTo: 'login',
+    redirectTo: 'splash',
     pathMatch: 'full'
+  },
+  {
+    path: 'splash',
+    component: SplashComponent
   },
   {
     path: 'login',
