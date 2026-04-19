@@ -52,6 +52,13 @@ export class AuthService {
     );
   }
 
+  /** Send Google access token + userinfo to backend — backend verifies + finds/creates user */
+  googleLogin(accessToken: string, userInfo?: any): Observable<LoginResponse> {
+    return this.http.post<LoginResponse>(`${this.baseUrl}/google`, { accessToken, userInfo }).pipe(
+      tap(res => this.storeSession(res.userId, res.name, res.username ?? ''))
+    );
+  }
+
   private storeSession(userId: number | null, name: string, username: string) {
     this._userId   = userId != null ? Number(userId) : null;
     this._userName = name;

@@ -263,6 +263,69 @@
   margin: 0 -4px 24px;
 }
 
+// ── Google Sign-In button ──────────────────────────────────────
+.google-btn {
+  width: 100%;
+  padding: 13px 20px;
+  border-radius: 14px;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.13);
+  color: #e5e7eb;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.18s, border-color 0.18s, transform 0.15s;
+  margin-bottom: 20px;
+  position: relative;
+
+  &:hover:not(:disabled) {
+    background: rgba(255,255,255,0.10);
+    border-color: rgba(255,255,255,0.22);
+    transform: translateY(-1px);
+  }
+
+  &:active:not(:disabled) { transform: translateY(0); }
+
+  &:disabled { opacity: 0.55; cursor: not-allowed; }
+}
+
+.google-btn-inner {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.google-icon {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+}
+
+// ── Or divider ────────────────────────────────────────────────
+.or-divider {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.or-line {
+  flex: 1;
+  height: 1px;
+  background: rgba(255,255,255,0.08);
+}
+
+.or-text {
+  font-size: 12px;
+  color: #4b5563;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  flex-shrink: 0;
+}
+
 // ── Tab switcher ───────────────────────────────────────────────
 .tab-bar {
   position: relative;
@@ -541,9 +604,18 @@
   to { transform: rotate(360deg); }
 }
 
+// ── Micro-trust line ───────────────────────────────────────────
+.trust-line {
+  font-size: 11px;
+  color: #374151;
+  text-align: center;
+  letter-spacing: 0.2px;
+  margin: -4px 0 0;
+  animation: fadeSlideIn 0.25s ease;
+}
+
 // ── Switch hint ────────────────────────────────────────────────
-.switch-hint {
-  font-size: 13px;
+.switch-hint {  font-size: 13px;
   color: #4b5563;
   text-align: center;
 }

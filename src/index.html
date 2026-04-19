@@ -17,6 +17,9 @@
     gtag('js', new Date());
     gtag('config', 'AW-18083368856');
   </script>
+  <!-- Google Identity Services (OAuth) — onload fires window.onGoogleLibraryLoad when ready -->
+  <script src="https://accounts.google.com/gsi/client" async defer
+          onload="window.onGoogleLibraryLoad && window.onGoogleLibraryLoad()"></script>
 </head>
 <body style="background:#05050a;margin:0">
   <app-root></app-root>

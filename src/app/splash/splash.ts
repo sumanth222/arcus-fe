@@ -11,8 +11,25 @@ import { CommonModule } from '@angular/common';
 })
 export class SplashComponent implements OnInit, OnDestroy {
 
-  entered = false;      // true after user taps "Get Started"
-  leaving = false;      // triggers exit animation before nav
+  leaving = false;
+
+  benefits = [
+    {
+      icon: '⚡',
+      title: 'Workouts built for you',
+      desc: 'Adaptive plans that evolve with your strength — no copy-paste programmes.'
+    },
+    {
+      icon: '📈',
+      title: 'Progressive overload, automated',
+      desc: 'Arcus tracks every set and tells you exactly what to lift next session.'
+    },
+    {
+      icon: '🎯',
+      title: 'Know your numbers',
+      desc: 'Volume, reps, nutrition — all in one place so you never guess again.'
+    }
+  ];
 
   pillRows = [
     [
@@ -34,10 +51,19 @@ export class SplashComponent implements OnInit, OnDestroy {
   ngOnInit() {}
   ngOnDestroy() {}
 
-  getStarted() {
+  /** Primary CTA — lands on register tab */
+  createAccount() {
     this.leaving = true;
     setTimeout(() => {
-      this.router.navigate(['/login']);
-    }, 550);
+      this.router.navigate(['/login'], { queryParams: { mode: 'register' } });
+    }, 480);
+  }
+
+  /** Secondary CTA — lands on sign-in tab */
+  signIn() {
+    this.leaving = true;
+    setTimeout(() => {
+      this.router.navigate(['/login'], { queryParams: { mode: 'login' } });
+    }, 480);
   }
 }

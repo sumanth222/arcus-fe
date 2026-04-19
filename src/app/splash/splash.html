@@ -22,57 +22,78 @@
     </div>
   </div>
 
-  <!-- ── Main content ─────────────────────────────────────────── -->
-  <div class="splash-content">
+  <!-- ── Page wrapper ─────────────────────────────────────────── -->
+  <div class="splash-page">
 
-    <!-- Logo mark -->
-    <div class="logo-wrap">
-      <div class="logo-ring logo-ring--outer"></div>
-      <div class="logo-ring logo-ring--inner"></div>
-      <img src="/images/logo.svg" alt="Arcus" class="logo-img" />
+    <!-- ── Hero card ────────────────────────────────────────── -->
+    <div class="splash-card">
+
+      <!-- Logo mark -->
+      <div class="logo-wrap">
+        <div class="logo-ring logo-ring--outer"></div>
+        <div class="logo-ring logo-ring--inner"></div>
+        <img src="/images/logo.svg" alt="Arcus" class="logo-img" />
+      </div>
+
+      <!-- Trust badge -->
+      <div class="trust-badge">🏆 Adaptive · Science-backed · Free</div>
+
+      <!-- Outcome-focused headline -->
+      <h1 class="headline">
+        Get stronger.<br />
+        <span class="headline-accent">Every single week.</span>
+      </h1>
+
+      <!-- Benefit-driven sub-copy -->
+      <p class="sub-copy">
+        Arcus builds your workout, tracks your progress, and tells you
+        exactly what to lift next — so you never plateau again.
+      </p>
+
+      <!-- Dual CTAs -->
+      <div class="cta-group">
+        <button class="cta-primary" (click)="createAccount()">
+          <span>Start for free</span>
+          <span class="cta-arrow">→</span>
+        </button>
+        <button class="cta-secondary" (click)="signIn()">
+          Already have an account? <span class="cta-secondary-accent">Sign in</span>
+        </button>
+      </div>
+
+      <!-- Fine print trust signals -->
+      <p class="fine-print">No credit card &nbsp;·&nbsp; No fluff &nbsp;·&nbsp; Cancel anytime</p>
+
+      <!-- Proof strip -->
+      <div class="proof-strip">
+        <div class="proof-item">
+          <span class="proof-val">100%</span>
+          <span class="proof-lbl">Personalised</span>
+        </div>
+        <div class="proof-sep"></div>
+        <div class="proof-item">
+          <span class="proof-val">AI</span>
+          <span class="proof-lbl">Powered</span>
+        </div>
+        <div class="proof-sep"></div>
+        <div class="proof-item">
+          <span class="proof-val">Zero</span>
+          <span class="proof-lbl">Guesswork</span>
+        </div>
+      </div>
+
     </div>
 
-    <!-- Brand name -->
-    <div class="brand-name">Arcus</div>
-
-    <!-- Hero headline -->
-    <h1 class="headline">
-      Train smarter.<br />
-      <span class="headline-accent">Own your progress.</span>
-    </h1>
-
-    <!-- Sub-copy -->
-    <p class="sub-copy">
-      Adaptive workouts. Progressive overload science.<br class="br-desk" />
-      Nutrition intelligence — all in one place.
-    </p>
-
-    <!-- Proof strip -->
-    <div class="proof-strip">
-      <div class="proof-item">
-        <span class="proof-val">100%</span>
-        <span class="proof-lbl">Personalised</span>
-      </div>
-      <div class="proof-sep"></div>
-      <div class="proof-item">
-        <span class="proof-val">AI</span>
-        <span class="proof-lbl">Powered</span>
-      </div>
-      <div class="proof-sep"></div>
-      <div class="proof-item">
-        <span class="proof-val">Zero</span>
-        <span class="proof-lbl">Guesswork</span>
+    <!-- ── Benefit cards row ─────────────────────────────────── -->
+    <div class="benefits-row">
+      <div class="benefit-card" *ngFor="let b of benefits">
+        <div class="benefit-icon">{{ b.icon }}</div>
+        <div class="benefit-body">
+          <p class="benefit-title">{{ b.title }}</p>
+          <p class="benefit-desc">{{ b.desc }}</p>
+        </div>
       </div>
     </div>
-
-    <!-- CTA -->
-    <button class="cta-btn" (click)="getStarted()">
-      <span class="cta-text">Get Started</span>
-      <span class="cta-arrow">→</span>
-    </button>
-
-    <!-- Fine print -->
-    <p class="fine-print">No credit card. No fluff. Just results.</p>
 
   </div>
 

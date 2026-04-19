@@ -1,10 +1,13 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, NgZone } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Router, RouterModule } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { Subject, Subscription } from 'rxjs';
 import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
 import { AuthService } from '../services/auth.service';
+
+// Google client ID — replace with your actual OAuth client ID from Google Cloud Console
+const GOOGLE_CLIENT_ID = '1056291595970-0aacmrca1ueithg72rpmkr9h5h2j4s8e.apps.googleusercontent.com';
 
 type Mode = 'login' | 'register';
 type UsernameStatus = 'idle' | 'checking' | 'available' | 'taken' | 'short';
@@ -18,7 +21,7 @@ type UsernameStatus = 'idle' | 'checking' | 'available' | 'taken' | 'short';
 })
 export class LoginComponent implements OnInit, OnDestroy {
 
-  constructor(private router: Router, private authService: AuthService) {}
+  constructor(private router: Router, private authService: AuthService, private route: ActivatedRoute, private ngZone: NgZone) {}
 
   mode: Mode = 'login';
 
@@ -30,6 +33,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   showConfirm = false;
 
   loading = false;
+  googleLoading = false;
   error = '';
   fieldErrors = { password: '', confirm: '', email: '' };
 
@@ -41,6 +45,12 @@ export class LoginComponent implements OnInit, OnDestroy {
   get isLogin() { return this.mode === 'login'; }
 
   ngOnInit() {
+    // Auto-switch tab based on ?mode=register|login from splash CTAs
+    const modeParam = this.route.snapshot.queryParamMap.get('mode');
+    if (modeParam === 'register' || modeParam === 'login') {
+      this.mode = modeParam;
+    }
+
     // Debounce username input — fire check 500ms after user stops typing
     this.sub = this.usernameInput$.pipe(
       debounceTime(500),
@@ -175,5 +185,62 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   onEnter(event: KeyboardEvent) {
     if (event.key === 'Enter') this.submit();
+  }
+
+  // ── Google Sign-In ────────────────────────────────────────────
+
+  /** Triggered by our custom button — uses OAuth popup redirect flow */
+  signInWithGoogle() {
+    if (typeof google === 'undefined') {
+      this.error = 'Google Sign-In is not available. Please try again.';
+      return;
+    }
+    // Use token client popup — more reliable than One Tap for localhost
+    const tokenClient = google.accounts.oauth2.initTokenClient({
+      client_id: GOOGLE_CLIENT_ID,
+      scope: 'openid email profile',
+      callback: (tokenResponse: any) => {
+        if (tokenResponse.error) {
+          this.ngZone.run(() => {
+            this.error = 'Google sign-in failed. Please try again.';
+          });
+          return;
+        }
+        // Exchange access token for ID token via userinfo
+        fetch('https://www.googleapis.com/oauth2/v3/userinfo', {
+          headers: { Authorization: `Bearer ${tokenResponse.access_token}` }
+        })
+          .then(r => r.json())
+          .then((userInfo: any) => {
+            this.ngZone.run(() => this.handleGoogleCallback(tokenResponse.access_token, userInfo));
+          })
+          .catch(() => {
+            this.ngZone.run(() => { this.error = 'Google sign-in failed. Please try again.'; });
+          });
+      },
+    });
+    tokenClient.requestAccessToken({ prompt: 'select_account' });
+  }
+
+  /** Called after OAuth popup succeeds */
+  private handleGoogleCallback(accessToken: string, userInfo?: any) {
+    this.googleLoading = true;
+    this.error = '';
+    this.authService.googleLogin(accessToken, userInfo).subscribe({
+      next: (res) => {
+        this.googleLoading = false;
+        if (res.isNewUser) {
+          this.router.navigate(['/onboarding']);
+        } else if (res.userId) {
+          this.router.navigate(['/home']);
+        } else {
+          this.error = 'Google sign-in succeeded but no profile found.';
+        }
+      },
+      error: () => {
+        this.googleLoading = false;
+        this.error = 'Google sign-in failed. Please try again or use email/password.';
+      }
+    });
   }
 }

@@ -49,4 +49,5 @@ export interface LoginResponse {
   userId: number | null;
   name: string;
   isNewUser: boolean;
+  username?: string;   // returned by Google login flow
 }
