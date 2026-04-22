@@ -28,9 +28,7 @@ const STEPS: Step[] = [
   { id: 3, title: 'Experience level',         subtitle: 'Be honest — we\'ll tailor your plan' },
   { id: 4, title: 'Your fitness goal',        subtitle: 'What are you training for?' },
   { id: 5, title: 'Choose your split',        subtitle: 'How do you want to structure your week?' },
-];
-
-@Component({
+];@Component({
   selector: 'app-onboarding',
   standalone: true,
   imports: [CommonModule, FormsModule],
@@ -43,13 +41,21 @@ export class OnboardingComponent {
     private router: Router,
     private profileService: ProfileService,
     private authService: AuthService
-  ) {}
+  ) {
+    // Pre-fill email from Google sign-in and skip email step
+    if (this.authService.googleEmail) {
+      this.data.email = this.authService.googleEmail;
+    }
+  }
 
   steps = STEPS;
   currentStep = 0;
   animating = false;
   submitting = false;
   error = '';
+
+  // True when user signed in via Google — email step is skipped
+  get hasGoogleEmail(): boolean { return !!this.authService.googleEmail; }
 
   data: OnboardingData = {
     name: '',
@@ -96,7 +102,7 @@ export class OnboardingComponent {
   get canAdvance(): boolean {
     switch (this.currentStep) {
       case 0: return this.data.name.trim().length >= 2;
-      case 1: return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(this.data.email);
+      case 1: return this.hasGoogleEmail || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(this.data.email);
       case 2: return (this.data.heightCm != null && this.data.heightCm > 0)
                   && (this.data.weightKg != null && this.data.weightKg > 0);
       case 3: return !!this.data.currentLevel;
@@ -115,6 +121,8 @@ export class OnboardingComponent {
     this.animating = true;
     setTimeout(() => {
       this.currentStep++;
+      // Skip email step if Google email is already set
+      if (this.currentStep === 1 && this.hasGoogleEmail) this.currentStep++;
       this.animating = false;
     }, 220);
   }
@@ -124,6 +132,8 @@ export class OnboardingComponent {
     this.animating = true;
     setTimeout(() => {
       this.currentStep--;
+      // Skip email step going backwards too
+      if (this.currentStep === 1 && this.hasGoogleEmail) this.currentStep--;
       this.animating = false;
     }, 220);
   }

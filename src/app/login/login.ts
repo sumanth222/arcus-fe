@@ -229,12 +229,38 @@ export class LoginComponent implements OnInit, OnDestroy {
     this.authService.googleLogin(accessToken, userInfo).subscribe({
       next: (res) => {
         this.googleLoading = false;
-        if (res.isNewUser) {
-          this.router.navigate(['/onboarding']);
-        } else if (res.userId) {
-          this.router.navigate(['/home']);
+        if (res.isNewUser || !res.userId) {
+          // New user or backend didn't find/create properly — register with Gmail
+          if (!res.userId && userInfo?.email) {
+            const username = userInfo.email.split('@')[0].replace(/[^a-zA-Z0-9_]/g, '');
+            this.authService.register({
+              username,
+              email: userInfo.email,
+              password: crypto.randomUUID()
+            }).subscribe({
+              next: () => this.router.navigate(['/onboarding']),
+              error: (err) => {
+                // Username taken — append random suffix and retry once
+                if (err.status === 409) {
+                  const unique = username + Math.floor(1000 + Math.random() * 9000);
+                  this.authService.register({
+                    username: unique,
+                    email: userInfo.email,
+                    password: crypto.randomUUID()
+                  }).subscribe({
+                    next: () => this.router.navigate(['/onboarding']),
+                    error: () => { this.error = 'Could not create account. Please sign up manually.'; }
+                  });
+                } else {
+                  this.error = 'Could not create account. Please sign up manually.';
+                }
+              }
+            });
+          } else {
+            this.router.navigate(['/onboarding']);
+          }
         } else {
-          this.error = 'Google sign-in succeeded but no profile found.';
+          this.router.navigate(['/home']);
         }
       },
       error: () => {

@@ -12,6 +12,7 @@ export class AuthService {
   private _userId: number | null = null;
   private _userName: string = '';
   private _username: string = '';
+  private _googleEmail: string = '';
 
   constructor(private http: HttpClient) {
     const stored = sessionStorage.getItem('arcus_user');
@@ -31,6 +32,7 @@ export class AuthService {
   get userId(): number | null { return this._userId; }
   get userName(): string      { return this._userName; }
   get username(): string      { return this._username; }
+  get googleEmail(): string   { return this._googleEmail; }
   get isLoggedIn(): boolean   { return this._userId !== null; }
 
   /** GET /auth/check-username?username=foo → { available: boolean } */
@@ -54,6 +56,7 @@ export class AuthService {
 
   /** Send Google access token + userinfo to backend — backend verifies + finds/creates user */
   googleLogin(accessToken: string, userInfo?: any): Observable<LoginResponse> {
+    if (userInfo?.email) this._googleEmail = userInfo.email;
     return this.http.post<LoginResponse>(`${this.baseUrl}/google`, { accessToken, userInfo }).pipe(
       tap(res => this.storeSession(res.userId, res.name, res.username ?? ''))
     );
