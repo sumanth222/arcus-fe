@@ -33,6 +33,7 @@ export class ProfileService {
     currentLevel: string;
     fitnessGoal: string;
     workoutSplit: string;
+    workoutLocation: string;
     lastWorkoutDay: number;
   }): Observable<UserProfile> {
     return this.http.post<UserProfile>(`${this.baseUrl}/create`, payload);

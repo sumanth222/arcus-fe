@@ -11,6 +11,7 @@ export interface UserProfile {
   currentLevel: string;
   fitnessGoal: string;
   workoutSplit: string;
+  workoutLocation?: string;
 
   bio: string | null;
 

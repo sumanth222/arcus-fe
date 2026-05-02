@@ -121,8 +121,22 @@
       </button>
     </div>
 
-    <!-- ── Step 5: Split ── -->
+    <!-- ── Step 5: Workout Location ── -->
     <div *ngIf="currentStep === 5" class="choice-grid">
+      <button
+        *ngFor="let loc of locations"
+        class="choice-card"
+        [class.choice-card--selected]="data.workoutLocation === loc.key"
+        (click)="select('workoutLocation', loc.key)">
+        <span class="choice-icon">{{loc.icon}}</span>
+        <span class="choice-label">{{loc.label}}</span>
+        <span class="choice-desc">{{loc.desc}}</span>
+        <span class="choice-check" *ngIf="data.workoutLocation === loc.key">✓</span>
+      </button>
+    </div>
+
+    <!-- ── Step 6: Split ── -->
+    <div *ngIf="currentStep === 6" class="choice-grid">
       <button
         *ngFor="let sp of splits"
         class="choice-card"

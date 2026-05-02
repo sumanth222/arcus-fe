@@ -27,6 +27,8 @@ export interface LogSetResponse {
   nextSetReps?: number;
 }
 
+export type SetRPE = 'easy' | 'moderate' | 'hard' | 'failed' | null;
+
 export interface SetData {
   setNumber: number;
   targetWeight: number;

@@ -3,43 +3,54 @@
   <!-- Logo -->
   <img src="/images/logo.svg" alt="Arcus" class="rest-logo" />
 
-  <!-- Loading state while API resolves -->
-  <div *ngIf="loading" class="rest-loading">
-    <div class="rest-loading-icon">✓</div>
-    <p class="rest-loading-text">Set {{completedSet}} Logged</p>
-    <p class="rest-loading-sub">Loading rest data...</p>
-  </div>
-
-  <!-- Rest screen once data is ready -->
-  <ng-container *ngIf="!loading && restData">
-
-    <!-- Completed indicator -->
-    <div class="rest-complete rest-fadein">
-      ✓ Set {{completedSet}} Logged
+  <!-- Phase 1: RPE Selection -->
+  <ng-container *ngIf="phase === 'rpe'">
+    <div class="rest-complete rest-fadein">✓ Set {{completedSet}} Logged</div>
+    <div class="rpe-section rest-fadein">
+      <p class="rpe-heading">How did that set feel?</p>
+      <p class="rpe-auto">Auto-skipping in {{rpeCountdown}}s</p>
+      <div class="rpe-options">
+        <button
+          *ngFor="let opt of rpeOptions"
+          class="rpe-btn"
+          [class.rpe-btn--selected]="selectedRpe === opt.key"
+          (click)="selectRpe(opt.key)">
+          <span class="rpe-emoji">{{opt.emoji}}</span>
+          <span class="rpe-text">{{opt.label}}</span>
+        </button>
+      </div>
     </div>
+  </ng-container>
 
-    <!-- AI feedback -->
-    <div class="rest-message rest-fadein">
-      {{restData.message}}
+  <!-- Phase 2: Loading -->
+  <ng-container *ngIf="phase === 'loading'">
+    <div class="rest-loading">
+      <div class="rest-loading-icon">✓</div>
+      <p class="rest-loading-text">Set {{completedSet}} Logged</p>
+      <p class="rest-loading-sub">Calculating next set...</p>
     </div>
+  </ng-container>
 
-    <!-- Fatigue warning -->
+  <!-- Phase 3: Resting -->
+  <ng-container *ngIf="phase === 'resting' && restData">
+
+    <div class="rest-complete rest-fadein">✓ Set {{completedSet}} Logged</div>
+
+    <div class="rest-message rest-fadein">{{restData.message}}</div>
+
     <div *ngIf="restData.fatigueDetected" class="fatigue-badge rest-fadein">
       ⚠️ Fatigue detected — take an extra rest
     </div>
 
-    <!-- Timer -->
     <div class="timer-section rest-fadein">
       <div class="rest-label">Rest</div>
       <div class="rest-timer">{{minutes}}:{{seconds}}</div>
     </div>
 
-    <!-- Next Set Info -->
     <div *ngIf="nextSet" class="next-set-card rest-fadein">
       <div class="next-label">Next Set</div>
       <div class="next-set-details">Set {{nextSet.setNumber}}</div>
       <div class="next-target">
-        <!-- Prefer backend-suggested values if present; show Bodyweight for bodyweight exercises -->
         <ng-container *ngIf="isBodyweightNextSet">
           Bodyweight × {{restData.nextSetReps != null ? restData.nextSetReps : nextSet.targetReps}} reps
         </ng-container>
@@ -49,7 +60,7 @@
         </ng-container>
       </div>
     </div>
-    <!-- End Rest -->
+
     <button class="end-rest-btn rest-fadein" (click)="endRest()">
       End Rest Early
     </button>

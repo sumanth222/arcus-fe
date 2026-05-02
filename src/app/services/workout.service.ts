@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, of, tap, ReplaySubject } from 'rxjs';
-import { ExerciseView, LogSetResponse, WorkoutSession } from '../models/workout.model';
+import { ExerciseView, LogSetResponse, SetRPE, WorkoutSession } from '../models/workout.model';
 import { environment } from '../../environments/environment';
 
 @Injectable({
@@ -19,6 +19,12 @@ export class WorkoutService {
 
   // Holds the pending log-set response for the rest screen to consume
   pendingLogSet$: ReplaySubject<LogSetResponse> | null = null;
+
+  // Payload held until RPE is selected on rest screen — then fired
+  pendingLogSetPayload: { exerciseSessionId: number; setNumber: number; weight: number; reps: number } | null = null;
+
+  // RPE selected on rest screen — attached when the API is finally fired
+  pendingRpe: SetRPE = null;
 
   // Accumulates total volume (weight × reps) across all logged sets in the session
   totalSessionVolume: number = 0;
@@ -53,13 +59,48 @@ export class WorkoutService {
     );
   }
 
-  logSet(payload: { exerciseSessionId: number; setNumber: number; weight: number; reps: number }): ReplaySubject<LogSetResponse> {
+  /** Stage the log-set payload — doesn't fire until fireLogSet() is called */
+  stageLogSet(payload: { exerciseSessionId: number; setNumber: number; weight: number; reps: number }) {
+    this.pendingLogSetPayload = payload;
+    this.pendingLogSet$ = new ReplaySubject<LogSetResponse>(1);
+  }
+
+  /** Fire the staged log-set, attaching the selected RPE */
+  fireLogSet(): ReplaySubject<LogSetResponse> {
+    const payload = this.pendingLogSetPayload!;
+    const rpe = this.pendingRpe;
+
+    // Accumulate volume
+    this.totalSessionVolume += payload.weight * payload.reps;
+
+    const body: any = { ...payload };
+    if (rpe) body.rpe = rpe;
+
+    this.pendingRpe = null;
+    this.pendingLogSetPayload = null;
+
+    console.log('[logSet] firing:', body);
+    this.http.post<LogSetResponse>(`${this.baseUrl}/logs/log-set`, body).subscribe({
+      next: (res) => this.pendingLogSet$!.next(res),
+      error: (err) => this.pendingLogSet$!.error(err)
+    });
+
+    return this.pendingLogSet$!;
+  }
+
+  logSet(payload: { exerciseSessionId: number; setNumber: number; weight: number; reps: number; rpe?: string | null }): ReplaySubject<LogSetResponse> {
     // Accumulate volume before firing the request
     this.totalSessionVolume += payload.weight * payload.reps;
 
+    // Attach pending RPE (from last rest screen selection) then clear it
+    if (this.pendingRpe) {
+      payload.rpe = this.pendingRpe;
+      this.pendingRpe = null;
+    }
+
     const subject = new ReplaySubject<LogSetResponse>(1);
     this.pendingLogSet$ = subject;
-    console.log("Obj: ",payload)
+    console.log("Obj: ", payload);
     this.http.post<LogSetResponse>(`${this.baseUrl}/logs/log-set`, payload).subscribe({
       next: (res) => subject.next(res),
       error: (err) => subject.error(err)
@@ -80,6 +121,8 @@ export class WorkoutService {
     this.exerciseIndex = 0;
     this.dayNumber = 0;
     this.pendingLogSet$ = null;
+    this.pendingLogSetPayload = null;
+    this.pendingRpe = null;
     this.totalSessionVolume = 0;
   }
 }

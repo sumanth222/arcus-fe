@@ -216,33 +216,17 @@ export class WorkoutComponent implements OnInit {
     // Persist exercise index in service before navigating
     this.workoutService.exerciseIndex = this.exerciseIndex;
 
-    // Show blur + spinner overlay while waiting for backend
-    this.setLogging = true;
-
-    // Fire the API call — rest screen will subscribe to the result via service
-    this.workoutService.logSet({
+    // Stage the payload — API fires from rest screen AFTER RPE is selected
+    this.workoutService.stageLogSet({
       exerciseSessionId: set.exerciseSessionId,
       setNumber: set.setNumber,
       weight: set.weight,
       reps: set.reps
-    }).subscribe({
-      next: (res) => {
-        // If the backend suggests next set weight/reps, update the next set
-        if (this.currentSet && res.nextSetWeight != null) {
-          this.currentSet.weight = res.nextSetWeight;
-        }
-        if (this.currentSet && res.nextSetReps != null) {
-          this.currentSet.reps = res.nextSetReps;
-        }
-        this.setLogging = false;
-      },
-      error: (err) => {
-        this.setLogging = false;
-        // Optionally handle error
-      }
     });
 
-    // Navigate immediately — rest screen picks up the pending observable
+    this.setLogging = false;
+
+    // Navigate — rest screen fires the API after RPE selection
     this.router.navigate(['/rest'], {
       state: {
         completedSet: set.setNumber,

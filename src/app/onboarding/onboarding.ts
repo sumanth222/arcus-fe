@@ -13,6 +13,7 @@ export interface OnboardingData {
   currentLevel: string;
   fitnessGoal: string;
   workoutSplit: string;
+  workoutLocation: string;
 }
 
 interface Step {
@@ -27,7 +28,8 @@ const STEPS: Step[] = [
   { id: 2, title: 'Body measurements',        subtitle: 'Used to personalise your nutrition targets' },
   { id: 3, title: 'Experience level',         subtitle: 'Be honest — we\'ll tailor your plan' },
   { id: 4, title: 'Your fitness goal',        subtitle: 'What are you training for?' },
-  { id: 5, title: 'Choose your split',        subtitle: 'How do you want to structure your week?' },
+  { id: 5, title: 'Where do you train?',      subtitle: 'We\'ll tailor exercises to your setup' },
+  { id: 6, title: 'Choose your split',        subtitle: 'How do you want to structure your week?' },
 ];@Component({
   selector: 'app-onboarding',
   standalone: true,
@@ -64,7 +66,8 @@ export class OnboardingComponent {
     weightKg: null,
     currentLevel: '',
     fitnessGoal: '',
-    workoutSplit: ''
+    workoutSplit: '',
+    workoutLocation: ''
   };
 
   levels = [
@@ -79,6 +82,12 @@ export class OnboardingComponent {
     { key: 'strength',       label: 'Strength',         icon: '🏋️', desc: 'Lift heavier, get stronger' },
     { key: 'endurance',      label: 'Endurance',        icon: '🏃', desc: 'Improve stamina and cardio' },
     { key: 'maintenance',    label: 'Maintenance',      icon: '⚖️', desc: 'Stay fit, stay consistent' },
+  ];
+
+  locations = [
+    { key: 'gym',  label: 'Gym',         icon: '🏋️', desc: 'Full equipment available' },
+    { key: 'home', label: 'Home',         icon: '🏠', desc: 'Bodyweight & minimal equipment' },
+    { key: 'both', label: 'Both',         icon: '🔀', desc: 'Mix of gym and home sessions' },
   ];
 
   splits = [
@@ -107,7 +116,8 @@ export class OnboardingComponent {
                   && (this.data.weightKg != null && this.data.weightKg > 0);
       case 3: return !!this.data.currentLevel;
       case 4: return !!this.data.fitnessGoal;
-      case 5: return !!this.data.workoutSplit;
+      case 5: return !!this.data.workoutLocation;
+      case 6: return !!this.data.workoutSplit;
       default: return false;
     }
   }
@@ -121,7 +131,6 @@ export class OnboardingComponent {
     this.animating = true;
     setTimeout(() => {
       this.currentStep++;
-      // Skip email step if Google email is already set
       if (this.currentStep === 1 && this.hasGoogleEmail) this.currentStep++;
       this.animating = false;
     }, 220);
@@ -132,7 +141,6 @@ export class OnboardingComponent {
     this.animating = true;
     setTimeout(() => {
       this.currentStep--;
-      // Skip email step going backwards too
       if (this.currentStep === 1 && this.hasGoogleEmail) this.currentStep--;
       this.animating = false;
     }, 220);
@@ -168,6 +176,7 @@ export class OnboardingComponent {
       currentLevel: this.data.currentLevel,
       fitnessGoal: this.data.fitnessGoal,
       workoutSplit: this.data.workoutSplit,
+      workoutLocation: this.data.workoutLocation,
       lastWorkoutDay: 0
     }).subscribe({
       next: (profile) => {
