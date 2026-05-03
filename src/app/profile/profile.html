@@ -201,6 +201,36 @@
           </ng-container>
         </div>
 
+        <!-- Workout Location -->
+        <div class="field-row" [class.editing]="editingField === 'workoutLocation'">
+          <ng-container *ngIf="editingField !== 'workoutLocation'">
+            <div class="field-meta">
+              <span class="field-key">Workout Location</span>
+              <span class="field-val">{{ locationLabel(profile.workoutLocation) }}</span>
+            </div>
+            <button class="edit-pill" (click)="startEdit('workoutLocation')">Edit</button>
+          </ng-container>
+          <ng-container *ngIf="editingField === 'workoutLocation'">
+            <div class="edit-row-header">
+              <span class="edit-field-key">Where do you train?</span>
+            </div>
+            <div class="location-options">
+              <button
+                *ngFor="let loc of locationOptions"
+                class="location-btn"
+                [class.location-btn--selected]="editValues['workoutLocation'] === loc.key"
+                (click)="editValues['workoutLocation'] = loc.key">
+                <span class="location-label">{{ loc.label }}</span>
+                <span class="location-desc">{{ loc.desc }}</span>
+              </button>
+            </div>
+            <div class="edit-actions">
+              <button class="save-btn" (click)="saveEdit('workoutLocation')">Save</button>
+              <button class="cancel-btn" (click)="cancelEdit()">Cancel</button>
+            </div>
+          </ng-container>
+        </div>
+
         <!-- Last Workout (read-only) -->
         <div class="field-row">
           <div class="field-meta">

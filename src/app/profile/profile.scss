@@ -452,3 +452,51 @@
 @keyframes spin {
   to { transform: rotate(360deg); }
 }
+
+// ── Workout Location Picker ────────────────────────────────────
+.location-options {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+  margin-bottom: 12px;
+}
+
+.location-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+  padding: 12px 16px;
+  border-radius: 12px;
+  border: 1.5px solid rgba(255,255,255,0.1);
+  background: rgba(255,255,255,0.04);
+  cursor: pointer;
+  width: 100%;
+  transition: all 0.18s ease;
+  text-align: left;
+
+  .location-label {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: rgba(255,255,255,0.85);
+  }
+
+  .location-desc {
+    font-size: 0.75rem;
+    color: rgba(255,255,255,0.4);
+  }
+
+  &:hover {
+    background: rgba(255,255,255,0.08);
+    border-color: rgba(255,255,255,0.2);
+  }
+
+  &.location-btn--selected {
+    background: rgba(139,92,246,0.2);
+    border-color: rgba(139,92,246,0.6);
+
+    .location-label { color: #fff; }
+    .location-desc  { color: rgba(255,255,255,0.6); }
+  }
+}

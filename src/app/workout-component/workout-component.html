@@ -107,7 +107,7 @@
       </span>
 
       <span class="set-stats">
-        {{ isBodyweightExercise ? 'BW' : set.weight + ' kg' }} × {{set.reps}}
+        {{ isBodyweightExercise ? 'Bodyweight' : set.weight + ' kg' }} × {{set.reps}}
       </span>
 
     </div>
@@ -192,7 +192,14 @@
         <div>
           <p class="next-exercise-name">{{nextExercise.name}}</p>
           <p class="next-exercise-meta">
-            {{nextExercise.sets.length}} sets · {{nextExercise.sets[0].targetWeight}} kg · Tempo {{nextExercise.tempo}}
+            {{nextExercise.sets.length}} sets · 
+            <ng-container *ngIf="isBodyweightExerciseName(nextExercise.name)">
+              Bodyweight
+            </ng-container>
+            <ng-container *ngIf="!isBodyweightExerciseName(nextExercise.name)">
+              {{nextExercise.sets[0].targetWeight}} kg
+            </ng-container>
+            · Tempo {{nextExercise.tempo}}
           </p>
         </div>
         <span class="next-exercise-icon">→</span>
@@ -209,7 +216,14 @@
   <div *ngIf="nextSet && currentSet" class="next-set-card">
     <div class="next-label">UP NEXT</div>
     <div class="next-details">Set {{nextSet.setNumber}}</div>
-    <div class="next-target">{{nextSet.targetWeight}} kg × {{nextSet.targetReps}} reps</div>
+    <div class="next-target">
+      <ng-container *ngIf="isBodyweightExercise">
+        Bodyweight × {{nextSet.targetReps}} reps
+      </ng-container>
+      <ng-container *ngIf="!isBodyweightExercise">
+        {{nextSet.targetWeight}} kg × {{nextSet.targetReps}} reps
+      </ng-container>
+    </div>
   </div>
 
 </div>

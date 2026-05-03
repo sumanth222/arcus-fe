@@ -42,7 +42,13 @@ export class RestScreenComponent implements OnInit, OnDestroy {
   get isBodyweightNextSet(): boolean {
     const name = this.exerciseName.toLowerCase();
     return name.includes('push-up') || name.includes('pushup') || name.includes('push up')
-        || name.includes('pull-up') || name.includes('pullup') || name.includes('pull up');
+        || name.includes('pull-up') || name.includes('pullup') || name.includes('pull up')
+        || name.includes('dip') || name.includes('chin-up') || name.includes('chinup') || name.includes('chin up')
+        || name.includes('muscle-up') || name.includes('muscleup') || name.includes('muscle up')
+        || name.includes('handstand') || name.includes('pistol squat') || name.includes('pistol')
+        || name.includes('planche') || name.includes('l-sit') || name.includes('l sit')
+        || name.includes('burpee') || name.includes('jump squat') || name.includes('lunge')
+        || name.includes('bodyweight') || name.includes('bw');
   }
 
   get loading(): boolean { return this.phase === 'loading'; }

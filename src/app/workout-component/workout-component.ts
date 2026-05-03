@@ -95,7 +95,13 @@ export class WorkoutComponent implements OnInit {
   get isBodyweightExercise(): boolean {
     const name = this.workout?.name?.toLowerCase() ?? '';
     return name.includes('push-up') || name.includes('pushup') || name.includes('push up')
-        || name.includes('pull-up') || name.includes('pullup') || name.includes('pull up');
+        || name.includes('pull-up') || name.includes('pullup') || name.includes('pull up')
+        || name.includes('dip') || name.includes('chin-up') || name.includes('chinup') || name.includes('chin up')
+        || name.includes('muscle-up') || name.includes('muscleup') || name.includes('muscle up')
+        || name.includes('handstand') || name.includes('pistol squat') || name.includes('pistol')
+        || name.includes('planche') || name.includes('l-sit') || name.includes('l sit')
+        || name.includes('burpee') || name.includes('jump squat') || name.includes('lunge')
+        || name.includes('bodyweight') || name.includes('bw');
   }
 
   /** True only for dumbbell or barbell exercises where weight is split per side */
@@ -104,6 +110,19 @@ export class WorkoutComponent implements OnInit {
     return name.includes('dumbbell') || name.includes('db ') || name.includes(' db')
         || name.includes('barbell') || name.includes('bb ') || name.includes(' bb')
         || name.includes('bench');
+  }
+
+  /** Helper to check if an exercise name is bodyweight */
+  isBodyweightExerciseName(exerciseName: string): boolean {
+    const name = exerciseName?.toLowerCase() ?? '';
+    return name.includes('push-up') || name.includes('pushup') || name.includes('push up')
+        || name.includes('pull-up') || name.includes('pullup') || name.includes('pull up')
+        || name.includes('dip') || name.includes('chin-up') || name.includes('chinup') || name.includes('chin up')
+        || name.includes('muscle-up') || name.includes('muscleup') || name.includes('muscle up')
+        || name.includes('handstand') || name.includes('pistol squat') || name.includes('pistol')
+        || name.includes('planche') || name.includes('l-sit') || name.includes('l sit')
+        || name.includes('burpee') || name.includes('jump squat') || name.includes('lunge')
+        || name.includes('bodyweight') || name.includes('bw');
   }
 
   totalVolume(): number {

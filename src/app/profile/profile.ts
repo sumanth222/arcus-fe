@@ -48,6 +48,12 @@ export class ProfileComponent implements OnInit {
     { key: 'athletic',     label: 'Athletic' },
   ];
 
+  locationOptions = [
+    { key: 'gym',  label: '🏋️ Gym',  desc: 'Full equipment available' },
+    { key: 'home', label: '🏠 Home', desc: 'Bodyweight & minimal equipment' },
+    { key: 'both', label: '🔀 Both', desc: 'Mix of gym and home sessions' },
+  ];
+
   constructor(
     public router: Router,
     private profileService: ProfileService,
@@ -137,7 +143,7 @@ export class ProfileComponent implements OnInit {
   }
 
   isEditableField(field: string): boolean {
-    return ['name', 'email', 'heightCm', 'weightKg', 'currentLevel', 'fitnessGoal', 'workoutSplit'].includes(field);
+    return ['name', 'email', 'heightCm', 'weightKg', 'currentLevel', 'fitnessGoal', 'workoutSplit', 'workoutLocation'].includes(field);
   }
 
   getFieldLabel(field: string): string {
@@ -150,6 +156,7 @@ export class ProfileComponent implements OnInit {
       currentLevel: 'Experience Level',
       fitnessGoal: 'Fitness Goal',
       workoutSplit: 'Workout Split',
+      workoutLocation: 'Workout Location',
       totalWorkouts: 'Total Workouts',
       totalWeightLifted: 'Total Weight Lifted',
       consecutiveWorkoutDays: 'Consecutive Days',
@@ -162,6 +169,11 @@ export class ProfileComponent implements OnInit {
     if (field === 'currentLevel') return this.levelOptions;
     if (field === 'fitnessGoal') return this.goalOptions;
     if (field === 'workoutSplit') return this.splitOptions;
+    if (field === 'workoutLocation') return this.locationOptions;
     return [];
+  }
+
+  locationLabel(key: string | undefined): string {
+    return this.locationOptions.find(o => o.key === key)?.label ?? (key ?? '—');
   }
 }
