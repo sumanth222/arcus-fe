@@ -301,6 +301,12 @@ export class WorkoutComponent implements OnInit {
     this.router.navigate(['/home']);
   }
 
+  openChat() {
+    this.router.navigate(['/chat'], {
+      state: { exerciseName: this.workout?.name ?? '' }
+    });
+  }
+
   replaceCurrentExercise() {
     this.showSwapConfirm = false;
     this.swapping = true;

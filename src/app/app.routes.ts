@@ -9,6 +9,7 @@ import { LoginComponent } from './login/login';
 import { ProfileComponent } from './profile/profile';
 import { AboutComponent } from './about/about';
 import { SplashComponent } from './splash/splash';
+import { ChatComponent } from './chat/chat';
 
 export const routes: Routes = [
   {
@@ -55,5 +56,9 @@ export const routes: Routes = [
   {
     path: 'about',
     component: AboutComponent
+  },
+  {
+    path: 'chat',
+    component: ChatComponent
   }
 ];

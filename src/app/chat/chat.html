@@ -1,0 +1,98 @@
+<div class="chat-shell">
+
+  <!-- Header -->
+  <div class="chat-header">
+    <button class="back-btn" (click)="goBack()">←</button>
+    <div class="chat-header-info">
+      <div class="chat-avatar">🤖</div>
+      <div>
+        <p class="chat-header-name">Arcus AI Coach</p>
+        <p class="chat-header-sub" *ngIf="!exerciseName">Fitness · Nutrition · Recovery</p>
+        <p class="chat-header-sub exercise-chip" *ngIf="exerciseName">
+          <span class="chip-dot">●</span> {{exerciseName}}
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Message List -->
+  <div class="message-list" #messageList>
+
+    <div
+      *ngFor="let msg of messages"
+      class="message-row"
+      [class.message-row--user]="msg.role === 'user'"
+      [class.message-row--ai]="msg.role === 'ai'">
+
+      <!-- AI avatar dot -->
+      <div *ngIf="msg.role === 'ai'" class="ai-avatar">🤖</div>
+
+      <div
+        class="bubble"
+        [class.bubble--user]="msg.role === 'user'"
+        [class.bubble--ai]="msg.role === 'ai'"
+        [class.bubble--error]="msg.error">
+        <p class="bubble-text">{{ msg.text }}</p>
+        <span class="bubble-time">{{ formatTime(msg.timestamp) }}</span>
+      </div>
+
+    </div>
+
+    <!-- Typing indicator while loading -->
+    <div *ngIf="loading" class="message-row message-row--ai">
+      <div class="ai-avatar">🤖</div>
+      <div class="bubble bubble--ai bubble--typing">
+        <span class="dot"></span>
+        <span class="dot"></span>
+        <span class="dot"></span>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Rate-limit banner -->
+  <div *ngIf="rateLimitLabel" class="rate-limit-bar" [class.rate-limit-bar--cap]="rateLimitHit">
+    <span class="rate-limit-icon">{{ rateLimitHit ? '🚦' : '⏱' }}</span>
+    <span class="rate-limit-text">{{ rateLimitLabel }}</span>
+    <span *ngIf="!rateLimitHit" class="rate-limit-progress-wrap">
+      <span
+        class="rate-limit-progress"
+        [style.width.%]="(cooldownRemaining / 30) * 100">
+      </span>
+    </span>
+  </div>
+
+  <!-- Input Bar -->
+  <div class="input-bar">
+    <textarea
+      #inputField
+      class="chat-input"
+      [(ngModel)]="inputText"
+      (keydown)="onKeydown($event)"
+      placeholder="Ask your coach anything…"
+      rows="1"
+      [disabled]="isSendBlocked">
+    </textarea>
+    <button
+      class="send-btn"
+      (click)="send()"
+      [disabled]="sendBtnDisabled"
+      [class.send-btn--cooling]="cooldownRemaining > 0 && !loading && !rateLimitHit">
+      <!-- Cooldown arc -->
+      <svg *ngIf="cooldownRemaining > 0 && !loading && !rateLimitHit"
+        class="cooldown-ring" viewBox="0 0 36 36">
+        <circle class="cooldown-ring-bg" cx="18" cy="18" r="15" />
+        <circle class="cooldown-ring-arc" cx="18" cy="18" r="15"
+          [style.stroke-dashoffset]="94.25 * (cooldownRemaining / 30)" />
+      </svg>
+      <!-- Normal send icon -->
+      <svg *ngIf="cooldownRemaining === 0 || loading || rateLimitHit"
+        viewBox="0 0 24 24" fill="none" stroke="currentColor"
+        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="22" y1="2" x2="11" y2="13"></line>
+        <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+      </svg>
+    </button>
+  </div>
+
+</div>
