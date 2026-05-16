@@ -20,6 +20,16 @@
     </div>
   </div>
 
+  <!-- Spinner Overlay for Exercise Swap -->
+  <div *ngIf="swapping" class="set-logging-overlay">
+    <div class="spinner-glass">
+      <svg class="spinner" viewBox="0 0 50 50">
+        <circle class="path" cx="25" cy="25" r="20" fill="none" stroke-width="5"></circle>
+      </svg>
+      <p class="swapping-label">Finding alternative…</p>
+    </div>
+  </div>
+
   <!-- Exit Confirmation Overlay -->
   <div *ngIf="showExitConfirm" class="exit-overlay" (click)="showExitConfirm = false">
     <div class="exit-dialog" (click)="$event.stopPropagation()">
@@ -33,12 +43,37 @@
     </div>
   </div>
 
+  <!-- Swap Exercise Confirmation Sheet -->
+  <div *ngIf="showSwapConfirm" class="exit-overlay" (click)="showSwapConfirm = false">
+    <div class="swap-dialog" (click)="$event.stopPropagation()">
+      <div class="swap-dialog-icon">🔄</div>
+      <h3 class="swap-dialog-title">Replace exercise?</h3>
+      <p class="swap-dialog-body">
+        <strong>{{workout.name}}</strong> will be swapped for a different exercise
+        targeting the same muscles. Sets already logged won't count.
+      </p>
+      <div class="exit-dialog-actions">
+        <button class="swap-dialog-confirm" (click)="replaceCurrentExercise()">Replace it</button>
+        <button class="exit-dialog-cancel" (click)="showSwapConfirm = false">Keep this one</button>
+      </div>
+    </div>
+  </div>
+
   <!-- Header -->
   <div class="workout-header">
 
     <div class="exercise-progress-row">
       <span class="exercise-progress">Day {{dayNumber}} · Exercise {{exerciseIndex + 1}} / {{totalExercises}}</span>
-      <button class="exit-btn" (click)="showExitConfirm = true" title="Exit workout">✕</button>
+      <div class="header-actions">
+        <button
+          *ngIf="completedSets.length === 0"
+          class="swap-btn"
+          title="Can't do this exercise? Swap it"
+          (click)="showSwapConfirm = true">
+          🔄
+        </button>
+        <button class="exit-btn" (click)="showExitConfirm = true" title="Exit workout">✕</button>
+      </div>
     </div>
 
     <div class="exercise-name-row">

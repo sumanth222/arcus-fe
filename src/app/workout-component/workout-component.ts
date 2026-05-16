@@ -77,6 +77,8 @@ export class WorkoutComponent implements OnInit {
   showExitConfirm = false;
   setLogging = false;
   videoLoading = true;
+  showSwapConfirm = false;
+  swapping = false;
 
   lastWorkoutDay: number = 1;
 
@@ -297,6 +299,47 @@ export class WorkoutComponent implements OnInit {
   exitWorkout() {
     this.workoutService.clearSession();
     this.router.navigate(['/home']);
+  }
+
+  replaceCurrentExercise() {
+    this.showSwapConfirm = false;
+    this.swapping = true;
+
+    const uid = this.authService.userId;
+    if (!uid) return;
+
+    // Collect IDs of all current exercises so the backend avoids repeating them
+    const excludeIds = this.exercises.map(e => e.exerciseSessionId).filter(Boolean);
+
+    this.workoutService.replaceExercise({
+      exerciseSessionId: this.workout.exerciseSessionId,
+      userId: uid,
+      level: '',    // backend can ignore or derive from session
+      goal: '',
+      muscleGroup: this.workout.muscle,
+      excludeExerciseIds: excludeIds,
+    }).subscribe({
+      next: (res) => {
+        const raw = res.exercises?.[0];
+        if (!raw) { this.swapping = false; return; }
+
+        // Build replacement ExerciseView and slot it in-place
+        const replacement = buildExerciseView(raw);
+        this.exercises[this.exerciseIndex] = replacement;
+        this.workoutService.activeExercises = this.exercises;
+
+        // Reset set state for the new exercise
+        this.initializeSets();
+        this.swapping = false;
+
+        // Force video reload
+        setTimeout(() => this.exerciseVideo?.nativeElement?.load(), 0);
+      },
+      error: (err) => {
+        console.error('Failed to replace exercise', err);
+        this.swapping = false;
+      }
+    });
   }
 
   onVideoLoaded() {

@@ -741,3 +741,93 @@
 @keyframes spin {
   100% { transform: rotate(360deg); }
 }
+
+// ── Header action buttons row ──────────────────────────────────
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+// ── Swap exercise button ───────────────────────────────────────
+.swap-btn {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 1px solid rgba(250, 204, 21, 0.25);
+  background: rgba(250, 204, 21, 0.07);
+  color: #fbbf24;
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
+  flex-shrink: 0;
+
+  &:hover:not(:disabled) {
+    background: rgba(250, 204, 21, 0.18);
+    border-color: rgba(250, 204, 21, 0.5);
+    box-shadow: 0 0 8px rgba(250, 204, 21, 0.25);
+    transform: rotate(45deg);
+  }
+}
+
+// ── Swap confirm sheet ─────────────────────────────────────────
+.swap-dialog {
+  background: rgba(18, 18, 28, 0.97);
+  border: 1px solid rgba(250, 204, 21, 0.2);
+  border-radius: 20px;
+  padding: 28px 24px 24px;
+  width: 100%;
+  max-width: 320px;
+  text-align: center;
+  box-shadow: 0 24px 48px rgba(0, 0, 0, 0.55);
+  animation: slideUp 0.25s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+.swap-dialog-icon {
+  font-size: 32px;
+  margin-bottom: 12px;
+}
+
+.swap-dialog-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: #f3f4f6;
+  margin: 0 0 10px;
+}
+
+.swap-dialog-body {
+  font-size: 13px;
+  color: #9ca3af;
+  line-height: 1.55;
+  margin: 0 0 24px;
+
+  strong { color: #f3f4f6; }
+}
+
+.swap-dialog-confirm {
+  width: 100%;
+  padding: 13px;
+  border-radius: 12px;
+  border: 1px solid rgba(250, 204, 21, 0.35);
+  background: rgba(250, 204, 21, 0.12);
+  color: #fbbf24;
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+
+  &:hover {
+    background: rgba(250, 204, 21, 0.22);
+  }
+}
+
+// ── Swapping label inside spinner glass ────────────────────────
+.swapping-label {
+  margin-top: 14px;
+  font-size: 13px;
+  color: #9ca3af;
+  text-align: center;
+}

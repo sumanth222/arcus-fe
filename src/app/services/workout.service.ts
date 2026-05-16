@@ -108,6 +108,25 @@ export class WorkoutService {
     return subject;
   }
 
+  /**
+   * Ask the backend to swap the given exercise for an alternative.
+   * Returns the replacement exercise data wrapped in a WorkoutSession-like object
+   * with a single exercise in the `exercises` array.
+   */
+  replaceExercise(payload: {
+    exerciseSessionId: number;
+    userId: number;
+    level: string;
+    goal: string;
+    muscleGroup: string;
+    excludeExerciseIds: number[];
+  }): Observable<{ exercises: import('../models/workout.model').WorkoutExercise[] }> {
+    return this.http.post<{ exercises: import('../models/workout.model').WorkoutExercise[] }>(
+      `${this.baseUrl}/workout/replaceExercise`,
+      payload
+    );
+  }
+
   completeWorkout(userId: number, totalWeight: number): Observable<any> {
     return this.http.post<any>(
       `${this.baseUrl}/workout/completeWorkout?userId=${userId}&totalWeight=${totalWeight}`,
