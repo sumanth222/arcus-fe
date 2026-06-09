@@ -28,12 +28,20 @@ export class ProfileService {
     username: string;
     name: string;
     email: string;
+    age?: number | null;
+    gender?: string | null;
     heightCm: number | null;
     weightKg: number | null;
     currentLevel: string;
     fitnessGoal: string;
     workoutSplit: string;
     workoutLocation: string;
+    daysPerWeek?: number | null;
+    workoutDuration?: number | null;
+    equipment?: string | null;
+    weakMuscleGroups?: string | null;
+    injuries?: string | null;
+    additionalNotes?: string | null;
     lastWorkoutDay: number;
   }): Observable<UserProfile> {
     return this.http.post<UserProfile>(`${this.baseUrl}/create`, payload);

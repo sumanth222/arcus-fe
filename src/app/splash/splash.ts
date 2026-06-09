@@ -15,20 +15,32 @@ export class SplashComponent implements OnInit, OnDestroy {
 
   benefits = [
     {
-      icon: '⚡',
-      title: 'Workouts built for you',
-      desc: 'Adaptive plans that evolve with your strength — no copy-paste programmes.'
+      icon: '🎯',
+      title: 'Personalized workout programs',
+      desc: 'Custom plans built around your goals, experience, and schedule — not a generic template.'
     },
     {
       icon: '📈',
-      title: 'Progressive overload, automated',
-      desc: 'Arcus tracks every set and tells you exactly what to lift next session.'
+      title: 'Smart progress tracking',
+      desc: 'Arcus tracks every set and auto-adjusts your weights so you progress every single week.'
     },
     {
-      icon: '🎯',
-      title: 'Know your numbers',
-      desc: 'Volume, reps, nutrition — all in one place so you never guess again.'
+      icon: '🥗',
+      title: 'Nutrition guidance',
+      desc: 'Daily targets and meal logging tailored to your body and training load.'
+    },
+    {
+      icon: '🤖',
+      title: 'AI fitness coach',
+      desc: 'Ask anything — form cues, alternatives, recovery tips — available 24/7.'
     }
+  ];
+
+  trustItems = [
+    { icon: '🎯', label: 'Personalized programs' },
+    { icon: '📈', label: 'Smart progress tracking' },
+    { icon: '🥗', label: 'Nutrition guidance' },
+    { icon: '🤖', label: 'AI fitness coach' },
   ];
 
   pillRows = [

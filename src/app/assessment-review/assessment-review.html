@@ -1,0 +1,68 @@
+<div class="review-shell">
+
+  <!-- Background orbs -->
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="orb orb-3"></div>
+
+  <div class="review-card" [class.anim-in]="animIn">
+
+    <!-- Success icon with animated ring -->
+    <div class="success-ring-wrap">
+      <div class="success-ring success-ring--outer"></div>
+      <div class="success-ring success-ring--inner"></div>
+      <div class="success-icon">✓</div>
+    </div>
+
+    <!-- Status badge -->
+    <div class="status-badge">
+      <span class="status-dot"></span>
+      Review Pending
+    </div>
+
+    <!-- Headline -->
+    <h1 class="review-title">Your Profile Is<br /><span class="review-title-accent">Under Review</span></h1>
+
+    <!-- Subtitle -->
+    <p class="review-sub">
+      Our coaching team is reviewing your information and preparing
+      recommendations tailored to your goals.
+    </p>
+
+    <!-- Animated progress bar -->
+    <div class="review-progress-wrap">
+      <div class="review-progress-track">
+        <div class="review-progress-fill"></div>
+      </div>
+      <div class="review-progress-labels">
+        <span>Profile submitted</span>
+        <span>Coach review</span>
+        <span>Plan ready</span>
+      </div>
+    </div>
+
+    <!-- Divider -->
+    <div class="divider">
+      <span class="divider-text">While we review your profile, you can still:</span>
+    </div>
+
+    <!-- While you wait benefits -->
+    <div class="waiting-grid">
+      <div class="waiting-item" *ngFor="let w of whileWaiting">
+        <span class="waiting-icon">{{ w.icon }}</span>
+        <span class="waiting-label">{{ w.label }}</span>
+      </div>
+    </div>
+
+    <!-- CTA -->
+    <button class="cta-btn" (click)="goHome()">
+      Take me to the app →
+    </button>
+
+    <p class="fine-print">
+      You'll be notified when your personalised plan is ready.
+    </p>
+
+  </div>
+
+</div>

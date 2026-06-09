@@ -10,6 +10,7 @@ import { ProfileComponent } from './profile/profile';
 import { AboutComponent } from './about/about';
 import { SplashComponent } from './splash/splash';
 import { ChatComponent } from './chat/chat';
+import { AssessmentReviewComponent } from './assessment-review/assessment-review';
 
 export const routes: Routes = [
   {
@@ -60,5 +61,9 @@ export const routes: Routes = [
   {
     path: 'chat',
     component: ChatComponent
+  },
+  {
+    path: 'assessment-review',
+    component: AssessmentReviewComponent
   }
 ];

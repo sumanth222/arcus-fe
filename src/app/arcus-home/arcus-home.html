@@ -1,5 +1,17 @@
 <div class="min-h-screen from-zinc-900 to-black text-white p-6 flex flex-col gap-6 bg-[url('/images/home-background.jpg')] bg-cover bg-center">
 
+  <!-- Pending Review Banner -->
+  <div *ngIf="isPendingReview" class="review-banner" (click)="router.navigate(['/assessment-review'])">
+    <div class="review-banner-left">
+      <span class="review-banner-dot"></span>
+      <div>
+        <p class="review-banner-title">Your personalized plan is being reviewed</p>
+        <p class="review-banner-sub">Our coaching team is preparing your programme · Tap to learn more</p>
+      </div>
+    </div>
+    <span class="review-banner-arrow">→</span>
+  </div>
+
   <!-- Header with Profile Icon -->
   <div class="flex items-center justify-between">
     <img src="/images/logo.svg" alt="Arcus" class="h-8 w-8 opacity-90" style="filter: brightness(0) invert(1);" />

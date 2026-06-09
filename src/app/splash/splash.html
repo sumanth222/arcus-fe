@@ -36,24 +36,24 @@
       </div>
 
       <!-- Trust badge -->
-      <div class="trust-badge">🏆 Adaptive · Science-backed · Free</div>
+      <div class="trust-badge">✦ Personalized · Science-backed · Free</div>
 
-      <!-- Outcome-focused headline -->
+      <!-- Headline -->
       <h1 class="headline">
-        Get stronger.<br />
-        <span class="headline-accent">Every single week.</span>
+        Get a Personalized<br />
+        <span class="headline-accent">Fitness Plan Built For You</span>
       </h1>
 
-      <!-- Benefit-driven sub-copy -->
+      <!-- Sub-copy -->
       <p class="sub-copy">
-        Arcus builds your workout, tracks your progress, and tells you
-        exactly what to lift next — so you never plateau again.
+        Tell us about your goals, experience, and lifestyle. Arcus will build
+        a program designed specifically for you.
       </p>
 
       <!-- Dual CTAs -->
       <div class="cta-group">
         <button class="cta-primary" (click)="createAccount()">
-          <span>Start for free</span>
+          <span>Get Started</span>
           <span class="cta-arrow">→</span>
         </button>
         <button class="cta-secondary" (click)="signIn()">
@@ -61,24 +61,11 @@
         </button>
       </div>
 
-      <!-- Fine print trust signals -->
-      <p class="fine-print">No credit card &nbsp;·&nbsp; No fluff &nbsp;·&nbsp; Cancel anytime</p>
-
-      <!-- Proof strip -->
-      <div class="proof-strip">
-        <div class="proof-item">
-          <span class="proof-val">100%</span>
-          <span class="proof-lbl">Personalised</span>
-        </div>
-        <div class="proof-sep"></div>
-        <div class="proof-item">
-          <span class="proof-val">AI</span>
-          <span class="proof-lbl">Powered</span>
-        </div>
-        <div class="proof-sep"></div>
-        <div class="proof-item">
-          <span class="proof-val">Zero</span>
-          <span class="proof-lbl">Guesswork</span>
+      <!-- Trust indicators grid -->
+      <div class="trust-grid">
+        <div class="trust-item" *ngFor="let t of trustItems">
+          <span class="trust-icon">{{ t.icon }}</span>
+          <span class="trust-label">{{ t.label }}</span>
         </div>
       </div>
 

@@ -21,6 +21,12 @@
       <div class="progress-fill" [style.width.%]="progressPct"></div>
     </div>
 
+    <!-- Section label -->
+    <div class="section-label">
+      <span class="section-badge">{{ step.section }}</span>
+      <span class="section-step">Step {{stepInSection}} of {{sectionSteps.length}}</span>
+    </div>
+
     <!-- Step heading -->
     <div class="step-heading">
       <h1 class="step-title">{{step.title}}</h1>
@@ -30,15 +36,8 @@
     <!-- ── Step 0: Name ── -->
     <div *ngIf="currentStep === 0" class="input-step">
       <div class="text-input-wrap">
-        <input
-          class="glass-input"
-          type="text"
-          placeholder="e.g. Alex"
-          [(ngModel)]="data.name"
-          (keydown)="onEnter($event)"
-          autofocus
-          maxlength="40"
-        />
+        <input class="glass-input" type="text" placeholder="e.g. Alex"
+          [(ngModel)]="data.name" (keydown)="onEnter($event)" autofocus maxlength="40" />
         <span class="input-icon">✦</span>
       </div>
     </div>
@@ -46,57 +45,58 @@
     <!-- ── Step 1: Email ── -->
     <div *ngIf="currentStep === 1" class="input-step">
       <div class="text-input-wrap">
-        <input
-          class="glass-input"
-          type="email"
-          placeholder="you@email.com"
-          [(ngModel)]="data.email"
-          (keydown)="onEnter($event)"
-          autofocus
-        />
+        <input class="glass-input" type="email" placeholder="you@email.com"
+          [(ngModel)]="data.email" (keydown)="onEnter($event)" autofocus />
         <span class="input-icon">@</span>
       </div>
     </div>
 
-    <!-- ── Step 2: Body Measurements ── -->
-    <div *ngIf="currentStep === 2" class="input-step measurements-step">
+    <!-- ── Step 2: Age ── -->
+    <div *ngIf="currentStep === 2" class="input-step">
+      <div class="text-input-wrap">
+        <input class="glass-input" type="number" placeholder="e.g. 25"
+          min="13" max="100" [(ngModel)]="data.age" (keydown)="onEnter($event)" autofocus />
+        <span class="input-icon">🎂</span>
+      </div>
+      <p class="measure-hint">Must be 13 or older to use Arcus.</p>
+    </div>
+
+    <!-- ── Step 3: Gender ── -->
+    <div *ngIf="currentStep === 3" class="choice-grid choice-grid--2col">
+      <button *ngFor="let g of genders"
+        class="choice-card"
+        [class.choice-card--selected]="data.gender === g.key"
+        (click)="select('gender', g.key)">
+        <span class="choice-icon">{{g.icon}}</span>
+        <span class="choice-label">{{g.label}}</span>
+        <span class="choice-check" *ngIf="data.gender === g.key">✓</span>
+      </button>
+    </div>
+
+    <!-- ── Step 4: Body Measurements ── -->
+    <div *ngIf="currentStep === 4" class="input-step measurements-step">
       <div class="measure-row">
         <label class="measure-label">Height</label>
         <div class="measure-input-wrap">
-          <input
-            class="glass-input measure-input"
-            type="number"
-            placeholder="175"
-            min="100"
-            max="250"
-            [(ngModel)]="data.heightCm"
-            (keydown)="onEnter($event)"
-          />
+          <input class="glass-input measure-input" type="number" placeholder="175"
+            min="100" max="250" [(ngModel)]="data.heightCm" (keydown)="onEnter($event)" />
           <span class="measure-unit">cm</span>
         </div>
       </div>
       <div class="measure-row">
         <label class="measure-label">Weight</label>
         <div class="measure-input-wrap">
-          <input
-            class="glass-input measure-input"
-            type="number"
-            placeholder="75"
-            min="30"
-            max="300"
-            [(ngModel)]="data.weightKg"
-            (keydown)="onEnter($event)"
-          />
+          <input class="glass-input measure-input" type="number" placeholder="75"
+            min="30" max="300" [(ngModel)]="data.weightKg" (keydown)="onEnter($event)" />
           <span class="measure-unit">kg</span>
         </div>
       </div>
       <p class="measure-hint">Used only for nutrition targets — never shared.</p>
     </div>
 
-    <!-- ── Step 3: Level ── -->
-    <div *ngIf="currentStep === 3" class="choice-grid">
-      <button
-        *ngFor="let lvl of levels"
+    <!-- ── Step 5: Level ── -->
+    <div *ngIf="currentStep === 5" class="choice-grid">
+      <button *ngFor="let lvl of levels"
         class="choice-card"
         [class.choice-card--selected]="data.currentLevel === lvl.key"
         (click)="select('currentLevel', lvl.key)">
@@ -107,10 +107,9 @@
       </button>
     </div>
 
-    <!-- ── Step 4: Goal ── -->
-    <div *ngIf="currentStep === 4" class="choice-grid">
-      <button
-        *ngFor="let goal of goals"
+    <!-- ── Step 6: Goal ── -->
+    <div *ngIf="currentStep === 6" class="choice-grid choice-grid--2col">
+      <button *ngFor="let goal of goals"
         class="choice-card"
         [class.choice-card--selected]="data.fitnessGoal === goal.key"
         (click)="select('fitnessGoal', goal.key)">
@@ -121,10 +120,9 @@
       </button>
     </div>
 
-    <!-- ── Step 5: Workout Location ── -->
-    <div *ngIf="currentStep === 5" class="choice-grid">
-      <button
-        *ngFor="let loc of locations"
+    <!-- ── Step 7: Workout Location ── -->
+    <div *ngIf="currentStep === 7" class="choice-grid">
+      <button *ngFor="let loc of locations"
         class="choice-card"
         [class.choice-card--selected]="data.workoutLocation === loc.key"
         (click)="select('workoutLocation', loc.key)">
@@ -135,10 +133,9 @@
       </button>
     </div>
 
-    <!-- ── Step 6: Split ── -->
-    <div *ngIf="currentStep === 6" class="choice-grid">
-      <button
-        *ngFor="let sp of splits"
+    <!-- ── Step 8: Split ── -->
+    <div *ngIf="currentStep === 8" class="choice-grid">
+      <button *ngFor="let sp of splits"
         class="choice-card"
         [class.choice-card--selected]="data.workoutSplit === sp.key"
         (click)="select('workoutSplit', sp.key)">
@@ -149,17 +146,86 @@
       </button>
     </div>
 
+    <!-- ── Step 9: Days per week ── -->
+    <div *ngIf="currentStep === 9" class="choice-grid choice-grid--4col">
+      <button *ngFor="let d of daysOptions"
+        class="choice-card choice-card--compact"
+        [class.choice-card--selected]="data.daysPerWeek === d"
+        (click)="select('daysPerWeek', d)">
+        <span class="choice-num">{{d}}</span>
+        <span class="choice-label">days</span>
+        <span class="choice-check" *ngIf="data.daysPerWeek === d">✓</span>
+      </button>
+    </div>
+
+    <!-- ── Step 10: Session duration ── -->
+    <div *ngIf="currentStep === 10" class="choice-grid choice-grid--2col">
+      <button *ngFor="let d of durationOptions"
+        class="choice-card"
+        [class.choice-card--selected]="data.workoutDuration === d.value"
+        (click)="select('workoutDuration', d.value)">
+        <span class="choice-label">{{d.label}}</span>
+        <span class="choice-desc">{{d.desc}}</span>
+        <span class="choice-check" *ngIf="data.workoutDuration === d.value">✓</span>
+      </button>
+    </div>
+
+    <!-- ── Step 11: Equipment ── -->
+    <div *ngIf="currentStep === 11" class="choice-grid choice-grid--2col">
+      <button *ngFor="let eq of equipmentOptions"
+        class="choice-card"
+        [class.choice-card--selected]="data.equipment === eq.key"
+        (click)="select('equipment', eq.key)">
+        <span class="choice-icon">{{eq.icon}}</span>
+        <span class="choice-label">{{eq.label}}</span>
+        <span class="choice-desc">{{eq.desc}}</span>
+        <span class="choice-check" *ngIf="data.equipment === eq.key">✓</span>
+      </button>
+    </div>
+
+    <!-- ── Step 12: Weak muscle groups ── -->
+    <div *ngIf="currentStep === 12" class="input-step">
+      <div class="text-input-wrap">
+        <textarea class="glass-input glass-textarea"
+          placeholder="e.g. rear delts, hamstrings, glutes…"
+          [(ngModel)]="data.weakMuscleGroups"
+          rows="4" maxlength="500"></textarea>
+      </div>
+      <p class="measure-hint">Optional — leave blank if unsure. We'll figure it out together.</p>
+    </div>
+
+    <!-- ── Step 13: Injuries ── -->
+    <div *ngIf="currentStep === 13" class="input-step">
+      <div class="text-input-wrap">
+        <textarea class="glass-input glass-textarea"
+          placeholder="e.g. lower back pain, left shoulder impingement…"
+          [(ngModel)]="data.injuries"
+          rows="4" maxlength="500"></textarea>
+      </div>
+      <p class="measure-hint">Optional — your safety always comes first.</p>
+    </div>
+
+    <!-- ── Step 14: Additional notes ── -->
+    <div *ngIf="currentStep === 14" class="input-step">
+      <div class="text-input-wrap">
+        <textarea class="glass-input glass-textarea"
+          placeholder="Anything else your coach should know…"
+          [(ngModel)]="data.additionalNotes"
+          rows="4" maxlength="800"></textarea>
+      </div>
+      <p class="measure-hint">Optional — travel schedule, time constraints, preferences, etc.</p>
+    </div>
+
     <!-- Error -->
     <p *ngIf="error" class="error-msg">{{error}}</p>
 
     <!-- CTA -->
-    <button
-      class="cta-btn"
+    <button class="cta-btn"
       [class.cta-btn--disabled]="!canAdvance"
       [disabled]="!canAdvance || submitting"
       (click)="next()">
       <span *ngIf="!submitting">
-        {{ currentStep === steps.length - 1 ? 'Launch Arcus 🚀' : 'Continue →' }}
+        {{ currentStep === steps.length - 1 ? 'Submit My Profile 🚀' : 'Continue →' }}
       </span>
       <span *ngIf="submitting" class="spinner"></span>
     </button>

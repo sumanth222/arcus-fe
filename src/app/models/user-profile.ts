@@ -5,6 +5,9 @@ export interface UserProfile {
   email: string;
   joinedAt: string;
 
+  age?: number | null;
+  gender?: string | null;
+
   heightCm: number | null;
   weightKg: number | null;
 
@@ -12,6 +15,15 @@ export interface UserProfile {
   fitnessGoal: string;
   workoutSplit: string;
   workoutLocation?: string;
+
+  daysPerWeek?: number | null;
+  workoutDuration?: number | null;
+  equipment?: string | null;
+  weakMuscleGroups?: string | null;
+  injuries?: string | null;
+  additionalNotes?: string | null;
+
+  status?: 'PENDING_REVIEW' | 'ACTIVE';
 
   bio: string | null;
 

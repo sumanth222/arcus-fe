@@ -13,6 +13,7 @@ export class AuthService {
   private _userName: string = '';
   private _username: string = '';
   private _googleEmail: string = '';
+  private _status: 'PENDING_REVIEW' | 'ACTIVE' | '' = '';
 
   constructor(private http: HttpClient) {
     const stored = sessionStorage.getItem('arcus_user');
@@ -22,6 +23,7 @@ export class AuthService {
         this._userId   = parsed.userId != null ? Number(parsed.userId) : null;
         this._userName = parsed.name    ?? '';
         this._username = parsed.username ?? '';
+        this._status   = parsed.status  ?? '';
         console.log('[AuthService] restored session:', { userId: this._userId, name: this._userName, username: this._username });
       } catch {
         sessionStorage.removeItem('arcus_user');
@@ -34,6 +36,8 @@ export class AuthService {
   get username(): string      { return this._username; }
   get googleEmail(): string   { return this._googleEmail; }
   get isLoggedIn(): boolean   { return this._userId !== null; }
+  get status(): 'PENDING_REVIEW' | 'ACTIVE' | '' { return this._status; }
+  get isPendingReview(): boolean { return this._status === 'PENDING_REVIEW'; }
 
   /** GET /auth/check-username?username=foo → { available: boolean } */
   checkUsername(username: string): Observable<{ available: boolean }> {
@@ -62,11 +66,12 @@ export class AuthService {
     );
   }
 
-  private storeSession(userId: number | null, name: string, username: string) {
+  private storeSession(userId: number | null, name: string, username: string, status?: string) {
     this._userId   = userId != null ? Number(userId) : null;
     this._userName = name;
     this._username = username;
-    const payload = { userId: this._userId, name, username };
+    this._status   = (status as any) ?? '';
+    const payload = { userId: this._userId, name, username, status: this._status };
     console.log('[AuthService] storeSession:', payload);
     sessionStorage.setItem('arcus_user', JSON.stringify(payload));
   }
@@ -80,8 +85,17 @@ export class AuthService {
     }
   }
 
-  setUserSession(userId: number, name: string) {
-    this.storeSession(Number(userId), name, this._username);
+  setStatus(status: 'PENDING_REVIEW' | 'ACTIVE') {
+    this._status = status;
+    const stored = sessionStorage.getItem('arcus_user');
+    if (stored) {
+      const parsed = JSON.parse(stored);
+      sessionStorage.setItem('arcus_user', JSON.stringify({ ...parsed, status }));
+    }
+  }
+
+  setUserSession(userId: number, name: string, status?: string) {
+    this.storeSession(Number(userId), name, this._username, status);
   }
 
   logout() {

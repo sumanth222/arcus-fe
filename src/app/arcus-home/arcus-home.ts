@@ -29,6 +29,7 @@ export class ArcusHomeComponent implements OnInit {
   get userName(): string { return this.authService.userName || 'Athlete'; }
   get userId(): number   { return this.authService.userId ?? 0; }
   get isRestDay(): boolean { return this.todaysWorkout.name?.toLowerCase() === 'rest'; }
+  get isPendingReview(): boolean { return this.authService.isPendingReview; }
 
   dragging = false;
   startX = 0;
